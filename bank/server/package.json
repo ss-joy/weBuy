@@ -1,0 +1,16 @@
+{
+  "name": "bank-server",
+  "version": "1.0.0",
+  "description": "A server built for the bank to manage transactions ",
+  "main": "app_bank.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sakil Sazzad Joy",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "nodemon": "^2.0.22"
+  }
+}
