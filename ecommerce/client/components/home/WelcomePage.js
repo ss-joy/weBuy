@@ -35,7 +35,7 @@ const WelcomePage = () => {
           smarter, shop with confidence, shop at weBuy!
         </p>
       </section>
-      <section className="flex justify-around items-center px-20 bg-[#E9E8F5] flex-wrap">
+      <section className="flex justify-around items-center px-20 bg-[#E6E5F4] flex-wrap">
         <section className="flex-wrap">
           <p className="p-4 m-4 rounded-lg text-white text-lg font-bold bg-fuchsia-400 w-96">
             Quality Assurance

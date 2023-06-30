@@ -13,9 +13,6 @@ const MainNavBar = () => {
         <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
           <Link href={"/auth/signup"}>SignUp</Link>
         </li>
-        <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
-          <Link href={"/shop"}>Shop</Link>
-        </li>
       </ul>
     </nav>
   );

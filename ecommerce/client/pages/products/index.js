@@ -1,4 +1,5 @@
 import ProductsList from "@/components/products/ProductsList";
+import Loading from "@/components/ui/Loading";
 import useSWR from "swr";
 export default function ProductsListPage() {
   async function fetcher() {
@@ -10,14 +11,18 @@ export default function ProductsListPage() {
     fetcher
   );
   if (isLoading) {
-    return <p className="basic">loading.....</p>;
+    return <Loading />;
   }
   if (error) {
-    return <p>error !</p>;
+    return (
+      <p className="text-center bg-red-400 p-12 text-white font-bold text-5xl rounded-md shadow shadow-black my-16">
+        Sorry .An error happened.Please try again and come back later
+      </p>
+    );
   }
   return (
     <>
-      <ProductsList products={data} />
+      <ProductsList products={data} />{" "}
     </>
   );
 }
