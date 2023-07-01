@@ -8,7 +8,7 @@ const cartProductSchema = new Schema({
 });
 
 const cartSchema = new Schema({
-  userid: { type: String, required: true },
+  userEmail: { type: String, required: true },
 
   product: [cartProductSchema],
 });
