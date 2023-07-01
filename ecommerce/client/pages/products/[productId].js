@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
+import DummyContext from "@/contexts/dummy-context";
+
 function cutOutFirst100Words(text) {
   const words = text.split(" ");
   const cutWords = words.slice(0, 100);
@@ -12,25 +14,32 @@ function cutOutFirst100Words(text) {
 }
 export default function SingleProductDetailsPage() {
   const [session, loading] = useSession();
-  console.log(session);
-
-  const [count, setCount] = useState(0);
-
-  function incrementProductCount() {
-    setCount((prev) => {
-      return prev + 1;
-    });
-  }
-  //NICE
-  function decrementProductCount() {
-    setCount((prev) => {
-      if (prev > 0) {
-        return prev - 1;
-      }
-      return prev;
-    });
-  }
+  const { decrement, state, increment } = useContext(DummyContext);
   const router = useRouter();
+  console.log(session);
+  console.log(state);
+  // const productId = state.map((e) => {
+  //   if (e.id === router.query.productId) {
+  //     return e.quantity;
+  //   }
+  // });
+
+  // const [count, setCount] = useState(0);
+
+  // function incrementProductCount() {
+  //   setCount((prev) => {
+  //     return prev + 1;
+  //   });
+  // }
+  //NICE
+  // function decrementProductCount() {
+  //   setCount((prev) => {
+  //     if (prev > 0) {
+  //       return prev - 1;
+  //     }
+  //     return prev;
+  //   });
+  // }
   async function fetcher() {
     const response = await fetch(`/api/products/${router.query.productId}`);
     return await response.json();
@@ -82,16 +91,26 @@ export default function SingleProductDetailsPage() {
                 >
                   <button
                     className="bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl"
-                    onClick={incrementProductCount}
+                    onClick={() => {
+                      increment(router.query.productId);
+                    }}
                   >
                     +
                   </button>
                   <span className="text-orange-300 inline-block text-center text-2xl font-bold w-16">
-                    {count}
+                    <p>
+                      {
+                        state.find((e) => {
+                          return e.id === router.query.productId;
+                        }).quantity
+                      }
+                    </p>
                   </span>
                   <button
                     className="bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl"
-                    onClick={decrementProductCount}
+                    onClick={() => {
+                      decrement(router.query.productId);
+                    }}
                   >
                     -
                   </button>

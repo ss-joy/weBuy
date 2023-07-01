@@ -4,6 +4,10 @@ const productSchema = new Schema({
   name: String,
   description: String,
   price: String,
+  imagePath: {
+    type: String,
+    required: true,
+  },
 });
 
 const Product = models.Product || model("Product", productSchema);

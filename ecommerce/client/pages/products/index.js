@@ -3,13 +3,10 @@ import Loading from "@/components/ui/Loading";
 import useSWR from "swr";
 export default function ProductsListPage() {
   async function fetcher() {
-    const response = await fetch("http://localhost:3000/api/products");
+    const response = await fetch("/api/products");
     return await response.json();
   }
-  const { data, error, isLoading } = useSWR(
-    "http://localhost:3000/api/products",
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR("/api/products", fetcher);
   if (isLoading) {
     return <Loading />;
   }
