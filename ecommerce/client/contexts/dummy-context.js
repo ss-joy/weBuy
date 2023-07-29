@@ -22,7 +22,7 @@ const initialState = [
 ];
 export function Sei({ children }) {
   const [state, setState] = useState(initialState);
-  function increment(id) {
+  function incrementProduct(id) {
     console.log("inc");
     const updateState = state.map((e) => {
       if (id === e.id) {
@@ -38,7 +38,7 @@ export function Sei({ children }) {
     });
     setState(updateState);
   }
-  function decrement(id) {
+  function decrementProduct(id) {
     const updateState = state.map((e) => {
       if (id === e.id) {
         return {
@@ -56,8 +56,8 @@ export function Sei({ children }) {
   return (
     <DummyContext.Provider
       value={{
-        increment,
-        decrement,
+        incrementProduct,
+        decrementProduct,
         state,
       }}
     >
