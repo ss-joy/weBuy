@@ -10,7 +10,7 @@ export default function App({ Component, pageProps }) {
       <Sei>
         <MainLayout>
           <MainHeader />
-          <Component {...pageProps} />;
+          <Component {...pageProps} />
         </MainLayout>
       </Sei>
     </Provider>
