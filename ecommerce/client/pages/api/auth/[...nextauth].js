@@ -33,12 +33,27 @@ const handler = NextAuth({
         return {
           email: foundUser.email,
           id: foundUser.id,
-          s: "sadasdas",
-          lol: "sadasd",
         };
       },
     }),
   ],
+
+  callbacks: {
+    async jwt(token, user, account, profile, isNewUser) {
+      if (user) {
+        token.user_id = user.id;
+      }
+
+      return token;
+    },
+    async session(session, token) {
+      //this token is da token passed from jwt func
+
+      //maybe await database here to get the user id
+      session.user.user_id = token.user_id;
+      return session;
+    },
+  },
 });
 
 export default handler;
