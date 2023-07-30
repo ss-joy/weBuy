@@ -10,11 +10,6 @@ const MainNavBar = () => {
   return (
     <nav>
       <ul className="flex justify-around">
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
-            <Link href={"/"}> Home</Link>
-          </li>
-        )}
         {!session && (
           <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
             <Link href={"/auth/login"}>Login</Link>
@@ -25,11 +20,16 @@ const MainNavBar = () => {
             <Link href={"/auth/signup"}>SignUp</Link>
           </li>
         )}
-        {/* {session && (
+        {session && (
           <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
-            <Link href={"/cart"}>Go to Cart</Link>
+            <Link href={"/products"}>Shop Here</Link>
           </li>
-        )} */}
+        )}
+        {session && (
+          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+            <Link href={"/cart"}>View Cart</Link>
+          </li>
+        )}
         {session && (
           <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
             <button onClick={logOut}>Log Out</button>
