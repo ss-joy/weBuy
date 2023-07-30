@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useContext, useState } from "react";
 import { useSession } from "next-auth/client";
 import Link from "next/link";
-import DummyContext from "@/contexts/dummy-context";
+import DummyContext from "@/contexts/cart-context";
 
 function cutOutFirst100Words(text) {
   const words = text.split(" ");
@@ -14,10 +14,10 @@ function cutOutFirst100Words(text) {
 }
 export default function SingleProductDetailsPage() {
   const [session, loading] = useSession();
-  const { decrement, state, increment } = useContext(DummyContext);
+  const { decrementProduct, state, incrementProduct } =
+    useContext(DummyContext);
   const router = useRouter();
-  console.log(session);
-  console.log(state);
+
   // const productId = state.map((e) => {
   //   if (e.id === router.query.productId) {
   //     return e.quantity;
@@ -74,9 +74,12 @@ export default function SingleProductDetailsPage() {
           <div>
             <h2 className="text-6xl mb-20 text-orange-600 ">
               {data.product.name}
-              <span className="p-3 ml-8 mb-8 rounded-md font-semibold text-white text-2xl bg-orange-400">
+              {/* <span className="p-3 ml-8 mb-8 rounded-md font-semibold text-white text-2xl bg-orange-400">
                 $ {data.product.price}
-              </span>
+              </span> */}
+              <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-white text-2xl bg-orange-400">
+                $ {data.product.price}
+              </div>
             </h2>
             <p className="mb-12">
               {cutOutFirst100Words(data.product.description)}
@@ -92,7 +95,7 @@ export default function SingleProductDetailsPage() {
                   <button
                     className="bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl"
                     onClick={() => {
-                      increment(router.query.productId);
+                      incrementProduct(router.query.productId);
                     }}
                   >
                     +
@@ -109,7 +112,7 @@ export default function SingleProductDetailsPage() {
                   <button
                     className="bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl"
                     onClick={() => {
-                      decrement(router.query.productId);
+                      decrementProduct(router.query.productId);
                     }}
                   >
                     -
