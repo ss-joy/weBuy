@@ -1,10 +1,4 @@
-/***
- *
- *
- * MUST FIX WHY THIS COMPONENT WONT WORK
- */
-
-import { createContext, useReducer, useState } from "react";
+import { createContext, useState } from "react";
 
 const CartContext = createContext({
   increment: () => {},
@@ -26,10 +20,10 @@ const initialState = [
     quantity: 0,
   },
 ];
-
 export function CartContextProvider({ children }) {
   const [state, setState] = useState(initialState);
-  function increment(id) {
+  function incrementProduct(id) {
+    console.log("inc");
     const updateState = state.map((e) => {
       if (id === e.id) {
         return {
@@ -44,7 +38,7 @@ export function CartContextProvider({ children }) {
     });
     setState(updateState);
   }
-  function decrement(id) {
+  function decrementProduct(id) {
     const updateState = state.map((e) => {
       if (id === e.id) {
         return {
@@ -62,8 +56,8 @@ export function CartContextProvider({ children }) {
   return (
     <CartContext.Provider
       value={{
-        increment,
-        decrement,
+        incrementProduct,
+        decrementProduct,
         state,
       }}
     >
