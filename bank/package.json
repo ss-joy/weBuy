@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon ./dist/app.js & npx tsc --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -16,5 +16,12 @@
     "mongoose": "^7.4.3",
     "nodemon": "^3.0.1",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.15",
+    "@types/express": "^4.17.20",
+    "@types/node": "^20.8.7",
+    "@types/uuid": "^9.0.6",
+    "typescript": "^5.2.2"
   }
 }
