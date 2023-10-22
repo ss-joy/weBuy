@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Footer from "./Footer";
 import Info from "./Info";
-const WelcomePage = () => {
+const WelcomePage = (): JSX.Element => {
   return (
     <>
       <h1 className="text-8xl text-center p-4 mt-40">

@@ -1,7 +1,7 @@
 import ProductsList from "@/components/products/ProductsList";
 import Loading from "@/components/ui/Loading";
 import useSWR from "swr";
-export default function ProductsListPage() {
+export default function ProductsListPage(): JSX.Element {
   async function fetcher() {
     const response = await fetch("/api/products");
     return await response.json();

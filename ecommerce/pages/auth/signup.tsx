@@ -1,12 +1,12 @@
 import { useRef } from "react";
 import { useRouter } from "next/router";
-export default function SignUpPage() {
-  const nameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
+export default function SignUpPage(): JSX.Element {
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
-  async function handleSubmit(e) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const response = await fetch("/api/auth/signup", {
       method: "POST",

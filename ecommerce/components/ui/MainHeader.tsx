@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import MainNavBar from "./MainNavBar";
-const MainHeader = () => {
+const MainHeader = (): JSX.Element => {
   return (
     <header className="flex justify-between items-center p-8 px-20 ">
       <Link

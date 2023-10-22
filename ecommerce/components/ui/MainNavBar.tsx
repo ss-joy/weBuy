@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/client";
-const MainNavBar = () => {
+import { useSession, signOut } from "next-auth/react";
+
+const MainNavBar = (): JSX.Element => {
   const [session, loading] = useSession();
   console.log(session);
   function logOut() {

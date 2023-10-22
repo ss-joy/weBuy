@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Loading from "../ui/Loading";
 import { findProductQuantity } from "@/utils/product-cart";
-const ShowCartDetail = ({ isLoading, data, cartDetail }) => {
+const ShowCartDetail = ({ isLoading, data, cartDetail }): JSX.Element => {
   function calculateTotalForASingleItem(productId, productPrice) {
     const product = cartDetail.state.find((e) => {
       return e.id === productId;

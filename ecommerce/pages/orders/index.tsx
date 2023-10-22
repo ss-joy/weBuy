@@ -1,7 +1,7 @@
 import OneOrder from "@/components/orders/Order";
 import { useEffect, useState } from "react";
 
-export default function ShowOrders() {
+export default function ShowOrders(): JSX.Element {
   const [data, setData] = useState(null);
   useEffect(() => {
     fetch("http://localhost:4000/get-transactions")

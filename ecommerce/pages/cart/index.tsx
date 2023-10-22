@@ -5,7 +5,7 @@ import useSWR from "swr";
 import CartContext from "@/contexts/cart-context";
 import ShowCartDetail from "@/components/cart/ShowCartDetail";
 import PaymentDetail from "@/components/cart/PaymentDetail";
-export default function ShowCart() {
+export default function ShowCart(): JSX.Element {
   const cartCtx = useContext(CartContext);
   async function fetcher() {
     const response = await fetch("/api/products");

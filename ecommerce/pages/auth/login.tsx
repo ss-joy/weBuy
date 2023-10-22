@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { getSession, signIn } from "next-auth/client";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-export default function LoginPage() {
+export default function LoginPage(): JSX.Element {
   const router = useRouter();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  async function handleSubmit(e) {
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const result = await signIn("credentials", {

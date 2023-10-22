@@ -12,7 +12,7 @@ function cutOutFirst100Words(text) {
   const cutWords = words.slice(0, 100);
   return cutWords.join(" ");
 }
-export default function SingleProductDetailsPage() {
+export default function SingleProductDetailsPage(): JSX.Element {
   const [session, loading] = useSession();
   const { decrementProduct, state, incrementProduct } =
     useContext(DummyContext);

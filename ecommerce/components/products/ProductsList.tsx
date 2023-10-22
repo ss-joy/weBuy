@@ -1,6 +1,6 @@
 import React from "react";
 import ProductItem from "./ProductItem";
-const ProductsList = ({ products }) => {
+const ProductsList = ({ products }): JSX.Element => {
   return (
     <ul className="mt-10 p-8">
       {products.map((p) => {

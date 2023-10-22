@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/client";
 
-export default function OneOrder({ e }) {
+export default function OneOrder({ e }): JSX.Element {
   const [session, loading] = useSession();
   const pendingDiv = <div className="bg-orange-400 p-2 rounded">Pending</div>;
   const successDiv = <div className="bg-green-400 p-2 rounded">Delivered</div>;

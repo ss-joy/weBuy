@@ -1,8 +1,8 @@
 import BankContext from "@/contexts/bank-context";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 
-export default function BankConnect() {
+export default function BankConnect(): JSX.Element {
   const [sessionEmail, setSessionEmail] = useState("");
   useEffect(() => {
     getSession().then((session) => {

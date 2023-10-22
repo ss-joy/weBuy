@@ -1,6 +1,6 @@
 import React from "react";
 
-const PaymentStatus = ({ status, msg }) => {
+const PaymentStatus = ({ status, msg }): JSX.Element => {
   if (status === 0) {
     return (
       <p className="mt-20 border-2 p-7 rounded-md text-xl bg-red-500 text-white font-bold ">

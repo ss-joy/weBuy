@@ -1,6 +1,6 @@
 import React from "react";
 
-const Info = () => {
+const Info = (): JSX.Element => {
   return (
     <section className="flex justify-around items-center px-20">
       <img

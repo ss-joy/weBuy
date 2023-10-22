@@ -8,7 +8,7 @@ function cutOutFirst100Words(text) {
   return cutWords.join(" ");
 }
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ product }): JSX.Element => {
   return (
     <li className="mt-12 mb-20 px-8 flex flex-row items-center justify-evenly">
       <section className="w-1/3">

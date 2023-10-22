@@ -1,13 +1,13 @@
 import { findProductQuantity } from "@/utils/product-cart";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import { getSession } from "next-auth/client";
 import CartContext from "@/contexts/cart-context";
+import { getSession } from "next-auth/react";
 
-const PaymentDetail = ({ isLoading, data, cartDetail }) => {
-  const addressRef = useRef();
-  const mobileRef = useRef();
-  const secretRef = useRef();
+const PaymentDetail = ({ isLoading, data, cartDetail }): JSX.Element => {
+  const addressRef = useRef<HTMLInputElement>(null);
+  const mobileRef = useRef<HTMLInputElement>(null);
+  const secretRef = useRef<HTMLInputElement>(null);
   const [sessionEmail, setSessionEmail] = useState("");
   function calTotalPrice() {
     let total = 0;
@@ -25,7 +25,7 @@ const PaymentDetail = ({ isLoading, data, cartDetail }) => {
     });
   }, []);
   getSession();
-  function handleTransaction(e) {
+  function handleTransaction(e: React.FormEvent) {
     e.preventDefault();
     const data = {
       address: addressRef.current.value,
@@ -49,10 +49,10 @@ const PaymentDetail = ({ isLoading, data, cartDetail }) => {
       })
       .then((anss) => {
         console.log(anss);
-        if(anss.msg==='transaction complete'){
-          mobileRef.current.value=""
-          secretRef.current.value=''
-          addressRef.current.value=''
+        if (anss.msg === "transaction complete") {
+          mobileRef.current.value = "";
+          secretRef.current.value = "";
+          addressRef.current.value = "";
         }
       });
   }

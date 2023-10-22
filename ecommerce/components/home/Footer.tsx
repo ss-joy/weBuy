@@ -1,6 +1,6 @@
 import React from "react";
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
     <section className="flex justify-around items-center px-20 bg-[#E6E5F4] flex-wrap">
       <section className="flex-wrap">
