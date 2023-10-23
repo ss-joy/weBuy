@@ -2,13 +2,21 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-function cutOutFirst100Words(text) {
+function cutOutFirst100Words(text: string) {
   const words = text.split(" ");
   const cutWords = words.slice(0, 100);
   return cutWords.join(" ");
 }
-
-const ProductItem = ({ product }): JSX.Element => {
+interface ProductItemProps {
+  product: {
+    _id: string;
+    name: string;
+    description: string;
+    price: number;
+    imagePath: string;
+  };
+}
+const ProductItem = ({ product }: ProductItemProps): JSX.Element => {
   return (
     <li className="mt-12 mb-20 px-8 flex flex-row items-center justify-evenly">
       <section className="w-1/3">

@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 interface IProductSchema {
   name: string;
   description: string;
-  price: string;
+  price: number;
   imagePath: string;
 }
 const productSchema = new Schema<IProductSchema>({
@@ -15,7 +15,7 @@ const productSchema = new Schema<IProductSchema>({
     required: true,
   },
   price: {
-    type: String,
+    type: Number,
     required: true,
   },
   imagePath: {
