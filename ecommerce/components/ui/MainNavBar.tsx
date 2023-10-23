@@ -3,46 +3,47 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 
 const MainNavBar = (): JSX.Element => {
-  const [session, loading] = useSession();
-  console.log(session);
+  const { data: session, status } = useSession();
+
   function logOut() {
     signOut();
   }
+  const isAuthenticated = status === "authenticated" && session;
   return (
     <nav>
       <ul className="flex justify-around">
-        {!session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {!isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/auth/login"}>Login</Link>
           </li>
         )}
-        {!session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {!isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/auth/signup"}>SignUp</Link>
           </li>
         )}
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/bank"}>Bank </Link>
           </li>
         )}
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/orders"}>Orders</Link>
           </li>
         )}
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/products"}>Shop Here</Link>
           </li>
         )}
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {isAuthenticated && (
+          <li className="nav-btn">
             <Link href={"/cart"}>View Cart</Link>
           </li>
         )}
-        {session && (
-          <li className="px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white">
+        {isAuthenticated && (
+          <li className="nav-btn">
             <button onClick={logOut}>Log Out</button>
           </li>
         )}

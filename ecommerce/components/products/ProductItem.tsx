@@ -21,6 +21,7 @@ const ProductItem = ({ product }: ProductItemProps): JSX.Element => {
     <li className="mt-12 mb-20 px-8 flex flex-row items-center justify-evenly">
       <section className="w-1/3">
         <Image
+          className="rounded-md"
           alt="Product image"
           src={product.imagePath}
           width={700}
@@ -36,7 +37,7 @@ const ProductItem = ({ product }: ProductItemProps): JSX.Element => {
             $ {product.price}
           </span>
           <Link
-            className="bg-blue-500 text-white font-semibold p-5 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
+            className="bg-blue-500 transition-all text-white font-semibold p-5 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
             href={`/products/${product._id}`}
           >
             View Product &#8594;

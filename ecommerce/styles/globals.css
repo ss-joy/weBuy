@@ -32,4 +32,7 @@ body {
   .btn2 {
     @apply bg-blue-500 text-white p-4 rounded font-bold hover:bg-blue-700 block;
   }
+  .nav-btn {
+    @apply px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700  rounded-md hover:font-bold hover:text-white;
+  }
 }
