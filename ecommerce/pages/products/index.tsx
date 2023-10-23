@@ -19,7 +19,7 @@ export default function ProductsListPage(): JSX.Element {
   }
   return (
     <>
-      <ProductsList products={data} />{" "}
+      <ProductsList products={data.data} />
     </>
   );
 }
