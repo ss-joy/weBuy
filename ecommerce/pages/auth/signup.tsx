@@ -14,9 +14,9 @@ export default function SignUpPage(): JSX.Element {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: nameRef.current.value,
-        email: emailRef.current.value,
-        password: passwordRef.current.value,
+        name: nameRef.current!.value,
+        email: emailRef.current!.value,
+        password: passwordRef.current!.value,
       }),
     });
     const ans = await response.json();
@@ -31,7 +31,7 @@ export default function SignUpPage(): JSX.Element {
       <h1 className="mt-8 text-slate-500 text-center font-bold text-5xl">
         Sign Up here
       </h1>
-      <form className="flex flex-col mt-8 mx-auto p-8 w-1/3 h-2/3 justify-between border-2 border-red-50 rounded">
+      <form className="flex flex-col mt-8 mx-auto p-2 sm:p-8 md:w-1/3 h-2/3 justify-between border-2 border-red-50 rounded">
         <input
           className="form-input"
           type="text"
