@@ -1,59 +1,156 @@
-import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 export default function SignUpPage(): JSX.Element {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-
   const router = useRouter();
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const { toast } = useToast();
+  type FormData = {
+    userName: string;
+    userPwd: string;
+    userConfirmPwd: string;
+    userEmail: string;
+  };
+
+  const {
+    formState: { isSubmitSuccessful, isSubmitting, errors },
+    register,
+    reset,
+    getValues,
+    handleSubmit,
+  } = useForm<FormData>();
+  //imported schema from zod resolves to-->
+  // type FormData = {
+  //   userName: string;
+  //   userPwd: string;
+  //   userConfirmPwd: string;
+  //   userEmail: string;
+  // };
+
+  async function onSubmit(data: UserSignUpSchemaType) {
+    console.log(data);
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: nameRef.current!.value,
-        email: emailRef.current!.value,
-        password: passwordRef.current!.value,
+        userName: data.userName,
+        userEmail: data.userEmail,
+        userPwd: data.userPwd,
       }),
     });
     const ans = await response.json();
     console.log(ans);
-    if (ans.user) {
-      router.replace("/auth/login");
+    if (ans.status === "success") {
+      reset();
+      toast({
+        title: "Sign Up Successful!",
+        description:
+          "You have been successfully signed up. You will be shortly taken to the login page...",
+      });
+      setTimeout(() => {
+        router.push("/auth/login");
+      }, 3000);
+    } else if (ans.status === "error") {
+      toast({
+        variant: "destructive",
+        title: "Sign Up failed!",
+        description:
+          "Something went wrong. Please check everything carefully and try again",
+      });
     }
   }
 
   return (
     <>
-      <h1 className="mt-8 text-slate-500 text-center font-bold text-5xl">
-        Sign Up here
-      </h1>
-      <form className="flex flex-col mt-8 mx-auto p-2 sm:p-8 md:w-1/3 h-2/3 justify-between border-2 border-red-50 rounded">
+      <form
+        className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
+      >
+        <label className="form-label" htmlFor="userName">
+          Your name*
+        </label>
+        <p className="text-red-700">{errors.userName?.message}</p>
         <input
           className="form-input"
+          {...register("userName", {
+            required: { value: true, message: "Your name is required" },
+            minLength: {
+              value: 5,
+              message: "Your name cant must be at least 5 characters",
+            },
+          })}
+          id="userName"
           type="text"
-          placeholder="Your name"
-          ref={nameRef}
         />
+        <label className="form-label" htmlFor="userEmail">
+          Your email*
+        </label>
+        <p className="text-red-700">{errors.userEmail?.message}</p>
         <input
           className="form-input"
+          {...register("userEmail", {
+            required: {
+              value: true,
+              message: "Email is required",
+            },
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Enter a valid email",
+            },
+          })}
           type="email"
-          placeholder="Your email"
-          ref={emailRef}
+          id="userEmail"
         />
+        <label className="form-label" htmlFor="userPwd">
+          Choose a password*
+        </label>
+        <p className="text-red-700">{errors.userPwd?.message}</p>
         <input
-          ref={passwordRef}
           className="form-input"
-          type="password"
-          placeholder="choose a password"
+          {...register("userPwd", {
+            required: {
+              value: true,
+              message: "Please enter your password",
+            },
+            minLength: {
+              value: 5,
+              message: "Password must be greater than 5 characters",
+            },
+          })}
+          id="userPwd"
+          type="text"
         />
-        <button onClick={handleSubmit} className="btn2">
+        <label className="form-label" htmlFor="userConfirmPwd">
+          Confirm your password*
+        </label>
+        <p className="text-red-700">{errors.userConfirmPwd?.message}</p>
+        <input
+          className="form-input"
+          {...register("userConfirmPwd", {
+            required: {
+              value: true,
+              message: "Please match your passwords",
+            },
+            validate: (fieldValue) => {
+              if (getValues("userPwd") === fieldValue) {
+                return true;
+              }
+              return "Passwords must match";
+            },
+          })}
+          id="userConfirmPwd"
+          type="text"
+        />
+
+        <button className="btn2 disabled:bg-gray-500" disabled={isSubmitting}>
           Sign Up
         </button>
       </form>
+      <Toaster />
     </>
   );
 }
