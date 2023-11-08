@@ -1,5 +1,6 @@
 import React from "react";
 import ProductItem from "./ProductItem";
+import { ProductSkeleton } from "./ProductSkeleton";
 interface ProductItemProps {
   isLoading: boolean;
   products: {
@@ -15,7 +16,7 @@ const ProductsList = ({
   isLoading,
 }: ProductItemProps): JSX.Element => {
   return (
-    <ul className="mt-10 p-8">
+    <ul className="mt-10 p-2 border-2 border-red-300 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly ">
       {products.map((p, id) => {
         return (
           <ProductItem
@@ -25,6 +26,7 @@ const ProductsList = ({
           />
         );
       })}
+      <ProductSkeleton />
     </ul>
   );
 };
