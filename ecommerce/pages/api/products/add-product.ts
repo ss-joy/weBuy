@@ -1,6 +1,6 @@
 import Product from "@/models/product-model";
 import { ApiResponse } from "@/types/apiResponse";
-import { ProductType } from "@/types/products-type";
+import { productSchema, productSchemaType } from "@/types/products-type";
 import dbConnect from "@/utils/database";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -15,18 +15,27 @@ export default async function handler(
       console.log("error connecting to databse from api folder");
       console.log(err);
     }
-    const body: ProductType = req.body;
-    if (!body.name || !body.description || !body.imagePath || !body.price) {
+    const body: productSchemaType = req.body;
+    let product;
+    try {
+      product = productSchema.parse(body);
+    } catch (err) {
+      console.log(err);
       return res.status(401).json({
         status: "error",
-        message: "Please enter all the required informations of a product",
+        error: {
+          errorCode: 401,
+          errorBody: err,
+        },
+        message: "Please enter all the required informations..",
       });
     }
+
     const dbResp = await Product.create({
-      name: body.name,
-      description: body.description,
-      price: Number(body.price),
-      imagePath: body.imagePath,
+      name: product.name,
+      description: product.description,
+      price: Number(product.price),
+      imagePath: product.imagePath,
     });
     if (!dbResp) {
       return res.status(500).json({

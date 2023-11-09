@@ -1,32 +1,49 @@
-import { useState } from "react";
-import PaymentStatus from "@/components/cart/PaymentStatus";
 import { useContext } from "react";
-import useSWR from "swr";
-import CartContext from "@/contexts/cart-context";
-import ShowCartDetail from "@/components/cart/ShowCartDetail";
-import PaymentDetail from "@/components/cart/PaymentDetail";
+import { cartContext } from "@/contexts/cart-context";
+import Payment from "@/components/cart/Payment";
+import SingleCartProductDetails from "@/components/cart/SingleCartProductDetails";
+import Image from "next/image";
 export default function ShowCart(): JSX.Element {
-  const cartCtx = useContext(CartContext);
-  async function fetcher() {
-    const response = await fetch("/api/products");
-    return await response.json();
+  const cartCtx = useContext(cartContext);
+  if (!cartContext) {
+    throw new Error("cart context cannot be null");
   }
-  const { data, error, isLoading } = useSWR("/api/products", fetcher);
-  console.log(data);
-  const [paymentStatus, setPaymentStatus] = useState(false);
-  if (error) {
-    return <p>sorry we are having trouble now.Please visit later</p>;
-  }
+
   return (
     <>
-      <div className="flex mt-8">
-        <ShowCartDetail
-          isLoading={isLoading}
-          data={data}
-          cartDetail={cartCtx}
-        />
-        <PaymentDetail isLoading={isLoading} data={data} cartDetail={cartCtx} />
-        {/* {paymentStatus && <PaymentStatus status={0} msg={"incomplete"} />} */}
+      <div
+        id="full-cart-container"
+        className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mx-auto"
+      >
+        {cartCtx!.products.length > 0 ? (
+          <>
+            <Payment />
+            <ul>
+              {cartCtx?.products.map((ele) => {
+                return (
+                  <SingleCartProductDetails
+                    key={ele.productId}
+                    productQuantity={ele.productQuantity}
+                    productId={ele.productId}
+                  />
+                );
+              })}
+            </ul>
+          </>
+        ) : (
+          <div className="flex flex-col mt-8">
+            <p className="mx-auto text-center font-bold text-5xl">
+              Please add some products to see something here
+            </p>
+            <Image
+              className="block mx-auto"
+              src="/ui-images/cart.jpg"
+              alt="cart dummy image"
+              width={300}
+              height={300}
+            />
+          </div>
+        )}
       </div>
     </>
   );

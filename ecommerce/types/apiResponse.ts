@@ -12,7 +12,8 @@ export interface ApiResponse {
     | "Product added successfully!!"
     | "Url/method not supported!"
     | "Something went wrong. Please try again!"
-    | "Could sign up the user";
+    | "Could sign up the user"
+    | "Showing details of single product";
   error?: {
     errorCode: number;
     errorBody?: any;

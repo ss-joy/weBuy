@@ -3,9 +3,10 @@ import React, { createContext, useState } from "react";
 type CartItem = {
   productId: string;
   productQuantity: number;
+  productPrice: number;
 };
 interface CartContextType {
-  increaseProductQuanity: (productId: string) => void;
+  increaseProductQuanity: (productId: string, productPrice: number) => void;
   decreaseProductQuantity: (productId: string) => void;
   products: CartItem[];
 }
@@ -19,13 +20,18 @@ export const cartContext = createContext<CartContextType | null>(null);
 export default function CartContextProvider({
   children,
 }: CartContextProviderProps): JSX.Element {
+  // const initialProducts = localStorage.getItem("weBuyCart");
+  // console.log(initialProducts);
   const [products, setProducts] = useState<CartItem[]>([]);
   /**
    * case1:cart array is empty. ok
    * case2:cart array is no empty. But doesnt have the product. ok
    * case3:cart is not empty. And has the product. ok
    */
-  function increaseProductQuanity(productId: string): void {
+  function increaseProductQuanity(
+    productId: string,
+    productPrice: number
+  ): void {
     const product = products.find((element) => {
       return element.productId === productId;
     });
@@ -36,6 +42,7 @@ export default function CartContextProvider({
       newProducts.push({
         productId: productId,
         productQuantity: 1,
+        productPrice: productPrice,
       });
       setProducts(newProducts);
       return;

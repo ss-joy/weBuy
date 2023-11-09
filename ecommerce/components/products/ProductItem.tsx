@@ -14,7 +14,6 @@ interface ProductItemProps {
   };
 }
 const ProductItem = ({ product, isLoading }: ProductItemProps): JSX.Element => {
-  console.log(product.imagePath);
   return (
     <>
       {isLoading ? (
