@@ -43,48 +43,34 @@ const SingleCartProductDetails = ({
   }
   console.log(data);
   return (
-    <li className="border-2 px-2 shadow-lg shadow-slate-400 my-4 rounded-md py-4 text-xl mx-auto flex flex-col lg:flex-row lg:justify-between lg:px-6">
-      <section id="name-image-display">
+    <li className="flex my-4 flex-col mx-2 shadow-sm shadow-slate-500 rounded-md overflow-hidden xs:mx-12 xs:my-12 md:flex-row md:justify-evenly">
+      <section
+        id="product-image-name"
+        className="px-2 md:p-4 md:flex-col md:w-64 border-2"
+      >
         <Image
-          className="rounded shadow-md shadow-slate-400 w-full mx-auto lg:mx-0 mb-2 max-w-xl lg:w-80"
+          width={500}
+          height={500}
           src={data?.data.product.imagePath as string}
           alt="product image"
-          height={700}
-          width={700}
+          className="w-full block md:w-full rounded-md"
         />
-        <h2 className="mb-2 font-bold text-orange-600 sm:text-3xl lg:max-w-sm">
+        <h2 className="text-slate-500 font-bold text-start text-2xl xs:text-3xl">
           {data?.data.product.name}
         </h2>
       </section>
       <section
-        id="item-count-section"
-        className="border-4 mb-4 rounded-md flex flex-col lg:text-2xl xl:text-3xl lg:mx-4"
+        id="unit-price-details"
+        className="text-orange-400 border-2 font-bold text-center text-3xl flex justify-around  md:flex-col md:justify-center md:px-12"
       >
-        <div className="flex justify-between lg:flex-col lg:items-center">
-          <p className="bg-orange-400 text-white font-bold px-2 py-1">
-            Price each unit
-          </p>
-          <p className="ml-5 text-orange-500 font-bold">
-            {data?.data.product.price}$
-          </p>
-        </div>
-        <div className="py-2 flex items-center lg:flex-col justify-between">
-          <p className="bg-orange-400 text-white font-bold px-2 py-1">Total</p>
-          <p className="ml-5 text-orange-500 font-bold">
-            {productQuantity} pc's
-          </p>
-        </div>
+        <p>{productQuantity}pc's</p>X<p>{data?.data.product.price}$</p>
       </section>
-      <section
-        id="total-price-calculation"
-        className="flex justify-between items-center lg:flex-col lg:text-2xl border-4 rounded-md lg:pb-4 xl:text-3xl"
-      >
-        <p className="bg-orange-400 text-white font-bold px-2 py-1">
-          Total Price
+      <section id="total-per-product" className="flex flex-col border-2">
+        <p className="bg-orange-400 font-bold text-white text-center text-2xl md:mb-24 md:px-12">
+          Total
         </p>
-        <p className="text-orange-400 font-bold mx-2">
-          {productQuantity} X {data?.data.product.price}=
-          {productQuantity * data?.data.product.price!}
+        <p className="text-orange-400 font-bold text-center text-3xl">
+          {productQuantity * data?.data.product.price!}$
         </p>
       </section>
     </li>
