@@ -58,6 +58,7 @@ export default function SignUpPage(): JSX.Element {
         variant: "destructive",
         title: "Sign Up failed!",
         description:
+          ans.message ||
           "Something went wrong. Please check everything carefully and try again",
       });
     }
