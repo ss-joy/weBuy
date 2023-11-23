@@ -40,7 +40,15 @@ export default async function handler(
       }
     }
     const { userName, userEmail, userPwd }: UserSignUpSchemaType = req.body;
-
+    const userFound = await User.findOne({
+      email: userEmail,
+    });
+    if (userFound) {
+      return res.status(405).json({
+        message: "This user is already registered",
+        status: "error",
+      });
+    }
     const hashedPass = await hash(userPwd, 10);
 
     const dbResponse = await User.create({

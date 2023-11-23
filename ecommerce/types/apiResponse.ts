@@ -13,7 +13,8 @@ export interface ApiResponse {
     | "Url/method not supported!"
     | "Something went wrong. Please try again!"
     | "Could sign up the user"
-    | "Showing details of single product";
+    | "Showing details of single product"
+    | "This user is already registered";
   error?: {
     errorCode: number;
     errorBody?: any;
