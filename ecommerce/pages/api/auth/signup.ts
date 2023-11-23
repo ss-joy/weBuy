@@ -7,6 +7,7 @@ import {
   UserSignUpSchema,
   UserSignUpSchemaType,
 } from "@/schemas/user-signup-schema";
+import { ZodError } from "zod";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse>
@@ -26,16 +27,17 @@ export default async function handler(
         userConfirmPwd: true,
       }).parse(req.body);
     } catch (err) {
-      console.log("on signup route", err.issues);
-
-      return res.status(400).json({
-        status: "error",
-        message: "Please enter all the required informations..",
-        error: {
-          errorCode: 400,
-          errorBody: err.issues,
-        },
-      });
+      if (err instanceof ZodError) {
+        console.log("on signup route", err.issues);
+        return res.status(400).json({
+          status: "error",
+          message: "Please enter all the required informations..",
+          error: {
+            errorCode: 400,
+            errorBody: err.issues,
+          },
+        });
+      }
     }
     const { userName, userEmail, userPwd }: UserSignUpSchemaType = req.body;
 
@@ -52,13 +54,13 @@ export default async function handler(
         message: "Could sign up the user",
       });
     }
-    return res.status(200).json({
+    return res.status(201).json({
       status: "success",
       message: "User created successfully",
       data: dbResponse,
     });
   } else {
-    return res.status(400).json({
+    return res.status(405).json({
       status: "error",
       message: "Url/method not supported!",
     });
