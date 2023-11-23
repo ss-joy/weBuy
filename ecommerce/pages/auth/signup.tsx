@@ -3,6 +3,7 @@ import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
+import { ApiResponse } from "@/types/apiResponse";
 export default function SignUpPage(): JSX.Element {
   const router = useRouter();
   const { toast } = useToast();
@@ -29,7 +30,6 @@ export default function SignUpPage(): JSX.Element {
   // };
 
   async function onSubmit(data: UserSignUpSchemaType) {
-    console.log(data);
     const response = await fetch("/api/auth/signup", {
       method: "POST",
       headers: {
@@ -41,8 +41,8 @@ export default function SignUpPage(): JSX.Element {
         userPwd: data.userPwd,
       }),
     });
-    const ans = await response.json();
-    console.log(ans);
+    const ans: ApiResponse = await response.json();
+
     if (ans.status === "success") {
       reset();
       toast({
@@ -52,7 +52,7 @@ export default function SignUpPage(): JSX.Element {
       });
       setTimeout(() => {
         router.push("/auth/login");
-      }, 3000);
+      }, 4000);
     } else if (ans.status === "error") {
       toast({
         variant: "destructive",
