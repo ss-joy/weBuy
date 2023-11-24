@@ -40,13 +40,13 @@ The main objective of this project is to demonstrate transactions and communicat
 
 - Homepage:
 
-  ![HomePage](/weBuy/ecommerce/public/githubimages/homepage.png)
+  ![HomePage](/ecommerce/public/githubimages/homepage.png)
 
 - Add Product page
-  ![Add Product Page](/weBuy/ecommerce/public/githubimages/addProduct.png)
+  ![Add Product Page](/ecommerce/public/githubimages/addProduct.png)
 - Shopping Page
 
-  ![Add Product Page](/weBuy/ecommerce/public/githubimages/shoppingPage.png)
+  ![Add Product Page](/ecommerce/public/githubimages/shoppingPage.png)
 
 - Cart Page
-  ![Add Product Page](/weBuy/ecommerce/public/githubimages/cartPage.png)
+  ![Add Product Page](/ecommerce/public/githubimages/cartPage.png)
