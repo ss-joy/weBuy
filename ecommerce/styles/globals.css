@@ -10,7 +10,7 @@
     @apply text-slate-700 block mb-8 p-4 border-2 rounded shadow-sm shadow-blue-300 font-semibold;
   }
   .btn2 {
-    @apply bg-blue-500 text-white p-4 rounded font-bold hover:bg-blue-700 block transition-all;
+    @apply bg-blue-500 text-white p-4 rounded font-bold hover:bg-blue-700 block transition-all disabled:bg-slate-500;
   }
   .nav-btn {
     @apply px-4 py-2 m-4  text-3xl bg-orange-300 text-orange-700 transition-all rounded-md hover:font-bold hover:text-white;

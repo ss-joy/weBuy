@@ -18,13 +18,16 @@ export default async function handler(
     const body: productSchemaType = req.body;
     let product;
     try {
-      product = productSchema.parse(body);
+      product = productSchema
+        .omit({
+          _id: true,
+        })
+        .parse(body);
     } catch (err) {
-      console.log(err);
       return res.status(401).json({
         status: "error",
         error: {
-          errorCode: 401,
+          errorCode: 400,
           errorBody: err,
         },
         message: "Please enter all the required informations..",

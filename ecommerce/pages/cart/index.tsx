@@ -3,7 +3,12 @@ import { cartContext } from "@/contexts/cart-context";
 import Payment from "@/components/cart/Payment";
 import SingleCartProductDetails from "@/components/cart/SingleCartProductDetails";
 import Image from "next/image";
-export default function ShowCart(): JSX.Element {
+import { getServerSession } from "next-auth";
+import { GetServerSideProps } from "next";
+import { authOptions } from "../api/auth/[...nextauth]";
+type CartIndexPageProps = {};
+export default function ShowCart(props: CartIndexPageProps): JSX.Element {
+  console.log(props);
   const cartCtx = useContext(cartContext);
   if (!cartContext) {
     throw new Error("cart context cannot be null");
@@ -48,3 +53,21 @@ export default function ShowCart(): JSX.Element {
     </>
   );
 }
+export const getServerSideProps = (async (context) => {
+  const sessionFound = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  if (!sessionFound) {
+    return {
+      redirect: {
+        destination: "/helper/no-auth",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}) satisfies GetServerSideProps<{}>;

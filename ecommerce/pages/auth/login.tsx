@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { useState } from "react";
+
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
 

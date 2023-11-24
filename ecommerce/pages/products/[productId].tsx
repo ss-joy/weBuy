@@ -13,10 +13,9 @@ function cutOutFirst100Words(text: string) {
   return cutWords.join(" ");
 }
 export default function SingleProductDetailsPage(): JSX.Element {
-  // const [session, loading] = useSession();
-  // const { data: session, status } = useSession();
+  const { data: session, status } = useSession();
   const [showFullText, setShowFullText] = useState<boolean>(false);
-
+  const isAuthenticated = status === "authenticated" && session;
   const cartCtx = useContext(cartContext);
   if (!cartCtx) {
     throw new Error("Cart Context cannot be null");
@@ -50,7 +49,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
     const response = await fetch(`/api/products/${router.query.productId}`);
     const parsedResponse: ApiResponseType = await response.json();
     const data = apiResponseSchema.parse(parsedResponse);
-    // console.log(data);
+
     return data;
   }
   const { data, error, isLoading } = useSWR(
@@ -90,7 +89,6 @@ export default function SingleProductDetailsPage(): JSX.Element {
             <h2 className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-600">
               {data?.data.product.name}
             </h2>
-            <p>provider</p>
             <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-white text-2xl bg-orange-400">
               $ {data?.data.product.price}
             </div>
@@ -111,9 +109,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
             </p>
           </div>
           <div>
-            {/* {session && ( */}
-
-            {
+            {isAuthenticated && (
               <div
                 id="authenticate-to-edit-cart"
                 className="flex flex-col justify-center"
@@ -161,7 +157,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
                   </Link>
                 </p>
               </div>
-            }
+            )}
           </div>
         </section>
       </div>

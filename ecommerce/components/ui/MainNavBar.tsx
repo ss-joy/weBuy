@@ -1,12 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const MainNavBar = (): JSX.Element => {
   const { data: session, status } = useSession();
-
+  console.log(session);
+  const router = useRouter();
   function logOut() {
-    signOut();
+    signOut({
+      redirect: false,
+    });
   }
   const isAuthenticated = status === "authenticated" && session;
   return (
@@ -22,24 +26,25 @@ const MainNavBar = (): JSX.Element => {
             <Link href={"/auth/signup"}>SignUp</Link>
           </li>
         )}
-        {isAuthenticated && (
-          <li className="nav-btn">
-            <Link href={"/bank"}>Bank </Link>
-          </li>
-        )}
+
         {isAuthenticated && (
           <li className="nav-btn">
             <Link href={"/orders"}>Orders</Link>
           </li>
         )}
-        {isAuthenticated && (
+        {router.pathname !== "/products" && (
           <li className="nav-btn">
             <Link href={"/products"}>Shop Here</Link>
           </li>
         )}
-        {isAuthenticated && (
+        {isAuthenticated && router.pathname !== "/cart" && (
           <li className="nav-btn">
             <Link href={"/cart"}>View Cart</Link>
+          </li>
+        )}
+        {isAuthenticated && (
+          <li className="nav-btn">
+            <Link href={"/products/add-product"}>Add product</Link>
           </li>
         )}
         {isAuthenticated && (
