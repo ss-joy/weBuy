@@ -1,23 +1,27 @@
 import OneOrder from "@/components/orders/Order";
+import { getSession, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function ShowOrders(): JSX.Element {
-  const [data, setData] = useState(null);
   useEffect(() => {
-    fetch("http://localhost:4000/get-transactions")
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((anss) => {
-        console.log(anss);
-        setData(anss);
-      });
+    async function getUserSession() {
+      const userSession = await getSession();
+      // userSession?.user!.user_id;
+      //@ts-ignore
+      const userEmail = userSession?.user!.email;
+      const response = await fetch(
+        `http://localhost:3001/api/orders/${userEmail}`
+      );
+      const response2 = await response.json();
+      console.log(response2);
+    }
+    getUserSession();
   }, []);
 
   return (
     <div>
       <ul>
-        {data &&
+        {/* {data &&
           data.ans.map((e, id) => {
             return (
               // <li
@@ -36,7 +40,8 @@ export default function ShowOrders(): JSX.Element {
               // </li>
               <OneOrder e={e} key={id} />
             );
-          })}
+          })} */}
+        ok
       </ul>
     </div>
   );

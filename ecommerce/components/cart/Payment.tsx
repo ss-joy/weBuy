@@ -1,18 +1,67 @@
 import { cartContext } from "@/contexts/cart-context";
-import React, { useContext } from "react";
-import { useForm } from "react-hook-form";
-
+import React, { useContext, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/router";
 const Payment = (): JSX.Element => {
+  const { toast } = useToast();
+  const router = useRouter();
   const cartCtx = useContext(cartContext);
+  const [loading, setIsloading] = useState<boolean>(false);
   function calculateTotalPrice() {
     let sum = 0;
     cartCtx?.products.map((element) => {
       return (sum += element.productQuantity * element.productPrice);
     });
-    console.log(sum);
+
     return sum;
   }
-  function payWithBank() {}
+  // https://we-bank.vercel.app/api/transactions/transact-money
+  async function payWithBank() {
+    setIsloading(true);
+    try {
+      const response = await fetch(
+        "http://localhost:3001/api/transactions/transact-money",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: "sakilsazzadjoy@gmail.com",
+            amount: calculateTotalPrice(),
+          }),
+        }
+      );
+
+      const pResponse = await response.json();
+      console.log(pResponse);
+      if (pResponse.status === "success") {
+        toast({
+          title: "Transaction Successful!",
+          description: "You will be shortly redirected...",
+        });
+        setTimeout(() => {
+          router.push("/orders");
+        }, 3000);
+      } else if (pResponse.status === "error") {
+        toast({
+          variant: "destructive",
+          title: "Transaction failed",
+          description: pResponse.message || "Try again..",
+        });
+      }
+      setIsloading(false);
+    } catch (error) {
+      setIsloading(false);
+      toast({
+        variant: "destructive",
+        title: "Transaction failed",
+        description: "Try again..",
+      });
+      console.log(error);
+    }
+  }
   return (
     <div>
       <section className="border-2 border-red-400 lg:h-52 m-4 lg:sticky lg:top-1 rounded">
@@ -25,12 +74,14 @@ const Payment = (): JSX.Element => {
       </section>
       <section>
         <button
+          disabled={loading}
           onClick={payWithBank}
-          className="bg-green-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto mb-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
+          className="bg-green-600 disabled:bg-slate-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto mb-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
         >
-          Pay with weBank
+          {loading ? "Contacting Bank" : "Pay with weBank"}
         </button>
       </section>
+      <Toaster />
     </div>
   );
 };
