@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
+import { getSession } from "next-auth/react";
 const Payment = (): JSX.Element => {
   const { toast } = useToast();
   const router = useRouter();
@@ -19,6 +20,17 @@ const Payment = (): JSX.Element => {
   // https://we-bank.vercel.app/api/transactions/transact-money
   async function payWithBank() {
     setIsloading(true);
+    const userSession = await getSession();
+    if (!userSession) {
+      toast({
+        variant: "destructive",
+        title: "Transaction failed",
+        description: "Try again..",
+      });
+      setIsloading(false);
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:3001/api/transactions/transact-money",
@@ -28,7 +40,9 @@ const Payment = (): JSX.Element => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: "sakilsazzadjoy@gmail.com",
+            userEmail: userSession.user?.email,
+            //@ts-ignore
+            userId: userSession.user!.user_id,
             amount: calculateTotalPrice(),
           }),
         }
@@ -41,15 +55,19 @@ const Payment = (): JSX.Element => {
           title: "Transaction Successful!",
           description: "You will be shortly redirected...",
         });
+        setIsloading(false);
         setTimeout(() => {
           router.push("/orders");
         }, 3000);
+        return;
       } else if (pResponse.status === "error") {
+        setIsloading(false);
         toast({
           variant: "destructive",
           title: "Transaction failed",
           description: pResponse.message || "Try again..",
         });
+        return;
       }
       setIsloading(false);
     } catch (error) {
