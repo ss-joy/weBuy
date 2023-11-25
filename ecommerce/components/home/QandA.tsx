@@ -1,16 +1,10 @@
 import React from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 const QandA = (): JSX.Element => {
   return (
     <>
       <section>
-        <Accordion type="multiple">
+        {/* <Accordion type="multiple">
           <AccordionItem value="item-1">
             <AccordionTrigger className="p-4 m-4 rounded-lg text-white text-lg font-bold bg-fuchsia-400 w-96 shadow-md shadow-slate-400">
               Quality Assurance
@@ -80,7 +74,7 @@ const QandA = (): JSX.Element => {
               perfect products while we handle the rest.
             </AccordionContent>
           </AccordionItem>
-        </Accordion>
+        </Accordion> */}
       </section>
     </>
   );
