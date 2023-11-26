@@ -4,6 +4,12 @@ An ecommerce web application
 
 ---
 
+## Live preview
+
+### [weBuy](https://we-buy-omega.vercel.app/)
+
+---
+
 ## **Description and goals**
 
 An ecommerce website that fascillitates transactions between two different organizations.
@@ -50,3 +56,18 @@ The main objective of this project is to demonstrate transactions and communicat
 
 - Cart Page
   ![Add Product Page](/ecommerce/public/githubimages/cartPage.png)
+
+## Setup:
+
+- First clone this github repo.
+- Then clone the [we-bank](https://github.com/ss-joy/we-bank) github repo. They depend on each other. Follow the instructions for we bank using the link above.
+- Install all the dependencies using npm.
+  - `npm i`
+- Run the command `npm run dev`.
+- This should start the application at http://localhost:3000
+- Now add some environment variables.
+  - Add a .env.local file inside the **ecommerce** folder.
+  - Then add these envionment variables in the .env.local file:
+    - **MONGODB_URI**
+    - **NEXTAUTH_SECRET**
+  - Then you should create a firebase app for file storage.Get all the api information from your firebase app and add them in the .env.local file as well.
