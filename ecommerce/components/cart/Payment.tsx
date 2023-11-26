@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
+import { BANK_URL } from "@/lib/url-helper";
 const Payment = (): JSX.Element => {
   const { toast } = useToast();
   const router = useRouter();
@@ -17,7 +18,7 @@ const Payment = (): JSX.Element => {
 
     return sum;
   }
-  // https://we-bank.vercel.app/api/transactions/transact-money
+
   async function payWithBank() {
     setIsloading(true);
     const userSession = await getSession();
@@ -33,7 +34,7 @@ const Payment = (): JSX.Element => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/api/transactions/transact-money",
+        `${BANK_URL}/api/transactions/transact-money`,
         {
           method: "POST",
           headers: {

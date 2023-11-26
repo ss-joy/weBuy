@@ -8,7 +8,7 @@ import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
-  console.log(props);
+  // console.log(props);
   const cartCtx = useContext(cartContext);
   if (!cartContext) {
     throw new Error("cart context cannot be null");

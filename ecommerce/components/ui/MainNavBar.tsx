@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 const MainNavBar = (): JSX.Element => {
   const { data: session, status } = useSession();
-  console.log(session);
   const router = useRouter();
   function logOut() {
     signOut({

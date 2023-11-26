@@ -1,6 +1,5 @@
 import React from "react";
 import ProductItem from "./ProductItem";
-import { ProductSkeleton } from "./ProductSkeleton";
 interface ProductItemProps {
   isLoading: boolean;
   products: {

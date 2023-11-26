@@ -3,6 +3,7 @@ import { getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
+import { BANK_URL } from "@/lib/url-helper";
 type Order = {
   trxId: string;
   total_cost: number;
@@ -18,9 +19,7 @@ export default function ShowOrders(): JSX.Element {
       // userSession?.user!.user_id;
       //@ts-ignore
       const userId = userSession?.user!.user_id;
-      const response = await fetch(
-        `http://localhost:3001/api/orders/${userId}`
-      );
+      const response = await fetch(`${BANK_URL}/api/orders/${userId}`);
       const response2 = await response.json();
       setOrders(response2.data);
     }

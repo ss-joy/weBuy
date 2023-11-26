@@ -76,7 +76,7 @@ export default function CartContextProvider({
     });
     setProducts(newProducts);
   }
-  console.log(products);
+  // console.log(products);
   return (
     <cartContext.Provider
       value={{
