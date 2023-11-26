@@ -3,7 +3,7 @@ import MainLayout from "@/components/layouts/MainLayout";
 import MainHeader from "@/components/ui/MainHeader";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
-import { BankContextProvider } from "@/contexts/bank-context";
+
 import type { AppProps } from "next/app";
 import CartContextProvider from "@/contexts/cart-context";
 
@@ -13,17 +13,15 @@ export default function App({
 }: AppProps): JSX.Element {
   return (
     <SessionProvider session={session}>
-      <BankContextProvider>
-        <CartContextProvider>
-          <MainLayout>
-            <Head>
-              <title>weBuy</title>
-            </Head>
-            <MainHeader />
-            <Component {...pageProps} />
-          </MainLayout>
-        </CartContextProvider>
-      </BankContextProvider>
+      <CartContextProvider>
+        <MainLayout>
+          <Head>
+            <title>weBuy</title>
+          </Head>
+          <MainHeader />
+          <Component {...pageProps} />
+        </MainLayout>
+      </CartContextProvider>
     </SessionProvider>
   );
 }
