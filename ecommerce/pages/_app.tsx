@@ -3,9 +3,15 @@ import MainLayout from "@/components/layouts/MainLayout";
 import MainHeader from "@/components/ui/MainHeader";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
-
 import type { AppProps } from "next/app";
 import CartContextProvider from "@/contexts/cart-context";
+import { Ubuntu } from "next/font/google";
+
+const ubuntuFont = Ubuntu({
+  weight: "400",
+  style: "normal",
+  subsets: ["latin", "cyrillic", "greek"],
+});
 
 export default function App({
   Component,
@@ -44,7 +50,9 @@ export default function App({
             <meta name="theme-color" content="#ffffff"></meta>
           </Head>
           <MainHeader />
-          <Component {...pageProps} />
+          <main className={ubuntuFont.className}>
+            <Component {...pageProps} />
+          </main>
         </MainLayout>
       </CartContextProvider>
     </SessionProvider>

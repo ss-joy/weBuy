@@ -7,11 +7,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { cartContext } from "@/contexts/cart-context";
 import { z } from "zod";
-function cutOutFirst100Words(text: string) {
-  const words = text.split(" ");
-  const cutWords = words.slice(0, 60);
-  return cutWords.join(" ");
-}
+import { cutOutFirst100Words } from "@/lib/custom-utils";
+
 export default function SingleProductDetailsPage(): JSX.Element {
   const { data: session, status } = useSession();
   const [showFullText, setShowFullText] = useState<boolean>(false);
