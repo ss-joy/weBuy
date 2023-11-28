@@ -23,7 +23,9 @@ export const SiteFeature = ({
       } xl:w-[1200px] `}
     >
       <div className=" lg:w-1/2 xl:m-4">
-        <h2 className="text-3xl text-slate-600 font-semibold">{features.h2}</h2>
+        <h2 className="text-3xl text-slate-600 font-semibold xl:text-4xl">
+          {features.h2}
+        </h2>
         <p className={"text-slate-700 font-light"}>
           {showFullText
             ? features.description

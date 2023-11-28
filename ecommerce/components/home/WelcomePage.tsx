@@ -74,7 +74,7 @@ const siteFeatures: SiteFeatures = [
 const WelcomePage = (): JSX.Element => {
   return (
     <>
-      <h1 className="text-7xl mx-auto mt-20 text-center sm:mt-16 sm:text-9xl 2xl:mt-">
+      <h1 className="text-7xl lg:text-8xl mx-auto mt-20 text-center sm:mt-16 sm:text-9xl 2xl:mt-">
         <span className="text-purple-600">we</span>
         <span className="font-bold text-fuchsia-400">Buy</span>
       </h1>
