@@ -90,6 +90,15 @@ const Payment = (): JSX.Element => {
         <p className="text-white bg-orange-600 text-3xl text-center font-bold">
           {calculateTotalPrice()} $
         </p>
+        <p>
+          <a
+            className="text-center mx-auto block text-blue-400 font-bold"
+            href="https://we-bank-3hk3x6k6q-ss-joy.vercel.app/"
+            target="_blank"
+          >
+            go to we Bank
+          </a>
+        </p>
       </section>
       <section>
         <button

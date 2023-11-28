@@ -82,7 +82,7 @@ const WelcomePage = (): JSX.Element => {
         <Link href={"/products"}>Shop here &#8594;</Link>
       </button>
       {siteFeatures.map((e, id) => {
-        return <SiteFeature features={e} id={id} />;
+        return <SiteFeature features={e} id={id} key={id} />;
       })}
     </>
   );

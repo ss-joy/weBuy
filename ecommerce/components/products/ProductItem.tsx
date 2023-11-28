@@ -36,7 +36,8 @@ const ProductItem = ({ product, isLoading }: ProductItemProps): JSX.Element => {
             </h2>
             {/* <p className="mb-2">rating,category</p> */}
             <p className="mb-2 text-blue-500 font-bold">
-              Seller:{product.sellerName}
+              Seller:
+              <br /> {product.sellerName}
             </p>
 
             <section className="flex items-center justify-between w-full">
