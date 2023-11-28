@@ -84,6 +84,9 @@ const Payment = (): JSX.Element => {
   return (
     <div>
       <section className="border-2 border-red-400 lg:h-52 m-4 lg:sticky lg:top-1 rounded">
+        <p className="text-center font-bold text-blue-500">
+          Remember you have to sign up to we bank if you want to purchase..
+        </p>
         <p className="text-orange-600 font-bold text-3xl text-center mb-2 lg:p-4">
           Grand Total
         </p>
@@ -93,7 +96,7 @@ const Payment = (): JSX.Element => {
         <p>
           <a
             className="text-center mx-auto block text-blue-400 font-bold"
-            href="https://we-bank-3hk3x6k6q-ss-joy.vercel.app/"
+            href="https://we-bank.vercel.app/"
             target="_blank"
           >
             go to we Bank
