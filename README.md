@@ -6,7 +6,9 @@ An ecommerce web application
 
 ## Live preview
 
-### [weBuy](https://we-buy-omega.vercel.app/)
+### [weBuy(Live)](https://we-buy-omega.vercel.app/)
+
+### [we Bank(Live)](https://we-bank.vercel.app/)
 
 ---
 
