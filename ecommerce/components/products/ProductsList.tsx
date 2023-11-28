@@ -8,6 +8,8 @@ interface ProductItemProps {
     description: string;
     price: number;
     imagePath: string;
+    sellerId: string;
+    sellerName: string;
   }[];
 }
 const ProductsList = ({

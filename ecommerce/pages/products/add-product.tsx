@@ -28,7 +28,10 @@ const AddProductPage = () => {
   async function onSubmit(data: FormData) {
     if (file) {
       try {
-        const imageRef = ref(storage, `product-images/${v4() + Date.now()}`);
+        const imageRef = ref(
+          storage,
+          `product-images/${File.name + v4() + Date.now()}`
+        );
         await uploadBytes(imageRef, file);
         const url = await getDownloadURL(imageRef);
         const session = await getSession();

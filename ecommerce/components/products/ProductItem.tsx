@@ -11,6 +11,8 @@ interface ProductItemProps {
     description: string;
     price: number;
     imagePath: string;
+    sellerId: string;
+    sellerName: string;
   };
 }
 const ProductItem = ({ product, isLoading }: ProductItemProps): JSX.Element => {
@@ -32,8 +34,10 @@ const ProductItem = ({ product, isLoading }: ProductItemProps): JSX.Element => {
             <h2 className="text-2xl font-bold text-orange-600">
               {product.name}
             </h2>
-            <p className="mb-2">rating,category</p>
-            <p className="mb-2">provider</p>
+            {/* <p className="mb-2">rating,category</p> */}
+            <p className="mb-2 text-blue-500 font-bold">
+              Seller:{product.sellerName}
+            </p>
 
             <section className="flex items-center justify-between w-full">
               <span className="p-3 rounded-md font-semibold text-white text-2xl bg-orange-400">

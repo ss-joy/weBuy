@@ -18,6 +18,7 @@ export default function ProductsListPage(): JSX.Element {
   if (error) {
     return <ErrorMsg />;
   }
+
   return (
     <>
       <Head>
