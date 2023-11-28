@@ -4,7 +4,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
-import { BANK_URL } from "@/lib/url-helper";
 const Payment = (): JSX.Element => {
   const { toast } = useToast();
   const router = useRouter();
@@ -34,7 +33,8 @@ const Payment = (): JSX.Element => {
 
     try {
       const response = await fetch(
-        `${BANK_URL}/api/transactions/transact-money`,
+        `/api/transactions/transact-money`,
+
         {
           method: "POST",
           headers: {
