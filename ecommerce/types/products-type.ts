@@ -13,6 +13,8 @@ export const productSchema = z.object({
   description: z.string(),
   price: z.number(),
   imagePath: z.string(),
+  sellerName: z.string(),
+  sellerId: z.string(),
 });
 
 export type productSchemaType = z.infer<typeof productSchema>;

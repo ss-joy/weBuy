@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
+import { getSession } from "next-auth/react";
 type FormData = {
   description: string;
   price: number;
@@ -23,12 +24,14 @@ const AddProductPage = () => {
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     setFile(e.target.files![0]);
   }
+
   async function onSubmit(data: FormData) {
     if (file) {
       try {
         const imageRef = ref(storage, `product-images/${v4() + Date.now()}`);
         await uploadBytes(imageRef, file);
         const url = await getDownloadURL(imageRef);
+        const session = await getSession();
         const response = await fetch("/api/products/add-product", {
           method: "POST",
           headers: {
@@ -39,6 +42,9 @@ const AddProductPage = () => {
             description: data.description,
             price: Number(data.price),
             imagePath: url,
+            sellerName: session?.user?.name,
+            //@ts-ignore
+            sellerId: session?.user.user_id,
           }),
         });
         const pResponse = await response.json();
@@ -66,6 +72,10 @@ const AddProductPage = () => {
   }
   return (
     <div>
+      <p className="text-center font-sans font-semibold text-slate-500">
+        You are adding this product. <br />
+        Others will be able to buy these from you!
+      </p>
       <form
         className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
         onSubmit={handleSubmit(onSubmit)}

@@ -34,9 +34,12 @@ export default function ShowOrders(): JSX.Element {
         <meta name="description" content="" />
       </Head>
       <ul className="flex flex-col">
-        {orders.map((e) => {
+        {orders.map((e, id) => {
           return (
-            <li className="border-4 p-2 rounded-md mx-auto my-2 w-[310px] xs:w-[500px] overflow-x-scroll">
+            <li
+              key={id}
+              className="border-4 p-2 rounded-md mx-auto my-2 w-[310px] xs:w-[500px] overflow-x-scroll"
+            >
               <p className="text-orange-700 text-lg font-bold">{e.email}</p>
               <p className="text-red-700 font-bold">{e.total_cost}$</p>
               <p className="text-slate-700 font-bold">{e.trxId}</p>

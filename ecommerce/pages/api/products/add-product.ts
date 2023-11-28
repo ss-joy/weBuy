@@ -39,6 +39,8 @@ export default async function handler(
       description: product.description,
       price: Number(product.price),
       imagePath: product.imagePath,
+      sellerName: product.sellerName,
+      sellerId: product.sellerId,
     });
     if (!dbResp) {
       return res.status(500).json({

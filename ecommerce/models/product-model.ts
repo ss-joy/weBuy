@@ -4,6 +4,8 @@ interface IProductSchema {
   description: string;
   price: number;
   imagePath: string;
+  sellerName: string;
+  sellerId: string;
 }
 const productSchema = new Schema<IProductSchema>({
   name: {
@@ -16,6 +18,14 @@ const productSchema = new Schema<IProductSchema>({
   },
   price: {
     type: Number,
+    required: true,
+  },
+  sellerName: {
+    type: String,
+    required: true,
+  },
+  sellerId: {
+    type: String,
     required: true,
   },
   imagePath: {
