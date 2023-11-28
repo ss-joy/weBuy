@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 import { ApiResponse } from "@/types/apiResponse";
+import Head from "next/head";
 export default function SignUpPage(): JSX.Element {
   const router = useRouter();
   const { toast } = useToast();
@@ -66,6 +67,9 @@ export default function SignUpPage(): JSX.Element {
 
   return (
     <>
+      <Head>
+        <title>we Buy | Signup page</title>
+      </Head>
       <form
         className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
         onSubmit={handleSubmit(onSubmit)}

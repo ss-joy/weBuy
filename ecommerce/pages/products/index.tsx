@@ -1,5 +1,6 @@
 import ProductsList from "@/components/products/ProductsList";
 import ErrorMsg from "@/components/ui/ErrorMsg";
+import Head from "next/head";
 import useSWR from "swr";
 
 export default function ProductsListPage(): JSX.Element {
@@ -19,6 +20,10 @@ export default function ProductsListPage(): JSX.Element {
   }
   return (
     <>
+      <Head>
+        <title>we Buy | Products list page</title>
+        <meta name="description" content="" />
+      </Head>
       <ProductsList
         //this cool hack works!! :v <3
         products={data ? data.data : [{}, {}, {}]}

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
+import Head from "next/head";
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   // console.log(props);
@@ -16,6 +17,9 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
 
   return (
     <>
+      <Head>
+        <title>we Buy | Cart page</title>
+      </Head>
       <div
         id="full-cart-container"
         className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mx-auto"

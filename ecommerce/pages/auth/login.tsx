@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import Head from "next/head";
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
@@ -41,6 +42,9 @@ export default function LoginPage(): JSX.Element {
   }
   return (
     <>
+      <Head>
+        <title>we Buy | Login page</title>
+      </Head>
       <h1 className="mt-8 text-slate-500 text-center font-bold text-5xl">
         Log In here
       </h1>
