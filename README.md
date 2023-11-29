@@ -33,6 +33,12 @@ The main objective of this project is to demonstrate transactions and communicat
 
 ---
 
+## Basic workflow
+
+![HomePage](/ecommerce/public/githubimages/diagram.png)
+
+---
+
 ## Technologies used
 
 - <mark>Typescript</mark> : Typesafe code implementation
