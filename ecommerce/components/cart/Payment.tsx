@@ -8,6 +8,7 @@ const Payment = (): JSX.Element => {
   const { toast } = useToast();
   const router = useRouter();
   const cartCtx = useContext(cartContext);
+
   const [loading, setIsloading] = useState<boolean>(false);
   function calculateTotalPrice() {
     let sum = 0;
@@ -45,6 +46,7 @@ const Payment = (): JSX.Element => {
             //@ts-ignore
             userId: userSession.user!.user_id,
             amount: calculateTotalPrice(),
+            cartProductsDetails: cartCtx?.products,
           }),
         }
       );

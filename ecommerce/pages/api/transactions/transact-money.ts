@@ -31,6 +31,8 @@ export default async function handler(
 
     const response = await fetch(
       "https://we-bank.vercel.app/api/transactions/transact-money",
+      // "http://localhost:3001/api/transactions/transact-money",
+
       {
         method: "POST",
         headers: {
@@ -40,6 +42,7 @@ export default async function handler(
           userEmail: body.userEmail,
           userId: body.userId,
           amount: body.amount,
+          cartProductsDetails: body.cartProductsDetails,
         }),
       }
     );
