@@ -6,11 +6,17 @@ import { v4 } from "uuid";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { getSession } from "next-auth/react";
+import { z } from "zod";
 type FormData = {
   description: string;
   price: number;
   name: string;
 };
+const FormDataSchema = z.object({
+  description: z.string(),
+  price: z.number().min(0, "price must be greater than 0"),
+  name: z.string(),
+});
 const AddProductPage = () => {
   const [file, setFile] = useState<File>();
   const { toast } = useToast();
@@ -26,6 +32,16 @@ const AddProductPage = () => {
   }
 
   async function onSubmit(data: FormData) {
+    try {
+      FormDataSchema.parse(data);
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Adding product failed",
+        description: "Invalid inputs. Check everything and try again",
+      });
+      return;
+    }
     if (file) {
       try {
         const imageRef = ref(
@@ -105,6 +121,10 @@ const AddProductPage = () => {
         <input
           {...register("price", {
             required: { value: true, message: "Product price is required" },
+            min: {
+              value: 0,
+              message: "Product price must be at least 0.",
+            },
           })}
           className="form-input"
           type="number"

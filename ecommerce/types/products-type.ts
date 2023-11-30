@@ -11,7 +11,7 @@ export const productSchema = z.object({
   _id: z.string(),
   name: z.string(),
   description: z.string(),
-  price: z.number(),
+  price: z.number().min(0, "Price must be at least 0"),
   imagePath: z.string(),
   sellerName: z.string(),
   sellerId: z.string(),
