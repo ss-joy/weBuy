@@ -37,7 +37,7 @@ export default function LoginPage(): JSX.Element {
       });
       setTimeout(() => {
         router.push("/products");
-      }, 3000);
+      }, 1000);
     }
   }
   return (
