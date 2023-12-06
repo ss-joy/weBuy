@@ -41,7 +41,7 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
           </>
         ) : (
           <div className="flex flex-col mt-8">
-            <p className="mx-auto text-center font-bold text-5xl">
+            <p className="mx-auto text-center font-bold text-5xl text-slate-500">
               Please add some products to see something here
             </p>
             <Image

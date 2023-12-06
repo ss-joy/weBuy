@@ -25,7 +25,7 @@ const Payment = (): JSX.Element => {
     if (!userSession) {
       toast({
         variant: "destructive",
-        title: "Transaction failed",
+        title: "You must log in to buy anything",
         description: "Try again..",
       });
       setIsloading(false);
@@ -58,10 +58,11 @@ const Payment = (): JSX.Element => {
           title: "Transaction Successful!",
           description: "You will be shortly redirected...",
         });
+        cartCtx?.emptyCart();
         setIsloading(false);
         setTimeout(() => {
           router.push("/orders");
-        }, 3000);
+        }, 1000);
         return;
       } else if (pResponse.status === "error") {
         setIsloading(false);

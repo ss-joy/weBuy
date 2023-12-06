@@ -9,6 +9,7 @@ interface CartContextType {
   increaseProductQuanity: (productId: string, productPrice: number) => void;
   decreaseProductQuantity: (productId: string) => void;
   products: CartItem[];
+  emptyCart: () => void;
 }
 
 type CartContextProviderProps = {
@@ -76,6 +77,9 @@ export default function CartContextProvider({
     });
     setProducts(newProducts);
   }
+  function emptyCart() {
+    products.length = 0;
+  }
   // console.log(products);
   return (
     <cartContext.Provider
@@ -83,6 +87,7 @@ export default function CartContextProvider({
         products,
         increaseProductQuanity,
         decreaseProductQuantity,
+        emptyCart,
       }}
     >
       {children}

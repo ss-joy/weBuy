@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import HamBurger from "./animations/HamBurger";
+import { LogOut } from "lucide-react";
 
 const MainNavBar = (): JSX.Element => {
   const { data: session, status } = useSession();
@@ -17,6 +18,11 @@ const MainNavBar = (): JSX.Element => {
     <>
       <nav className="hidden lg:block">
         <ul className="flex justify-around">
+          {router.pathname !== "/products" && !isAuthenticated && (
+            <li className="nav-btn">
+              <Link href={"/products"}>View Products</Link>
+            </li>
+          )}
           {!isAuthenticated && (
             <li className="nav-btn">
               <Link href={"/auth/login"}>Login</Link>
@@ -50,7 +56,7 @@ const MainNavBar = (): JSX.Element => {
           )}
           {isAuthenticated && (
             <li className="nav-btn">
-              <button onClick={logOut}>Log Out</button>
+              <LogOut onClick={logOut} className="mt-2 hover:cursor-pointer" />
             </li>
           )}
         </ul>

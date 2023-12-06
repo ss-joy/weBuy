@@ -14,7 +14,6 @@ const SlidePanel = (): JSX.Element => {
     });
   }
   const resCtx = useContext(responsivePanelContext);
-  console.log(resCtx?.startAnimation);
   const isAuthenticated = status === "authenticated" && session;
   return (
     //wrong approach
@@ -31,11 +30,11 @@ const SlidePanel = (): JSX.Element => {
     <nav
       className={
         resCtx?.startAnimation
-          ? `bg-white fixed top-20 right-0 shadow ${style.singlePanelNav}`
-          : `bg-white fixed top-20 right-[-380px] ${style.singlePanelNav}`
+          ? `bg-white fixed top-0 right-0 shadow ${style.singlePanelNav}`
+          : `bg-white fixed top-0 right-[-380px] ${style.singlePanelNav}`
       }
     >
-      <ul className="flex flex-col items-end">
+      <ul className="flex flex-col items-end pt-20">
         {!isAuthenticated && (
           <li className="nav-btn">
             <Link href={"/auth/login"}>Login</Link>
@@ -48,27 +47,27 @@ const SlidePanel = (): JSX.Element => {
         )}
 
         {isAuthenticated && (
-          <li className="nav-btn bg-white text-orange-500 hover:text-orange-600">
+          <li className="nav-btn">
             <Link href={"/orders"}>Orders</Link>
           </li>
         )}
         {router.pathname !== "/products" && (
-          <li className="nav-btn bg-white text-orange-500 hover:text-orange-600">
+          <li className="nav-btn">
             <Link href={"/products"}>Shop Here</Link>
           </li>
         )}
         {isAuthenticated && router.pathname !== "/cart" && (
-          <li className="nav-btn bg-white text-orange-500 hover:text-orange-600">
+          <li className="nav-btn">
             <Link href={"/cart"}>View Cart</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="nav-btn bg-white text-orange-500 hover:text-orange-600">
+          <li className="nav-btn">
             <Link href={"/products/add-product"}>Add product</Link>
           </li>
         )}
         {isAuthenticated && (
-          <li className="nav-btn bg-white text-orange-500 hover:text-orange-600">
+          <li className="nav-btn">
             <button onClick={logOut}>Log Out</button>
           </li>
         )}

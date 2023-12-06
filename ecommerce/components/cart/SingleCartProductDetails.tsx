@@ -41,7 +41,6 @@ const SingleCartProductDetails = ({
   if (error) {
     return <ErrorMsg />;
   }
-  console.log(data);
   return (
     <li className="flex my-4 flex-col mx-2 shadow-sm shadow-slate-500 rounded-md overflow-hidden xs:mx-12 xs:my-12 md:flex-row md:justify-evenly">
       <section

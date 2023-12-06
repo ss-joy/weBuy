@@ -19,18 +19,27 @@ type Order = {
 };
 export default function ShowOrders(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     async function getUserSession() {
+      setIsLoading(true);
       const userSession = await getSession();
       //@ts-ignore
       const userId = userSession?.user!.user_id;
       const response = await fetch(`/api/orders/${userId}`);
       const response2 = await response.json();
+      setIsLoading(false);
       setOrders(response2.data);
     }
     getUserSession();
   }, []);
-
+  if (isLoading) {
+    return (
+      <p className="font-bold text-2xl text-slate-500 mt-16 text-center mx-auto">
+        Loading your orders...
+      </p>
+    );
+  }
   return (
     <>
       <Head>
@@ -65,6 +74,7 @@ export default function ShowOrders(): JSX.Element {
                 <p className="bg-green-400 rounded-md font-bold p-1 my-3">
                   Delivery on the way
                 </p>
+
                 <p className="bg-green-400 rounded-md font-bold p-1 my-3">
                   Order details
                 </p>
