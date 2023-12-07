@@ -31,14 +31,20 @@ const AddProductPage = () => {
     setFile(e.target.files![0]);
   }
 
-  async function onSubmit(data: FormData) {
+  async function onSubmit(formData: FormData) {
+    const data: FormData = {
+      name: formData.name,
+      description: formData.description,
+      price: Number(formData.price),
+    };
     try {
       FormDataSchema.parse(data);
     } catch (error) {
+      console.log(error);
       toast({
         variant: "destructive",
         title: "Adding product failed",
-        description: "Invalid inputs. Check everything and try again",
+        description: "Invalid inputs. Check everything and try againxd",
       });
       return;
     }
