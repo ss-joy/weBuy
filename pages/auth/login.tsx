@@ -94,7 +94,7 @@ export default function LoginPage(): JSX.Element {
           type="password"
         />
         <button type="submit" disabled={isSubmitting} className="btn2">
-          Sign Up
+          Log In
         </button>
       </form>
       <Toaster />
