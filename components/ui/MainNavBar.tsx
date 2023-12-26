@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import HamBurger from "./animations/HamBurger";
-import { LogOut } from "lucide-react";
+import Profile from "../profile/Profile";
 
 const MainNavBar = (): JSX.Element => {
   const { data: session, status } = useSession();
@@ -56,7 +56,7 @@ const MainNavBar = (): JSX.Element => {
           )}
           {isAuthenticated && (
             <li className="nav-btn">
-              <LogOut onClick={logOut} className="mt-2 hover:cursor-pointer" />
+              <Profile logout={logOut} />
             </li>
           )}
         </ul>

@@ -15,6 +15,9 @@ const SlidePanel = (): JSX.Element => {
   }
   const resCtx = useContext(responsivePanelContext);
   const isAuthenticated = status === "authenticated" && session;
+  //@ts-ignore
+  const userId = session?.user!.user_id;
+
   return (
     //wrong approach
     //in this approach style.singe.. wont be added in html
@@ -45,7 +48,6 @@ const SlidePanel = (): JSX.Element => {
             <Link href={"/auth/signup"}>SignUp</Link>
           </li>
         )}
-
         {isAuthenticated && (
           <li className="nav-btn">
             <Link href={"/orders"}>Orders</Link>
@@ -69,6 +71,11 @@ const SlidePanel = (): JSX.Element => {
         {isAuthenticated && (
           <li className="nav-btn">
             <button onClick={logOut}>Log Out</button>
+          </li>
+        )}
+        {isAuthenticated && (
+          <li className="nav-btn">
+            <Link href={`/user/profile/${userId}`}>Profile</Link>
           </li>
         )}
       </ul>
