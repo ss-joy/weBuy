@@ -7,18 +7,24 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
+import axios from "axios";
+import Loading from "@/components/ui/Loading";
 type FormData = {
   description: string;
   price: number;
   name: string;
+  productImage: FileList;
 };
-const FormDataSchema = z.object({
-  description: z.string(),
-  price: z.number().min(0, "price must be greater than 0"),
-  name: z.string(),
-});
+const FormDataSchema = z
+  .object({
+    description: z.string(),
+    price: z.number().min(0, "price must be greater than 0"),
+    name: z.string(),
+  })
+  .passthrough();
 const AddProductPage = () => {
-  const [file, setFile] = useState<File>();
+  const [imagePreview, setImagePreview] = useState<string | null>("");
+
   const { toast } = useToast();
   const {
     handleSubmit,
@@ -28,7 +34,18 @@ const AddProductPage = () => {
     formState: { isSubmitting, errors },
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFile(e.target.files![0]);
+    const file = e.target.files![0];
+    console.log(e.target.files![0]);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setImagePreview(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
   }
 
   async function onSubmit(formData: FormData) {
@@ -36,7 +53,9 @@ const AddProductPage = () => {
       name: formData.name,
       description: formData.description,
       price: Number(formData.price),
+      productImage: formData.productImage,
     };
+
     try {
       FormDataSchema.parse(data);
     } catch (error) {
@@ -48,44 +67,40 @@ const AddProductPage = () => {
       });
       return;
     }
-    if (file) {
+    console.log(data.productImage[0]);
+    if (data.productImage[0]) {
       try {
         const imageRef = ref(
           storage,
           `product-images/${File.name + v4() + Date.now()}`
         );
-        await uploadBytes(imageRef, file);
+        await uploadBytes(imageRef, data.productImage[0]);
         const url = await getDownloadURL(imageRef);
         const session = await getSession();
-        const response = await fetch("/api/products/add-product", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: data.name,
-            description: data.description,
-            price: Number(data.price),
-            imagePath: url,
-            sellerName: session?.user?.name,
-            //@ts-ignore
-            sellerId: session?.user.user_id,
-          }),
+        const response = await axios.post("/api/products/add-product", {
+          name: data.name,
+          description: data.description,
+          price: Number(data.price),
+          imagePath: url,
+          sellerName: session?.user?.name,
+          //@ts-ignore
+          sellerId: session?.user.user_id,
         });
-        const pResponse = await response.json();
-        if (pResponse.status === "success") {
+        console.log(response);
+        if (response.data.status === "success") {
           reset();
+          setImagePreview("");
           toast({
             title: "Product added Successfully!",
             description:
               "You have successfully added the product. Visit shop here page to view it...",
           });
-        } else if (pResponse.status === "error") {
+        } else if (response.data.status === "error") {
           toast({
             variant: "destructive",
             title: "Adding product failed",
             description:
-              pResponse.message ||
+              response.data.message ||
               "Something went wrong. Please check everything carefully and try again",
           });
         }
@@ -151,13 +166,32 @@ const AddProductPage = () => {
           className="form-input"
           id="productDescription"
         />
-        <input type="file" onChange={handleFileChange} />
+        <p className="text-red-700">{errors.productImage?.message}</p>
+
+        <input
+          type="file"
+          {...register("productImage", {
+            required: {
+              value: true,
+              message: "Please select an image for the product",
+            },
+          })}
+          className="my-4 border-2 border-blue-300 rounded p-2"
+          onChange={handleFileChange}
+        />
+        {imagePreview && (
+          <img className="w-[300px] rounded mb-6" src={imagePreview} />
+        )}
         <button
           type="submit"
           className="btn2 disabled:bg-gray-500"
           disabled={isSubmitting}
         >
-          Add Product
+          {isSubmitting ? (
+            <Loading className="bg-white" />
+          ) : (
+            <span>Add Product</span>
+          )}
         </button>
       </form>
       <Toaster />
