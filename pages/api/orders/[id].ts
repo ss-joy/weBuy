@@ -1,4 +1,3 @@
-import Product from "@/models/product-model";
 import { ApiResponse } from "@/types/apiResponse";
 import connectToDB from "@/utils/database";
 import { NextApiRequest, NextApiResponse } from "next";

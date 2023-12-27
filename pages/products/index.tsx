@@ -1,20 +1,13 @@
 import ProductsList from "@/components/products/ProductsList";
 import ErrorMsg from "@/components/ui/ErrorMsg";
+import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import useSWR from "swr";
-
+import { makeGetRequest } from "@/lib/queryFunctions";
 export default function ProductsListPage(): JSX.Element {
-  // function cutOutFirst100Words(text: string) {
-  //   const words = text.split(" ");
-  //   const cutWords = words.slice(0, 100);
-  //   return cutWords.join(" ");
-  // }
-  async function fetcher() {
-    const response = await fetch("/api/products");
-    return await response.json();
-  }
-  const { data, error, isLoading } = useSWR("/api/products", fetcher);
-
+  const { error, data, isLoading } = useQuery({
+    queryKey: ["get-products-list"],
+    queryFn: () => makeGetRequest("/api/products"),
+  });
   if (error) {
     return <ErrorMsg />;
   }

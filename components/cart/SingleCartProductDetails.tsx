@@ -1,8 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import useSWR from "swr";
 import { z } from "zod";
 import ErrorMsg from "../ui/ErrorMsg";
+import { useQuery } from "@tanstack/react-query";
+import { makeGetRequest } from "@/lib/queryFunctions";
+import Loading from "../ui/Loading";
 
 interface SingleCartProductDetailsProps {
   productQuantity: number;
@@ -27,19 +29,15 @@ const SingleCartProductDetails = ({
   });
   type ApiResponseType = z.infer<typeof apiResponseSchema>;
 
-  async function fetcher() {
-    const response = await fetch(`/api/products/${productId}`);
-
-    const parsedResponse: ApiResponseType = await response.json();
-    const data = apiResponseSchema.parse(parsedResponse);
-    return data;
-  }
-  const { data, error, isLoading } = useSWR(
-    `/api/products/${productId}`,
-    fetcher
-  );
+  const { data, isLoading, error } = useQuery<ApiResponseType>({
+    queryKey: ["get-single-product-details-for-cart", productId],
+    queryFn: () => makeGetRequest(`/api/products/${productId}`),
+  });
   if (error) {
     return <ErrorMsg />;
+  }
+  if (isLoading) {
+    return <Loading />;
   }
   return (
     <li className="flex my-4 flex-col mx-2 shadow-sm shadow-slate-500 rounded-md overflow-hidden xs:mx-12 xs:my-12 md:flex-row md:justify-evenly">

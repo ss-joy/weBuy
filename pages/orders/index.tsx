@@ -5,40 +5,31 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import Head from "next/head";
 import SingleCartProductDetails from "@/components/cart/SingleCartProductDetails";
-type Order = {
-  trxId: string;
-  total_cost: number;
-  ecom_user_id: string;
-  email: string;
-  trx_date: Date;
-  transactionsItemsLists: {
-    productId: string;
-    productPrice: number;
-    productQuantity: number;
-  }[];
-};
+import { useQuery } from "@tanstack/react-query";
+import ErrorMsg from "@/components/ui/ErrorMsg";
+import { makeGetRequest } from "@/lib/queryFunctions";
+import { TransactionsList } from "@/types/transactoion";
+
 export default function ShowOrders(): JSX.Element {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  useEffect(() => {
-    async function getUserSession() {
-      setIsLoading(true);
+  const { data, isLoading, error } = useQuery<TransactionsList>({
+    queryKey: ["get-all-orders"],
+    queryFn: async () => {
       const userSession = await getSession();
       //@ts-ignore
       const userId = userSession?.user!.user_id;
-      const response = await fetch(`/api/orders/${userId}`);
-      const response2 = await response.json();
-      setIsLoading(false);
-      setOrders(response2.data);
-    }
-    getUserSession();
-  }, []);
+      return makeGetRequest(`/api/orders/${userId}`);
+    },
+  });
+  console.log(data);
   if (isLoading) {
     return (
       <p className="font-bold text-2xl text-slate-500 mt-16 text-center mx-auto">
         Loading your orders...
       </p>
     );
+  }
+  if (error) {
+    return <ErrorMsg />;
   }
   return (
     <>
@@ -50,8 +41,8 @@ export default function ShowOrders(): JSX.Element {
         List of all your orders.
       </h1>
       <ul className="flex flex-col">
-        {orders.length > 0 ? (
-          orders.map((e, id) => {
+        {data!.data!.length > 0 ? (
+          data!.data!.map((e, id) => {
             return (
               <li
                 key={id}

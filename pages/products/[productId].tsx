@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import useSWR from "swr";
 import Loading from "@/components/ui/Loading";
 import Image from "next/image";
 import { useContext, useState } from "react";
@@ -8,6 +7,8 @@ import Link from "next/link";
 import { cartContext } from "@/contexts/cart-context";
 import { z } from "zod";
 import { cutOutFirst100Words } from "@/lib/custom-utils";
+import { useQuery } from "@tanstack/react-query";
+import { makeGetRequest } from "@/lib/queryFunctions";
 
 export default function SingleProductDetailsPage(): JSX.Element {
   const { data: session, status } = useSession();
@@ -18,6 +19,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
     throw new Error("Cart Context cannot be null");
   }
   const router = useRouter();
+  console.log("client", router.query.productId);
   function findSingleProductQuantity() {
     if (!cartCtx) {
       throw new Error("Cart context cannot be null");
@@ -42,17 +44,11 @@ export default function SingleProductDetailsPage(): JSX.Element {
     }),
   });
   type ApiResponseType = z.infer<typeof apiResponseSchema>;
-  async function fetcher() {
-    const response = await fetch(`/api/products/${router.query.productId}`);
-    const parsedResponse: ApiResponseType = await response.json();
-    const data = apiResponseSchema.parse(parsedResponse);
 
-    return data;
-  }
-  const { data, error, isLoading } = useSWR(
-    `/api/products/${router.query.productId}`,
-    fetcher
-  );
+  const { data, isLoading, error } = useQuery<ApiResponseType>({
+    queryKey: ["get-single-product-details", router.query.productId],
+    queryFn: () => makeGetRequest(`/api/products/${router.query.productId}`),
+  });
 
   if (isLoading) {
     return <Loading />;
