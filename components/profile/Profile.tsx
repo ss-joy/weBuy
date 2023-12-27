@@ -40,8 +40,8 @@ function Profile({ logout, userId }: ProfileProps) {
         <Image
           className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
           src={
-            data.data.user.profilePicture
-              ? data.data.user.profilePicture
+            data?.data.user.profilePicture
+              ? data?.data.user.profilePicture
               : "/ui-images/dummy-user.jpg"
           }
           width={40}
