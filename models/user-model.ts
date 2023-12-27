@@ -3,6 +3,7 @@ interface IUser {
   name: string;
   email: string;
   password: string;
+  profilePicture: string;
 }
 const userSchema = new Schema<IUser>({
   name: {
@@ -16,6 +17,9 @@ const userSchema = new Schema<IUser>({
   password: {
     type: String,
     required: true,
+  },
+  profilePicture: {
+    type: String,
   },
 });
 

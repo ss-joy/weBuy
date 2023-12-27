@@ -13,10 +13,13 @@ import Image from "next/image";
 import { LogOutIcon, User2Icon } from "lucide-react";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import { makeGetRequest } from "@/lib/queryFunctions";
 type ProfileProps = {
   logout: () => void;
+  userId: string;
 };
-function Profile({ logout }: ProfileProps) {
+function Profile({ logout, userId }: ProfileProps) {
   const router = useRouter();
   async function gotoProfilePage() {
     const session = await getSession();
@@ -27,12 +30,20 @@ function Profile({ logout }: ProfileProps) {
     //@ts-ignore
     router.push(`/user/profile/${session?.user!.user_id}`);
   }
+  const { error, isLoading, data } = useQuery({
+    queryKey: ["get-single-user-profile", userId],
+    queryFn: () => makeGetRequest(`/api/user/profile/${userId}`),
+  });
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Image
           className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
-          src={"/ui-images/dummy-user.jpg"}
+          src={
+            data.data.user.profilePicture
+              ? data.data.user.profilePicture
+              : "/ui-images/dummy-user.jpg"
+          }
           width={40}
           height={40}
           alt="profile image of user"

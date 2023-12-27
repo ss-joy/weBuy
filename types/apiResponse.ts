@@ -14,9 +14,11 @@ export interface ApiResponse {
     | "Something went wrong. Please try again!"
     | "Could sign up the user"
     | "Showing details of single product"
+    | "Showing details of single user"
     | "This user is already registered"
     | "Transaction failed.Please try again later"
     | "Transaction succesful!"
+    | "User updated successfully"
     | "Showing all prouct transactions";
   error?: {
     errorCode: number;

@@ -56,7 +56,11 @@ const MainNavBar = (): JSX.Element => {
           )}
           {isAuthenticated && (
             <li className="nav-btn">
-              <Profile logout={logOut} />
+              <Profile
+                //@ts-ignore
+                userId={session.user!.user_id}
+                logout={logOut}
+              />
             </li>
           )}
         </ul>
