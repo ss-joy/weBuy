@@ -20,7 +20,7 @@ export default function ProductsListPage(): JSX.Element {
       </Head>
       <ProductsList
         //this cool hack works!! :v <3
-        products={data ? data.data : [{}, {}, {}]}
+        products={data ? data?.data : [{}, {}, {}]}
         isLoading={isLoading}
       />
     </>

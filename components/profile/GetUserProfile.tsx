@@ -24,8 +24,8 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
       <Image
         className="rounded-full w-40 lg:w-56 transition-all hover:shadow-md hover:shadow-slate-500 block mx-auto"
         src={
-          data.data.user.profilePicture
-            ? data.data.user.profilePicture
+          data?.data.user.profilePicture
+            ? data?.data.user.profilePicture
             : "/ui-images/dummy-user.jpg"
         }
         width={300}
@@ -39,11 +39,11 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
         </p>
         <p className="text-gray-700 font-bold mb-4">
           <span className="mr-2 ">name:</span>
-          {isLoading ? "Loading..." : data.data.user.name}
+          {isLoading ? "Loading..." : data?.data.user.name}
         </p>
         <p className="text-gray-700 font-bold">
           <span className="mr-2 text-gray-700">email:</span>
-          {isLoading ? "loading..." : data.data.user.email}
+          {isLoading ? "loading..." : data?.data.user.email}
         </p>
       </div>
     </div>
