@@ -9,6 +9,8 @@ import { getSession } from "next-auth/react";
 import { z } from "zod";
 import axios from "axios";
 import Loading from "@/components/ui/Loading";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 type FormData = {
   description: string;
   price: number;
@@ -112,15 +114,21 @@ const AddProductPage = () => {
   }
   return (
     <div>
-      <p className="text-center font-sans font-semibold text-slate-500">
-        You are adding this product. <br />
-        Others will be able to buy these from you!
+      <p className="mt-8 text-center font-sans font-semibold text-slate-500 text-2xl">
+        Add Products here. Other can buy these from you..
       </p>
+
       <form
-        className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
+        className="flex flex-col mt-8 mx-auto shadow-md shadow-black-200 p-6 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-[500px] sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded-md"
         onSubmit={handleSubmit(onSubmit)}
         noValidate
       >
+        <h1 className="text-2xl text-slate-600 font-semibold">
+          Product information
+        </h1>
+        <p className="text-slate-500 my-1 mb-7">
+          add your product information below.
+        </p>
         <label className="form-label" htmlFor="productName">
           Product name
         </label>
@@ -130,7 +138,7 @@ const AddProductPage = () => {
           {...register("name", {
             required: { value: true, message: "Product name is required" },
           })}
-          className="form-input"
+          className={cn("form-input", "rounded-xl")}
           type="text"
           id="productName"
         />
@@ -147,7 +155,7 @@ const AddProductPage = () => {
               message: "Product price must be at least 0.",
             },
           })}
-          className="form-input"
+          className={cn("form-input", "rounded-xl")}
           type="number"
           id="productPrice"
         />
@@ -163,12 +171,22 @@ const AddProductPage = () => {
               message: "Product description is required",
             },
           })}
-          className="form-input"
+          className={cn("form-input", "rounded-xl")}
           id="productDescription"
         />
         <p className="text-red-700">{errors.productImage?.message}</p>
-
-        <input
+        <Input
+          {...register("productImage", {
+            required: {
+              value: true,
+              message: "Please select an image for the product",
+            },
+          })}
+          className="my-4 border-2 border-blue-300 rounded p-2"
+          onChange={handleFileChange}
+          type="file"
+        />
+        {/* <input
           type="file"
           {...register("productImage", {
             required: {
@@ -178,7 +196,7 @@ const AddProductPage = () => {
           })}
           className="my-4 border-2 border-blue-300 rounded p-2"
           onChange={handleFileChange}
-        />
+        /> */}
         {imagePreview && (
           <img className="w-[300px] rounded mb-6" src={imagePreview} />
         )}
