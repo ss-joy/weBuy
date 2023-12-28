@@ -5,6 +5,8 @@ import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import Head from "next/head";
+import Loading from "@/components/ui/Loading";
+import { cn } from "@/lib/utils";
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
@@ -13,6 +15,7 @@ export default function LoginPage(): JSX.Element {
   const {
     handleSubmit,
     register,
+
     formState: { errors, isSubmitting },
   } = useForm<UserSignUpSchemaType>();
 
@@ -93,8 +96,18 @@ export default function LoginPage(): JSX.Element {
           className="form-input"
           type="password"
         />
-        <button type="submit" disabled={isSubmitting} className="btn2">
-          Log In
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className={cn("btn2", {
+            "py-0": isSubmitting,
+          })}
+        >
+          {isSubmitting ? (
+            <Loading className="bg-white" />
+          ) : (
+            <span>Log In</span>
+          )}
         </button>
       </form>
       <Toaster />
