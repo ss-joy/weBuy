@@ -19,7 +19,6 @@ export default function SingleProductDetailsPage(): JSX.Element {
     throw new Error("Cart Context cannot be null");
   }
   const router = useRouter();
-  console.log("client", router.query.productId);
   function findSingleProductQuantity() {
     if (!cartCtx) {
       throw new Error("Cart context cannot be null");
@@ -40,6 +39,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
         description: z.string(),
         price: z.number(),
         imagePath: z.string(),
+        sellerId: z.string(),
       }),
     }),
   });
@@ -116,7 +116,8 @@ export default function SingleProductDetailsPage(): JSX.Element {
                     onClick={() => {
                       cartCtx.increaseProductQuanity(
                         router.query.productId as string,
-                        data?.data.product.price as number
+                        data?.data.product.price as number,
+                        data?.data.product.sellerId as string
                       );
                     }}
                   >

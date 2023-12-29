@@ -22,7 +22,7 @@ export default async function handler(
     try {
       const product = await Product.findOne({
         _id: req.query.productId,
-      }).select("name description price imagePath");
+      }).select("name description price imagePath sellerId");
       if (!product) {
         return res
           .status(404)

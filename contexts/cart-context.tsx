@@ -4,9 +4,14 @@ type CartItem = {
   productId: string;
   productQuantity: number;
   productPrice: number;
+  productSellerId: string;
 };
 interface CartContextType {
-  increaseProductQuanity: (productId: string, productPrice: number) => void;
+  increaseProductQuanity: (
+    productId: string,
+    productPrice: number,
+    productSellerId: string
+  ) => void;
   decreaseProductQuantity: (productId: string) => void;
   products: CartItem[];
   emptyCart: () => void;
@@ -31,7 +36,8 @@ export default function CartContextProvider({
    */
   function increaseProductQuanity(
     productId: string,
-    productPrice: number
+    productPrice: number,
+    productSellerId: string
   ): void {
     const product = products.find((element) => {
       return element.productId === productId;
@@ -44,6 +50,7 @@ export default function CartContextProvider({
         productId: productId,
         productQuantity: 1,
         productPrice: productPrice,
+        productSellerId: productSellerId,
       });
       setProducts(newProducts);
       return;

@@ -30,7 +30,6 @@ const ProductItem = ({
     queryKey: ["get-single-user-profile", sellerId],
     queryFn: () => makeGetRequest(`/api/user/profile/${sellerId}`),
   });
-  console.log(data);
   return (
     <>
       {isLoading ? (
