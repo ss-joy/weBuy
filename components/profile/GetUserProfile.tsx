@@ -12,6 +12,7 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
     queryKey: ["get-single-user-profile", userId],
     queryFn: () => makeGetRequest(`/api/user/profile/${userId}`),
   });
+
   if (error) {
     console.log(error);
     return <ErrorMsg />;
@@ -41,9 +42,13 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
           <span className="mr-2 ">name:</span>
           {isLoading ? "Loading..." : data?.data.user.name}
         </p>
-        <p className="text-gray-700 font-bold">
+        <p className="text-gray-700 font-bold mb-4">
           <span className="mr-2 text-gray-700">email:</span>
           {isLoading ? "loading..." : data?.data.user.email}
+        </p>
+        <p className="text-gray-700 font-bold mb-4">
+          <span className="mr-2 ">Id:</span>
+          {isLoading ? "Loading..." : data?.data.user._id}
         </p>
       </div>
     </div>
