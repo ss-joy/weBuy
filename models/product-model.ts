@@ -6,6 +6,7 @@ interface IProductSchema {
   imagePath: string;
   sellerName: string;
   sellerId: string;
+  sellCount: number;
 }
 const productSchema = new Schema<IProductSchema>({
   name: {
@@ -31,6 +32,10 @@ const productSchema = new Schema<IProductSchema>({
   imagePath: {
     type: String,
     required: true,
+  },
+  sellCount: {
+    type: Number,
+    default: 0,
   },
 });
 

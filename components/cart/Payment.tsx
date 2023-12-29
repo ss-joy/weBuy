@@ -42,17 +42,16 @@ const Payment = (): JSX.Element => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            userEmail: userSession.user?.email,
+            buyerEmail: userSession.user?.email,
             //@ts-ignore
-            userId: userSession.user!.user_id,
-            amount: calculateTotalPrice(),
+            buyerId: userSession.user!.user_id,
+            totalCost: calculateTotalPrice(),
             cartProductsDetails: cartCtx?.products,
           }),
         }
       );
 
       const pResponse = await response.json();
-      console.log(pResponse);
       if (pResponse.status === "success") {
         toast({
           title: "Transaction Successful!",
