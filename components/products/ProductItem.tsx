@@ -4,7 +4,14 @@ import Link from "next/link";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/lib/queryFunctions";
-import { ShoppingBasketIcon } from "lucide-react";
+import { CopyIcon, Share2Icon, ShoppingBasketIcon } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useToast } from "../ui/use-toast";
+import { Toaster } from "../ui/toaster";
 
 interface ProductItemProps {
   isLoading: boolean;
@@ -30,6 +37,17 @@ const ProductItem = ({
     queryKey: ["get-single-user-profile", sellerId],
     queryFn: () => makeGetRequest(`/api/user/profile/${sellerId}`),
   });
+  const { toast } = useToast();
+
+  async function copyText() {
+    await navigator.clipboard.writeText(
+      `http://localhost:3000/products/${_id}`
+    );
+    toast({
+      title: "Link copied!!!",
+      description: "Keep sharing!",
+    });
+  }
   return (
     <>
       {isLoading ? (
@@ -68,15 +86,28 @@ const ProductItem = ({
                   $ {price}
                 </span>
                 <Link
-                  className="bg-blue-500 flex transition-all text-white font-semibold p-5 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
+                  className="bg-blue-500 ml-auto mr-3 flex transition-all text-white font-semibold p-5 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
                   href={`/products/${_id}`}
                 >
                   <span className="mr-6">View Product</span>{" "}
                   <ShoppingBasketIcon />
                 </Link>
+                <Popover>
+                  <PopoverTrigger>
+                    <Share2Icon className="w-10 h-10 text-slate-500 rounded" />
+                  </PopoverTrigger>
+                  <PopoverContent
+                    onClick={copyText}
+                    className="flex items-center justify-between w-[140px] hover:border-blue-300 hover:border-2 "
+                  >
+                    Copy Link
+                    <CopyIcon />
+                  </PopoverContent>
+                </Popover>
               </section>
             </div>
           </li>
+          <Toaster />
         </>
       )}
     </>

@@ -65,7 +65,10 @@ export default function SingleProductDetailsPage(): JSX.Element {
   return (
     <>
       <div className="flex flex-col items-center px-2 sm:px-6 xl:flex-row xl:justify-evenly xl:items-start xl:mx-32 xl:mt-12 2xl:w-[1450px] 2xl:mx-auto 2xl:mt-16">
-        <section id="image" className="w-full mb-4 sm:w-5/6 lg:w-4/5 lg:m-0">
+        <section
+          id="image"
+          className="w-full mb-4 sm:w-5/6 lg:w-4/5 lg:m-0 lg:mb-6"
+        >
           <Image
             className="rounded mx-auto w-full max-w-2xl shadow shadow-slate-500 transition-all"
             alt="Product image"
