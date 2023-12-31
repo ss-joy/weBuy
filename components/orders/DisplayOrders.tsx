@@ -31,7 +31,7 @@ function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
         return (
           <div
             key={trx.trxId}
-            className="shadow shadow-slate-400 rounded mx-1 md:mx-10 md:p-2 lg:mx-20 my-4"
+            className="shadow shadow-slate-400 rounded mx-2 md:mx-10 md:p-2 lg:mx-40 my-4 lg:my-8"
           >
             <header className="p-3 flex justify-between">
               <div id="order-details ">
@@ -39,9 +39,9 @@ function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
                   Transaction Id
                 </h1>
                 <p className="text-slate-500 mb-2 w-64 overflow-hidden md:w-full">
-                  {trx.trxId}
+                  {trx.trxId} <span className="sm:hidden">...</span>
                 </p>
-                <p className="text-slate-500 mb-2">
+                <p className="text-slate-600 mb-2 underline ">
                   {new Date(trx.trxDate).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -52,14 +52,11 @@ function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
                     timeZone: "UTC",
                   })}
                 </p>
-                <p className="text-slate-500 mb-2 w-64 overflow-hidden md:w-full">
-                  {trx.totalCost}
-                </p>
               </div>
               <p
                 id="order-status"
                 className={cn(
-                  "rounded-md font-bold  px-2 py-0 flex justify-center items-center text-white text-xs md:text-sm lg:text-base h-[20px] text-center",
+                  "rounded-md font-bold px-3 py-3 flex justify-center items-center text-white text-xs sm:text-lg h-[20px] text-center",
                   {
                     "bg-orange-400": trx.trxStatus === "Pending",
                     "bg-green-400": trx.trxStatus === "Delivered",

@@ -33,7 +33,7 @@ export const SiteFeature = ({
         </p>
 
         <button
-          className="bg-slate-300 mt-4 text-slate-700 rounded px-2 font-bold"
+          className="bg-slate-300 text-slate-700 rounded px-2 font-bold mx-0"
           onClick={() => {
             setShowFullText((prev) => {
               return !prev;

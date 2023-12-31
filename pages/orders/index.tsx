@@ -37,7 +37,7 @@ export default function ShowOrders(): JSX.Element {
         <title>we Buy | Orders page</title>
         <meta name="description" content="" />
       </Head>
-      <h1 className="text-center text-3xl font-semibold text-slate-500">
+      <h1 className="text-center text-3xl font-semibold text-slate-500 mt-8 mb-8">
         List of all your orders.
       </h1>
       {(data?.data as FetchTransactionSchemaType[]).length === 0 ? (

@@ -4,6 +4,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
+import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 const Payment = (): JSX.Element => {
   const { toast } = useToast();
   const router = useRouter();
@@ -85,23 +86,23 @@ const Payment = (): JSX.Element => {
   }
   return (
     <div>
-      <section className="border-2 border-red-400 lg:h-52 m-4 lg:sticky lg:top-1 rounded">
-        <p className="text-center font-bold text-blue-500">
+      <section className="border border-slate-400 lg:h-56 m-4 lg:sticky lg:top-1 rounded p-4">
+        <p className="bg-slate-600 text-white font-bold text-3xl mb-2 flex items-center rounded p-2">
+          Pay with we bank <CreditCardIcon className="ml-2 md:ml-5" />
+        </p>
+        <p className="font-bold text-gray-500 mb-4">
           Remember you have to sign up to we bank if you want to purchase..
         </p>
-        <p className="text-orange-600 font-bold text-3xl text-center mb-2 lg:p-4">
-          Grand Total
-        </p>
-        <p className="text-white bg-orange-600 text-3xl text-center font-bold">
+        <p className="text-slate-600  text-3xl font-bold mb-4">
           {calculateTotalPrice()} $
         </p>
         <p>
           <a
-            className="text-center mx-auto block text-blue-400 font-bold"
+            className="text-center mx-auto  text-blue-400 font-bold flex items-center "
             href="https://we-bank.vercel.app/"
             target="_blank"
           >
-            go to we Bank
+            visit we Bank <ExternalLinkIcon className="ml-2 md:ml-5" />
           </a>
         </p>
       </section>
@@ -111,7 +112,14 @@ const Payment = (): JSX.Element => {
           onClick={payWithBank}
           className="bg-green-600 disabled:bg-slate-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto mb-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
         >
-          {loading ? "Contacting Bank" : "Pay with weBank"}
+          {loading ? (
+            "Contacting Bank"
+          ) : (
+            <span className="inline-flex items-center">
+              Pay with weBank
+              <BanknoteIcon className="ml-4" />
+            </span>
+          )}
         </button>
       </section>
       <Toaster />

@@ -38,15 +38,13 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
         <p className="text-slate-500 mb-8">
           You can change your name, email ,profile image anytime..
         </p>
-        <p className="text-gray-700 font-bold mb-4">
-          <span className="mr-2 ">name:</span>
+        <p className="text-gray-600 font-bold mb-4">
           {isLoading ? "Loading..." : data?.data.user.name}
         </p>
-        <p className="text-gray-700 font-bold mb-4">
-          <span className="mr-2 text-gray-700">email:</span>
+        <p className="text-gray-600 font-bold mb-4">
           {isLoading ? "loading..." : data?.data.user.email}
         </p>
-        <p className="text-gray-700 font-bold mb-4">
+        <p className="text-gray-600 font-bold mb-4">
           <span className="mr-2 ">Id:</span>
           {isLoading ? "Loading..." : data?.data.user._id}
         </p>

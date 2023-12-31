@@ -64,10 +64,10 @@ export default function SingleProductDetailsPage(): JSX.Element {
 
   return (
     <>
-      <div className="flex flex-col items-center px-2 sm:px-6 xl:flex-row xl:justify-evenly xl:items-start xl:mx-32 xl:mt-12">
-        <section id="image" className="w-full mb-4 sm:w-5/6 lg:w-4/5">
+      <div className="flex flex-col items-center px-2 sm:px-6 xl:flex-row xl:justify-evenly xl:items-start xl:mx-32 xl:mt-12 2xl:w-[1450px] 2xl:mx-auto 2xl:mt-16">
+        <section id="image" className="w-full mb-4 sm:w-5/6 lg:w-4/5 lg:m-0">
           <Image
-            className="rounded mx-auto w-full max-w-2xl shadow-lg shadow-slate-500 transition-all"
+            className="rounded mx-auto w-full max-w-2xl shadow shadow-slate-500 transition-all"
             alt="Product image"
             src={data?.data.product.imagePath as string}
             width={700}
@@ -76,16 +76,16 @@ export default function SingleProductDetailsPage(): JSX.Element {
         </section>
         <section
           id="product-details"
-          className="shadow-md shadow-red-400 sm:w-5/6 lg:w-4/5 lg:p-4 rounded-md max-w-2xl p-2"
+          className="shadow-md px-2 pt-0 mt-0 shadow-slates-400 sm:w-5/6 lg:w-4/5 lg:mx-6 lg:p-4 lg:pt-0 rounded-md max-w-2xl"
         >
           <div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-600">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-500">
               {data?.data.product.name}
             </h2>
-            <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-white text-2xl bg-orange-400">
+            <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-2xl lg:text-3xl text-orange-400">
               $ {data?.data.product.price}
             </div>
-            <p className="my-12 text-lg">
+            <p className="my-5 text-lg">
               {showFullText
                 ? data?.data.product.description
                 : cutOutFirst100Words(data!.data.product.description)}
@@ -95,7 +95,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
                     return !prev;
                   });
                 }}
-                className="mx-4 bg-slate-300 rounded px-2 font-bold"
+                className="bg-slate-300 rounded text-slate-700 px-2 font-bold"
               >
                 {showFullText ? "Show less" : "Show more"}
               </button>
@@ -112,7 +112,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
                   className="mx-8 flex justify-between items-center"
                 >
                   <button
-                    className="bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl"
+                    className="bg-orange-300 transition-all p-4 rounded w-16 text-white font-bold text-3xl hover:text-orange-300 hover:bg-white shadow shadow-orange-300"
                     onClick={() => {
                       cartCtx.increaseProductQuanity(
                         router.query.productId as string,
@@ -131,7 +131,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
                     </p>
                   </span>
                   <button
-                    className={`bg-orange-300 p-4 rounded w-16 text-white font-bold text-3xl disabled:bg-slate-500`}
+                    className={`bg-orange-300 transition-all p-4 rounded w-16 text-white font-bold text-3xl hover:text-orange-300 hover:bg-white shadow shadow-orange-300 disabled:bg-slate-500 disabled:cursor-not-allowed`}
                     disabled={!findSingleProductQuantity()}
                     onClick={() => {
                       cartCtx.decreaseProductQuantity(

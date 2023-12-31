@@ -1,3 +1,5 @@
+import React, { useMemo } from "react";
+import { useTable } from "react-table";
 import {
   Table,
   TableBody,
@@ -9,49 +11,40 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExternalLinkIcon } from "lucide-react";
-import Link from "next/link";
-import React, { useMemo } from "react";
-import { useTable } from "react-table";
-import ProductImage from "../cart/ProductImage";
-const COLUMNS = [
-  {
-    Header: "Product Id",
-    Footer: "Product Id",
-    accessor: "productId",
-  },
-  {
-    Header: "Product Price",
-    Footer: "Product Price",
-    accessor: "productPrice",
-  },
-  {
-    Header: "Product Quantity",
-    Footer: "Product Quantity",
-    accessor: "productQuantity",
-  },
-];
-type OrderItem = {
+import ProductImage from "@/components/cart/ProductImage";
+type Product = {
   productId: string;
   productQuantity: number;
   productPrice: number;
-  _id: string;
+  productSellerId: string;
 };
-type OrderTableProps = {
-  orderItem: OrderItem[];
+type CartDetailsTableProps = {
+  products: Product[];
 };
-function calulcateTotalPrice(orderItem: OrderItem[]): number {
-  const totalPrice = orderItem.reduce((prev, curr) => {
-    return prev + curr.productQuantity * curr.productPrice;
-  }, 0);
-  console.log(orderItem);
-  return totalPrice;
-}
-function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
+const COLUMNS = [
+  {
+    Header: "Name",
+    Footer: "Name",
+    accessor: "productId",
+  },
+  {
+    Header: "Quantity",
+    Footer: "Quantity",
+    accessor: "productQuantity",
+  },
+  {
+    Header: "Price(Each)",
+    Footer: "Price",
+    accessor: "productPrice",
+  },
+];
+
+function CartDetailsTable({ products }: CartDetailsTableProps): JSX.Element {
   const columns = useMemo(() => {
     return COLUMNS;
   }, []);
   const memoData = useMemo(() => {
-    return orderItem;
+    return products;
   }, []);
   const {
     getTableProps,
@@ -68,6 +61,13 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
     //rows or data
     data: memoData,
   });
+  function calulcateTotalPrice(products: Product[]): number {
+    const totalPrice = products.reduce((prev, curr) => {
+      return prev + curr.productQuantity * curr.productPrice;
+    }, 0);
+
+    return totalPrice;
+  }
   return (
     <div>
       <Table {...getTableProps()}>
@@ -99,7 +99,6 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
                 {row.cells.map((cell) => {
                   return (
                     <TableCell {...cell.getCellProps()}>
-                      {/* {cell.render("Cell")} */}
                       {cell.column.id === "productId" ? (
                         <ProductImage key={cell.value} productId={cell.value} />
                       ) : (
@@ -112,28 +111,13 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
             );
           })}
         </TableBody>
-        {/* <TableFooter>
-          {footerGroups.map((footerGroup) => {
-            return (
-              <TableRow {...footerGroup.getFooterGroupProps()}>
-                {footerGroup.headers.map((footer) => {
-                  return (
-                    <TableCell {...footer.getFooterProps()}>
-                      {footer.render("Footer")}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
-        </TableFooter> */}
         <TableFooter>
           <TableRow>
             <TableCell className="text-right xl:text-xl" colSpan={2}>
               Total
             </TableCell>
             <TableCell className="text-right xl:text-xl">
-              {calulcateTotalPrice(orderItem)}
+              {calulcateTotalPrice(products)}
             </TableCell>
           </TableRow>
         </TableFooter>
@@ -142,4 +126,4 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
   );
 }
 
-export default OrderTable;
+export default CartDetailsTable;

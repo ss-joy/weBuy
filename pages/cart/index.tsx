@@ -7,6 +7,7 @@ import { getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import Head from "next/head";
+import CartDetailsTable from "./CartDetailsTable";
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   // console.log(props);
@@ -22,22 +23,18 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
       </Head>
       <div
         id="full-cart-container"
-        className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mx-auto"
+        className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mt-12 mx-auto"
       >
         {cartCtx!.products.length > 0 ? (
           <>
-            <Payment />
             <ul>
-              {cartCtx?.products.map((ele) => {
-                return (
-                  <SingleCartProductDetails
-                    key={ele.productId}
-                    productQuantity={ele.productQuantity}
-                    productId={ele.productId}
-                  />
-                );
-              })}
+              {
+                <CartDetailsTable
+                  products={cartCtx?.products ? cartCtx?.products : []}
+                />
+              }
             </ul>
+            <Payment />
           </>
         ) : (
           <div className="flex flex-col mt-8">
