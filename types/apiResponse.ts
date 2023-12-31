@@ -25,3 +25,23 @@ export interface ApiResponse {
     errorBody?: any;
   };
 }
+type TransactionItem = {
+  productId: string;
+  productQuantity: number;
+  productPrice: number;
+  _id: string;
+};
+
+export interface ShowOrderDetailsApiResponse extends ApiResponse {
+  data: {
+    trxId: string;
+    totalCost: number;
+    buyerId: string;
+    buyerEmail: string;
+    trxDate: Date;
+    trxStatus: string;
+    _id: string;
+    transactionsItemsLists: TransactionItem[];
+    _v: 0;
+  }[];
+}

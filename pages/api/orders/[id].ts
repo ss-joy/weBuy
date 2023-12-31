@@ -24,7 +24,8 @@ export default async function handler(
       });
     }
     const response = await fetch(
-      `https://we-bank.vercel.app/api/orders/${req.query.id}`
+      // `https://we-bank.vercel.app/api/orders/${req.query.id}`
+      `http://localhost:3001/api/transactions/${req.query.id}`
     );
     if (!response.ok) {
       return res.status(500).json({

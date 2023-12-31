@@ -17,6 +17,9 @@ module.exports = {
     },
 
     extend: {
+      screen: {
+        xs: "480px",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -31,13 +34,6 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-    },
-    screens: {
-      xs: "480px",
-      md: "768px",
-      lg: "1024px",
-      xl: "1280px",
-      "2xl": "1536px",
     },
   },
   plugins: [require("tailwindcss-animate")],
