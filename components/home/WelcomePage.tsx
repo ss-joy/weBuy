@@ -1,14 +1,7 @@
 import React from "react";
 import Link from "next/link";
-
-import { Rubik } from "next/font/google";
 import { SiteFeature } from "./SiteFeature";
 
-const rubikFont = Rubik({
-  weight: "400",
-  style: "normal",
-  subsets: ["latin", "cyrillic"],
-});
 type SiteFeatures = {
   h2: string;
   description: string;
