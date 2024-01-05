@@ -24,7 +24,6 @@
     "@types/uuid": "^9.0.7",
     "axios": "^1.6.3",
     "bcrypt": "^5.1.1",
-    "chart.js": "^4.4.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
