@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import ErrorMsg from "../ui/ErrorMsg";
 import Loading from "../ui/Loading";
+import { FingerprintIcon, MailIcon, UserCircleIcon } from "lucide-react";
 type GetUserProfileProps = {
   userId: string | null;
 };
@@ -39,14 +40,17 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
         <p className="text-slate-500 mb-8">
           You can change your name, email ,profile image anytime..
         </p>
-        <p className="text-gray-600 font-bold mb-4">
+        <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap">
+          <UserCircleIcon className="mr-3" />
           {isLoading ? "Loading..." : data?.data.user.name}
         </p>
-        <p className="text-gray-600 font-bold mb-4">
+        <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap">
+          <MailIcon className="mr-3" />
           {isLoading ? "loading..." : data?.data.user.email}
         </p>
-        <p className="text-gray-600 font-bold mb-4">
-          <span className="mr-2 ">Id:</span>
+        <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap">
+          <span className="mr-2 break-words">Id:</span>
+          <FingerprintIcon className="mr-3" />
           {isLoading ? "Loading..." : data?.data.user._id}
         </p>
       </div>

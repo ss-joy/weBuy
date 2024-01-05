@@ -5,6 +5,7 @@ import connectToDB from "@/utils/database";
 import { hash } from "bcrypt";
 import { MongooseError } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
+import { z } from "zod";
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ApiResponse>
@@ -60,24 +61,44 @@ export default async function handler(
         message: "Something went wrong. Please try again!",
       });
     }
-    console.log(req.body);
     try {
-      const data = UserSignUpSchema.omit({
-        userEmail: true,
-        userConfirmPwd: true,
-      })
-        .passthrough()
-        .parse(req.body);
-      const hashedPwd = await hash(data.userPwd, 6);
+      const updateProfileSchema = z.object({
+        userName: z.string().optional(),
+        userImage: z.string().optional(),
+        userPwd: z.string().optional(),
+      });
+      const data = updateProfileSchema.parse(req.body);
+
+      const oldUSerData = await User.findById(req.query.userId);
+      if (!oldUSerData) {
+        return res.status(404).json({
+          status: "error",
+          message: "User not found",
+        });
+      }
+
+      let hashedPwd = "";
+      if (data.userPwd) {
+        hashedPwd = await hash(data.userPwd, 6);
+      }
+
       const resp = await User.updateOne(
         { _id: req.query.userId },
         {
-          name: data.userName,
-          password: hashedPwd,
-          profilePicture: data.userImage,
+          name: data.userName ? data.userName : oldUSerData.name,
+          password: data.userPwd ? hashedPwd : oldUSerData.password,
+          profilePicture: data.userImage
+            ? data.userImage
+            : oldUSerData.profilePicture,
         }
       );
-
+      if (!resp) {
+        return res.status(500).json({
+          status: "success",
+          message: "Something went wrong. Please try again!",
+          data: resp,
+        });
+      }
       return res.status(200).json({
         status: "success",
         message: "User updated successfully",

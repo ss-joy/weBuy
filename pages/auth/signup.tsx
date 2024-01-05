@@ -53,7 +53,7 @@ export default function SignUpPage(): JSX.Element {
       });
       setTimeout(() => {
         router.push("/auth/login");
-      }, 4000);
+      }, 1000);
     } else if (ans.status === "error") {
       toast({
         variant: "destructive",

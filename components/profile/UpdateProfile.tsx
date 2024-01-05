@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { makeGetRequest } from "@/lib/queryFunctions";
+import NoItemSelectedWarning from "./NoItemSelectedWarning";
+import { Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
 
 type UpdateProfileProps = {
   userId: string | null;
@@ -23,14 +25,15 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
     userImage: FileList;
   };
   const [imagePreview, setImagePreview] = useState<string | null>("");
+  const [noItemSelected, setNoItemSelected] = useState<boolean>(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const {
-    formState: { isSubmitting, errors },
+    formState: { errors },
     register,
     reset,
-    getValues,
+    resetField,
     handleSubmit,
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -73,15 +76,38 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
               description:
                 "You have been successfully changed your name and password....",
             });
+            return;
           } else if (response.data.status === "error") {
             toast({
               title: "Something went wrong",
               description: "please try again later",
             });
+            return;
           }
         } catch (error) {
           console.log(error);
           alert("error");
+          return;
+        }
+      } else {
+        const response = await axios.post(`/api/user/profile/${userId}`, {
+          userName: formData.userName,
+          userPwd: formData.userPwd,
+        });
+        console.log(response.data.status);
+        if (response.data.status === "success") {
+          toast({
+            title: "Information Updated Successful!",
+            description:
+              "You have been successfully changed your name and password....",
+          });
+          return;
+        } else if (response.data.status === "error") {
+          toast({
+            title: "Something went wrong",
+            description: "please try again later",
+          });
+          return;
         }
       }
     },
@@ -94,11 +120,23 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
     },
   });
   async function onSubmit(formData: FormData) {
+    console.log(formData);
+    if (!formData.userImage && !formData.userName && !formData.userPwd) {
+      setNoItemSelected(true);
+      setTimeout(() => {
+        setNoItemSelected(false);
+      }, 3000);
+      reset();
+      return;
+    }
     mutate(formData);
   }
   return (
     <>
-      <div className="flex items-center mt-8 mx-auto shadow-md shadow-black-200 p-6 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-[500px] sm:p-8 h-2/3 justify-start border-2 border-red-50 rounded-md">
+      <div
+        id="user-current-profile-info"
+        className="flex items-center mt-8 mx-auto shadow-md shadow-black-200 p-6 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-[500px] sm:p-8 h-2/3 justify-start border-2 border-red-50 rounded-md"
+      >
         <div>
           <Image
             className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
@@ -121,6 +159,8 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
           </p>
         </div>
       </div>
+      {noItemSelected ? <NoItemSelectedWarning /> : null}
+
       <form
         className="flex flex-col mt-8 mx-auto shadow-md shadow-black-200 p-6 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-[500px] sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded-md"
         onSubmit={handleSubmit(onSubmit)}
@@ -140,7 +180,6 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
           placeholder="Enter your new name"
           className={cn("form-input", "rounded-xl")}
           {...register("userName", {
-            required: { value: true, message: "Your name is required" },
             minLength: {
               value: 5,
               message: "Your name cant must be at least 5 characters",
@@ -151,17 +190,13 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
         />
 
         <label className="form-label" htmlFor="userPwd">
-          Choose new password*
+          Choose new password
         </label>
         <p className="text-red-700">{errors.userPwd?.message}</p>
         <input
           placeholder="Enter your new password"
           className={cn("form-input", "rounded-xl")}
           {...register("userPwd", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
             minLength: {
               value: 5,
               message: "Password must be greater than 5 characters",
@@ -171,30 +206,27 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
           type="text"
         />
         <p className="text-red-700">{errors.userImage?.message}</p>
+        <label className="form-label" htmlFor="userPwd">
+          Choose a profile image
+        </label>
         <Input
-          {...register("userImage", {
-            required: {
-              value: true,
-              message: "Please select an image for yourself",
-            },
-          })}
+          {...register("userImage")}
           className="my-4 border-2 border-blue-300 rounded p-2"
           onChange={handleFileChange}
           type="file"
         />
-        {/* <input
-          type="file"
-          {...register("userImage", {
-            required: {
-              value: true,
-              message: "Please select an image for yourself",
-            },
-          })}
-          className="my-4 border-2 border-blue-300 rounded p-2"
-          onChange={handleFileChange}
-        /> */}
+
         {imagePreview && (
-          <img className="w-[300px] rounded mb-6" src={imagePreview} />
+          <div className="border-red-600 relative border-2">
+            <img className="w-[300px] rounded mb-6" src={imagePreview} />
+            <Cross1Icon
+              onClick={() => {
+                resetField("userImage");
+                setImagePreview("");
+              }}
+              className="rounded-full bg-white absolute top-0 right-0 border-red-600 border-2 w-[30px] h-[30px]"
+            />
+          </div>
         )}
         <button
           type="submit"
