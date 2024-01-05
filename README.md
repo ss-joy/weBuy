@@ -57,19 +57,19 @@ The main objective of this project is to demonstrate transactions and communicat
   ![HomePage](/public/githubimages/homepage.png)
 
 - Add Product page
-  ![Add Product Page](/public/githubimages/addProduct.png)
+  ![Add Product Page](public/githubimages/addProduct.png)
 - Shopping Page
 
-  ![Add Product Page](/public/githubimages/shoppingPage.png)
+  ![Add Product Page](public/githubimages/shoppingPage.png)
 
 - Cart Page
-  ![Add Product Page](/public/githubimages/cartPage.png)
+  ![Add Product Page](public/githubimages/cartPage.png)
 
 - Orders Page
-  ![Add Product Page](/public/githubimages/ordersPage.png)
+  ![Add Product Page](public/githubimages/ordersPage.png)
 
-- Dashoard Page
-  ![Add Product Page](/public/githubimages/dashboard.png)
+- Dashboard Page
+  ![Add Product Page](public/githubimages/dashboard.png)
 
 ## Setup:
 
