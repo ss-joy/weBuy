@@ -1,16 +1,20 @@
 import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { z } from "zod";
 import axios from "axios";
 import Loading from "@/components/ui/Loading";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 type FormData = {
   description: string;
   price: number;
@@ -112,6 +116,16 @@ const AddProductPage = () => {
       }
     }
   }
+  /**
+   * redirect user to homepage
+   * after logging out
+   */
+  const router = useRouter();
+  const session = useSession();
+  if (!session.data) {
+    router.push("/");
+  }
+
   return (
     <div>
       <p className="mt-8 text-center font-sans font-semibold text-slate-500 text-2xl">
@@ -218,3 +232,21 @@ const AddProductPage = () => {
 };
 
 export default AddProductPage;
+export const getServerSideProps = (async (context) => {
+  const sessionFound = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  if (!sessionFound) {
+    return {
+      redirect: {
+        destination: "/helper/no-auth",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}) satisfies GetServerSideProps<{}>;

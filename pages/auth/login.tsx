@@ -53,8 +53,7 @@ export default function LoginPage(): JSX.Element {
       </h1>
       <form
         noValidate
-        // className="flex flex-col mt-8 mx-auto p-2 sm:p-8 md:w-1/3 h-2/3 justify-between border-2 border-red-50 rounded">
-        className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
+        className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 md:px-4 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded-md shadow-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <label className="form-label" htmlFor="userEmail">

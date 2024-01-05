@@ -59,7 +59,7 @@ const MainNavBar = (): JSX.Element => {
           {isAuthenticated && (
             <li className="nav-btn">
               <Link className="nav-btn-link" href={"/cart"}>
-                View Cart <ShoppingCartIcon className="ml-4" />f
+                View Cart <ShoppingCartIcon className="ml-4" />
               </Link>
             </li>
           )}

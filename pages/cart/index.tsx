@@ -1,19 +1,29 @@
 import { useContext } from "react";
 import { cartContext } from "@/contexts/cart-context";
 import Payment from "@/components/cart/Payment";
-import SingleCartProductDetails from "@/components/cart/SingleCartProductDetails";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { GetServerSideProps } from "next";
 import { authOptions } from "../api/auth/[...nextauth]";
 import Head from "next/head";
 import CartDetailsTable from "./CartDetailsTable";
+import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   // console.log(props);
   const cartCtx = useContext(cartContext);
   if (!cartContext) {
     throw new Error("cart context cannot be null");
+  }
+  /**
+   * redirect user to homepage
+   * after logging out
+   */
+  const router = useRouter();
+  const session = useSession();
+  if (!session.data) {
+    router.push("/");
   }
 
   return (

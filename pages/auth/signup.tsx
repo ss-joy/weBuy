@@ -70,6 +70,9 @@ export default function SignUpPage(): JSX.Element {
       <Head>
         <title>we Buy | Signup page</title>
       </Head>
+      <h1 className="mt-8 text-slate-500 text-center font-bold text-5xl">
+        Sign up here
+      </h1>
       <form
         className="flex flex-col mt-8 mx-auto p-2 w-11/12 md:w-10/12 lg:w-4/6 xl:w-3/6 2xl:w-2/5 sm:p-8 h-2/3 justify-between border-2 border-red-50 rounded"
         onSubmit={handleSubmit(onSubmit)}

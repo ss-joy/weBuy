@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import Head from "next/head";
@@ -9,6 +9,7 @@ import { makeGetRequest } from "@/lib/queryFunctions";
 import { FetchTransactionSchemaType } from "@/schemas/shopping-transaction-schema";
 import { ShowOrderDetailsApiResponse } from "@/types/apiResponse";
 import DisplayOrders from "@/components/orders/DisplayOrders";
+import { useRouter } from "next/router";
 
 export default function ShowOrders(): JSX.Element {
   const { data, isLoading, error } = useQuery<ShowOrderDetailsApiResponse>({
@@ -20,7 +21,6 @@ export default function ShowOrders(): JSX.Element {
       return makeGetRequest(`/api/orders/${userId}`);
     },
   });
-  console.log(data);
   if (isLoading) {
     return (
       <p className="font-bold text-2xl text-slate-500 mt-16 text-center mx-auto">
@@ -30,6 +30,15 @@ export default function ShowOrders(): JSX.Element {
   }
   if (error) {
     return <ErrorMsg />;
+  }
+  /**
+   * redirect user to homepage
+   * after logging out
+   */
+  const router = useRouter();
+  const session = useSession();
+  if (!session.data) {
+    router.push("/");
   }
   return (
     <>

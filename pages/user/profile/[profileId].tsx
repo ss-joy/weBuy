@@ -1,9 +1,13 @@
 import GetUserProfile from "@/components/profile/GetUserProfile";
 import React, { useEffect, useState } from "react";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import UpdateProfile from "@/components/profile/UpdateProfile";
+import Dashboard from "@/components/dashboard/Dashboard";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
 function UserProfilePage() {
   const [userId, setUserId] = useState<string | null>("");
   useEffect(() => {
@@ -16,16 +20,36 @@ function UserProfilePage() {
     }
     getUserId();
   }, []);
+  /**
+   * redirect user to homepage
+   * after logging out
+   */
+  const router = useRouter();
+  const session = useSession();
+  if (!session.data) {
+    router.push("/");
+  }
   return (
     <>
       <Tabs
         defaultValue="profile"
-        className="w-full md:w-[600px] lg:w-[800px] mx-auto"
+        //overflow-scroll is must for responsive design
+        // overflow-x-scroll md:overflow-visible
+        className="w-full md:w-[600px] lg:w-[800px] mx-auto mt-16 overflow-x-scroll md:overflow-visible"
       >
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="profile">Profile</TabsTrigger>
-          <TabsTrigger value="updateProfile">Update Profile</TabsTrigger>
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+        <TabsList
+          style={{ fontWeight: "bold" }}
+          className="grid w-full grid-cols-3 font-inter font-bold"
+        >
+          <TabsTrigger className="text-lg md:text-xl" value="profile">
+            Profile
+          </TabsTrigger>
+          <TabsTrigger className="text-lg md:text-xl" value="updateProfile">
+            Update Profile
+          </TabsTrigger>
+          <TabsTrigger className="text-lg md:text-xl" value="dashboard">
+            Dashboard
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="profile">
           <GetUserProfile userId={userId} />
@@ -33,10 +57,31 @@ function UserProfilePage() {
         <TabsContent value="updateProfile">
           <UpdateProfile userId={userId} />
         </TabsContent>
-        <TabsContent value="dashboard">Dashboard</TabsContent>
+        <TabsContent value="dashboard">
+          <Dashboard userId={userId} />
+        </TabsContent>
       </Tabs>
     </>
   );
 }
 
 export default UserProfilePage;
+
+export const getServerSideProps = (async (context) => {
+  const sessionFound = await getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+  if (!sessionFound) {
+    return {
+      redirect: {
+        destination: "/helper/no-auth",
+        permanent: false,
+      },
+    };
+  }
+  return {
+    props: {},
+  };
+}) satisfies GetServerSideProps<{}>;

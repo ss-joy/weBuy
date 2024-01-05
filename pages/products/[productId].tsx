@@ -9,6 +9,7 @@ import { z } from "zod";
 import { cutOutFirst100Words } from "@/lib/custom-utils";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/lib/queryFunctions";
+import ErrorMsg from "@/components/ui/ErrorMsg";
 
 export default function SingleProductDetailsPage(): JSX.Element {
   const { data: session, status } = useSession();
@@ -57,7 +58,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
     console.log(error);
     return (
       <p className="text-center bg-red-400 p-12 text-white font-bold text-5xl rounded-md shadow shadow-black my-16">
-        Sorry .An error happened.Please try again and come back later
+        <ErrorMsg />
       </p>
     );
   }
