@@ -36,12 +36,13 @@ const ProductItem = ({
   } = useQuery({
     queryKey: ["get-single-user-profile", sellerId],
     queryFn: () => makeGetRequest(`/api/user/profile/${sellerId}`),
+    enabled: sellerId ? true : false,
   });
   const { toast } = useToast();
 
   async function copyText() {
     await navigator.clipboard.writeText(
-      `http://localhost:3000/products/${_id}`
+      `https://we-buy-omega.vercel.app/products/${_id}`
     );
     toast({
       title: "Link copied!!!",

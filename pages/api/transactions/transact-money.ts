@@ -56,7 +56,7 @@ export default async function handler(
     let response;
     try {
       response = await axios.post(
-        "http://localhost:3001/api/transactions/transact-money",
+        "https://we-bank.vercel.app/api/transactions/transact-money",
         {
           buyerEmail: body.buyerEmail,
           buyerId: body.buyerId,

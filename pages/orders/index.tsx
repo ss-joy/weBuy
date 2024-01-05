@@ -10,6 +10,7 @@ import { FetchTransactionSchemaType } from "@/schemas/shopping-transaction-schem
 import { ShowOrderDetailsApiResponse } from "@/types/apiResponse";
 import DisplayOrders from "@/components/orders/DisplayOrders";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function ShowOrders(): JSX.Element {
   const { data, isLoading, error } = useQuery<ShowOrderDetailsApiResponse>({
@@ -31,15 +32,7 @@ export default function ShowOrders(): JSX.Element {
   if (error) {
     return <ErrorMsg />;
   }
-  /**
-   * redirect user to homepage
-   * after logging out
-   */
-  const router = useRouter();
-  const session = useSession();
-  if (!session.data) {
-    router.push("/");
-  }
+
   return (
     <>
       <Head>

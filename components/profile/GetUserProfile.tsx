@@ -11,6 +11,7 @@ function GetUserProfile({ userId }: GetUserProfileProps) {
   const { error, isLoading, data } = useQuery({
     queryKey: ["get-single-user-profile", userId],
     queryFn: () => makeGetRequest(`/api/user/profile/${userId}`),
+    enabled: userId ? true : false,
   });
 
   if (error) {

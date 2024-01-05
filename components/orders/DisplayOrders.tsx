@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { useTable } from "react-table";
 import OrderTable from "./OrderTable";
 type TransactionItem = {
   productId: string;
@@ -23,8 +22,6 @@ type DisplayTransactionsTableProps = {
   }[];
 };
 function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
-  console.log("tt", trxData);
-
   return (
     <>
       {trxData.map((trx) => {

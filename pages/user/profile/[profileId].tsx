@@ -20,15 +20,7 @@ function UserProfilePage() {
     }
     getUserId();
   }, []);
-  /**
-   * redirect user to homepage
-   * after logging out
-   */
-  const router = useRouter();
-  const session = useSession();
-  if (!session.data) {
-    router.push("/");
-  }
+
   return (
     <>
       <Tabs

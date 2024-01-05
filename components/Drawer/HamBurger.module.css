@@ -1,0 +1,30 @@
+.hamBurger {
+  /* border: 3px solid black; */
+  width: 68px;
+  height: 68px;
+  border-radius: 10px;
+  margin-right: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+  /* position: fixed; */
+  /* top: 10px; */
+  background-color: white;
+  /* right: 0; */
+  /* z-index: 200; */
+}
+.hamBurger hr {
+  background-color: black;
+  height: 5px;
+  width: 80%;
+  border-radius: 17px;
+  border: none;
+}
+@media only screen and (min-width: 1024px) {
+  .hamBurger {
+    display: none;
+  }
+}

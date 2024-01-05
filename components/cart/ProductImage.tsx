@@ -41,7 +41,7 @@ function ProductImage({ productId }: ProductImageProps) {
           <p>
             <Link
               className="flex items-center text-slate-600 hover:text-orange-400"
-              href={`http://localhost:3000/products/${productId}`}
+              href={`/products/${productId}`}
             >
               {data.data.product.name}
               <ExternalLinkIcon className="md:ml-2" />

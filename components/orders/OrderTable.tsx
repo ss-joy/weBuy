@@ -43,7 +43,6 @@ function calulcateTotalPrice(orderItem: OrderItem[]): number {
   const totalPrice = orderItem.reduce((prev, curr) => {
     return prev + curr.productQuantity * curr.productPrice;
   }, 0);
-  console.log(orderItem);
   return totalPrice;
 }
 function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
@@ -53,21 +52,15 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
   const memoData = useMemo(() => {
     return orderItem;
   }, []);
-  const {
-    getTableProps,
-    getTableBodyProps,
-    footerGroups,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    //columns
-    // @ts-ignore
-    columns: columns,
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      //columns
+      // @ts-ignore
+      columns: columns,
 
-    //rows or data
-    data: memoData,
-  });
+      //rows or data
+      data: memoData,
+    });
   return (
     <div>
       <Table {...getTableProps()}>

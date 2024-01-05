@@ -81,7 +81,10 @@ function CartDetailsTable({ products }: CartDetailsTableProps): JSX.Element {
               >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead {...header.getHeaderProps()}>
+                    <TableHead
+                      className="text-slate-700"
+                      {...header.getHeaderProps()}
+                    >
                       {header.render("Header")}
                     </TableHead>
                   );
