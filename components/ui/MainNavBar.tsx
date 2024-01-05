@@ -2,14 +2,16 @@ import React from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import HamBurger from "./animations/HamBurger";
 import Profile from "../profile/Profile";
 import {
+  KeyRoundIcon,
+  LockIcon,
   PackagePlusIcon,
   ShoppingBagIcon,
   ShoppingCartIcon,
   StoreIcon,
 } from "lucide-react";
+import HamburgerSlider from "../Drawer/HamburgerSlider";
 
 const MainNavBar = (): JSX.Element => {
   const { data: session, status } = useSession();
@@ -26,22 +28,15 @@ const MainNavBar = (): JSX.Element => {
         <ul className="flex justify-around items-center">
           {!isAuthenticated && (
             <li className="nav-btn">
-              <Link className="nav-btn-link" href={"/products"}>
-                View Products
-              </Link>
-            </li>
-          )}
-          {!isAuthenticated && (
-            <li className="nav-btn">
               <Link className="nav-btn-link" href={"/auth/login"}>
-                Login
+                Login <KeyRoundIcon className="ml-4" />
               </Link>
             </li>
           )}
           {!isAuthenticated && (
             <li className="nav-btn">
               <Link className="nav-btn-link" href={"/auth/signup"}>
-                SignUp
+                SignUp <LockIcon className="ml-4" />
               </Link>
             </li>
           )}
@@ -53,17 +48,18 @@ const MainNavBar = (): JSX.Element => {
               </Link>
             </li>
           )}
-          {router.pathname !== "/products" && (
+          {
             <li className="nav-btn">
               <Link className="nav-btn-link" href={"/products"}>
-                Shop Here <StoreIcon className="ml-4" />
+                {isAuthenticated ? " Shop Here" : "View Products"}
+                <StoreIcon className="ml-4" />
               </Link>
             </li>
-          )}
+          }
           {isAuthenticated && (
             <li className="nav-btn">
               <Link className="nav-btn-link" href={"/cart"}>
-                View Cart <ShoppingCartIcon className="ml-4" />
+                View Cart <ShoppingCartIcon className="ml-4" />f
               </Link>
             </li>
           )}
@@ -86,7 +82,7 @@ const MainNavBar = (): JSX.Element => {
           )}
         </ul>
       </nav>
-      <HamBurger />
+      <HamburgerSlider />
     </>
   );
 };

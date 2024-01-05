@@ -23,10 +23,10 @@ export const SiteFeature = ({
       } xl:w-[1200px] `}
     >
       <div className=" lg:w-1/2 xl:m-4">
-        <h2 className="text-3xl text-slate-600 font-semibold xl:text-4xl">
+        <h2 className="text-3xl text-slate-600 mb-4 font-semibold xl:text-4xl transition-all hover:underline hover:underline-offset-4">
           {features.h2}
         </h2>
-        <p className={"text-slate-700 font-light"}>
+        <p className={"text-slate-700 text-lg font-light"}>
           {showFullText
             ? features.description
             : cutOutFirst100Words(features.description)}
@@ -45,7 +45,7 @@ export const SiteFeature = ({
       </div>
       <div className="lg:w-1/2 xl:m-4">
         <Image
-          className="w-full rounded-md"
+          className="w-full rounded-md mt-4"
           src={features.src}
           alt={features.alt}
           width={700}

@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
 import { SiteFeature } from "./SiteFeature";
+import {
+  BookCheckIcon,
+  CreditCard,
+  LockIcon,
+  ShoppingCartIcon,
+} from "lucide-react";
 
 type SiteFeatures = {
   h2: string;
@@ -71,9 +77,43 @@ const WelcomePage = (): JSX.Element => {
         <span className="text-purple-600">we</span>
         <span className="font-bold text-fuchsia-400">Buy</span>
       </h1>
-      <button className="mx-auto block p-4 bg-orange-200 text-orange-800 font-extrabold my-28 mb-10 shadow-xl text-lg shadow-orange-400 rounded-xl transition-all hover:font-bold hover:shadow-2xl hover:shadow-orange-400 sm:text-3xl 2xl:mt-30 md:mb-36">
-        <Link href={"/products"}>Shop here &#8594;</Link>
+      <button className="mx-auto block p-4 bg-orange-200 text-orange-800 font-extrabold my-28 mb-10 shadow-xl text-lg shadow-orange-400 rounded-xl transition-all hover:font-bold hover:shadow-2xl hover:shadow-orange-400 sm:text-3xl 2xl:mt-30">
+        <Link href={"/products"} className="flex items-center">
+          Shop here <ShoppingCartIcon className="ml-4 animate-bounce" />
+        </Link>
       </button>
+
+      <section
+        id="bank-advertise"
+        className="p-3 mt-8 flex mx-auto flex-col items-center xs:p-6 md:p-16 md:pb-0 lg:flex-row xl:w-[1200px] "
+      >
+        <div className="bg-slate-100 rounded-md shadow-md mx-2 p-4 px-6 w-[374px] mb-4 sm:w-[500px] lg:h-[162px] hover:scale-105 transition-all">
+          <LockIcon size={30} className="animate-pulse" />
+          <p className="mt-4 text-xl">
+            Your transactions are secure. So you can rest assuerd.
+          </p>
+        </div>
+        <div className="bg-slate-100 rounded-md shadow-md mx-2 p-4 px-6 mb-4 w-[374px] sm:w-[500px] lg:h-[162px] hover:scale-105 transition-all">
+          <CreditCard size={30} className="animate-pulse" />
+          <p className="mt-4 text-xl">
+            Easily pay with{" "}
+            <Link
+              href={"https://we-bank.vercel.app/"}
+              target="_blank"
+              className="font-bold rounded-md text-green-600"
+            >
+              we bank
+            </Link>
+            . Get everything you want with click of a button.
+          </p>
+        </div>
+        <div className="bg-slate-100 rounded-md shadow-md mx-2 p-4 px-6 mb-4 w-[374px] sm:w-[500px] lg:h-[162px] hover:scale-105 transition-all">
+          <BookCheckIcon size={30} className="animate-pulse" />
+          <p className="mt-4 text-xl">
+            Trusted by millions of users. So you are in the right hands
+          </p>
+        </div>
+      </section>
       {siteFeatures.map((e, id) => {
         return <SiteFeature features={e} id={id} key={id} />;
       })}
