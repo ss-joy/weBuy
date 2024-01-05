@@ -76,7 +76,7 @@ function BarChartGraph({ data, isLoading, error }: BarChartProps) {
   return (
     <div
       id="graph-parent"
-      className="h-[100vh] pt-20 md:w-[1024px] lg:-[1500px]"
+      className="h-[100vh] w-[300px] pt-20 md:w-[1024px] lg:-[1500px]"
     >
       <ResponsiveContainer width={"100%"} height={"100%"}>
         <BarChart height={500} data={barChartArray}>

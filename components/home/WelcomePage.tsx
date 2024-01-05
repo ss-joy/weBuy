@@ -48,7 +48,7 @@ const siteFeatures: SiteFeatures = [
     affordability meets excellence, making it easy for you to enjoy a
     satisfying and cost-effective shopping experience.`,
     src: "/ui-images/walking.gif",
-    alt: "walking girl image",
+    alt: "walking man image",
   },
   {
     h2: " Many products from trusted brands",
@@ -67,7 +67,7 @@ const siteFeatures: SiteFeatures = [
     experience and explore a world of quality with our curated
     collection of trusted brands.`,
     src: "/ui-images/trust.jpg",
-    alt: "walking girl image",
+    alt: "payment image",
   },
 ];
 const WelcomePage = (): JSX.Element => {
@@ -87,7 +87,7 @@ const WelcomePage = (): JSX.Element => {
         id="bank-advertise"
         className="p-3 mt-8 flex mx-auto flex-col items-center xs:p-6 md:p-16 md:pb-0 lg:flex-row xl:w-[1200px] "
       >
-        <div className="bg-slate-100 rounded-md shadow-md mx-2 p-4 px-6 w-[374px] mb-4 sm:w-[500px] lg:h-[162px] hover:scale-105 transition-all">
+        <div className="bg-slate-100 rounded-md shadow-md mx-5 p-4 px-6 w-[370px] mb-4 sm:w-[500px] lg:h-[162px] hover:scale-105 transition-all">
           <LockIcon size={30} className="animate-pulse" />
           <p className="mt-4 text-xl">
             Your transactions are secure. So you can rest assuerd.

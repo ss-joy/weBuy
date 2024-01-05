@@ -18,7 +18,7 @@ export const SiteFeature = ({
 
   return (
     <section
-      className={`p-3 mt-8 flex mx-auto flex-col xs:p-6 md:p-16 ${
+      className={`p-3 mt-8 px-4 flex mx-auto flex-col xs:p-6 md:p-16 ${
         id % 2 == 0 ? "lg:flex-row" : "lg:flex-row-reverse"
       } xl:w-[1200px] `}
     >

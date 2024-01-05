@@ -69,23 +69,31 @@ function PieChartGraph({ data, error, isLoading }: PieChartProps) {
     );
   }
   return (
-    <PieChart width={500} height={500}>
-      <Tooltip />
-      <Pie
-        data={data}
-        cx="50%"
-        cy="50%"
-        labelLine={false}
-        label={renderCustomizedLabel}
-        outerRadius={180}
-        fill="#8884d8"
-        dataKey="sellCount"
-      >
-        {data.map((entry, index) => (
-          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-        ))}
-      </Pie>
-    </PieChart>
+    <ResponsiveContainer
+      width={370}
+      height={370}
+      style={{
+        margin: "15px auto",
+      }}
+    >
+      <PieChart width={500} height={500}>
+        <Tooltip />
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          label={renderCustomizedLabel}
+          outerRadius={180}
+          fill="#8884d8"
+          dataKey="sellCount"
+        >
+          {data.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+      </PieChart>
+    </ResponsiveContainer>
   );
 }
 

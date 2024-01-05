@@ -33,13 +33,16 @@ function UserProfilePage() {
           style={{ fontWeight: "bold" }}
           className="grid w-full grid-cols-3 font-inter font-bold"
         >
-          <TabsTrigger className="text-lg md:text-xl" value="profile">
+          <TabsTrigger className="text-lg md:text-xl py-0" value="profile">
             Profile
           </TabsTrigger>
-          <TabsTrigger className="text-lg md:text-xl" value="updateProfile">
+          <TabsTrigger
+            className="text-lg md:text-xl py-0"
+            value="updateProfile"
+          >
             Update Profile
           </TabsTrigger>
-          <TabsTrigger className="text-lg md:text-xl" value="dashboard">
+          <TabsTrigger className="text-lg md:text-xl py-0" value="dashboard">
             Dashboard
           </TabsTrigger>
         </TabsList>

@@ -29,7 +29,7 @@ function SalesAndRevenue({ isLoading, error, data }: SalesAndRevenueProps) {
     <div>
       <div
         id="sales"
-        className="shadow-md shadow-slate-400 w-[400px] rounded-md px-6 py-4 mb-8"
+        className="shadow-md shadow-slate-400 w-[360px] mx-auto rounded-md px-6 py-4 mb-8"
       >
         <h2 className="flex items-center justify-between mb-2">
           <span className="text-xl font-medium">Sales</span>
