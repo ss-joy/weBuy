@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from "react";
 import {
+  AppleIcon,
   ArmchairIcon,
   BookIcon,
   CatIcon,
@@ -7,6 +8,7 @@ import {
   GamepadIcon,
   LaptopIcon,
   Music2Icon,
+  PocketKnifeIcon,
   ShirtIcon,
 } from "lucide-react";
 import ListIem from "./ListItem";
@@ -43,6 +45,8 @@ export const categories = [
     categoryId: "Pets",
     categoryIcon: <CatIcon />,
   },
+  { categoryId: "Food", categoryIcon: <AppleIcon /> },
+  { categoryId: "Gadget", categoryIcon: <PocketKnifeIcon /> },
 ] as const;
 function ProductsCategory({
   setProductCategory,
@@ -50,7 +54,7 @@ function ProductsCategory({
   setProductCategory: Dispatch<SetStateAction<string>>;
 }) {
   return (
-    <ul className="flex flex-wrap items-center mx-auto justify-evenly px-2 sm:mx-auto sm:px-32 md:px-12">
+    <ul className="flex overflow-x-scroll items-center mx-auto justify-evenly px-4 sm:mx-auto sm:px-32 md:px-12">
       {categories.map((category) => {
         return (
           <ListIem
@@ -58,13 +62,6 @@ function ProductsCategory({
             categoryId={category.categoryId}
             setProductCategory={setProductCategory}
           />
-          // <li
-          //   onClick={() => {
-          //     setProductCategory(category.categoryId);
-          //   }}
-          // >
-
-          // </li>
         );
       })}
     </ul>
