@@ -7,6 +7,7 @@ interface IProductSchema {
   sellerName: string;
   sellerId: string;
   sellCount: number;
+  productCategory: string;
 }
 const productSchema = new Schema<IProductSchema>({
   name: {
@@ -36,6 +37,10 @@ const productSchema = new Schema<IProductSchema>({
   sellCount: {
     type: Number,
     default: 0,
+  },
+  productCategory: {
+    type: String,
+    required: true,
   },
 });
 

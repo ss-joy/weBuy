@@ -14,19 +14,38 @@ export default async function handler(
       console.log("error connecting to databse from api folder");
       console.log(err);
     }
-    const products = await Product.find({}).exec();
-    if (products.length === 0) {
+    console.log(req.query);
+    if (!req.query.productCategory) {
+      const products = await Product.find({}).exec();
+      if (products.length === 0) {
+        return res.status(200).json({
+          message: "No products found yet",
+          status: "success",
+          data: [],
+        });
+      }
       return res.status(200).json({
-        message: "No products found yet",
+        message: "Showing list of products",
         status: "success",
-        data: [],
+        data: products,
+      });
+    } else if (req.query.productCategory) {
+      const products = await Product.find({
+        productCategory: req.query.productCategory,
+      }).exec();
+      if (products.length === 0) {
+        return res.status(200).json({
+          message: "No products found yet",
+          status: "success",
+          data: [],
+        });
+      }
+      return res.status(200).json({
+        message: "Showing list of products",
+        status: "success",
+        data: products,
       });
     }
-    return res.status(200).json({
-      message: "Showing list of products",
-      status: "success",
-      data: products,
-    });
   } else {
     return res.status(404).json({
       status: "error",

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { z } from "zod";
 import axios from "axios";
 import Loading from "@/components/ui/Loading";
@@ -14,18 +14,30 @@ import { Input } from "@/components/ui/input";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
-import { useRouter } from "next/router";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories } from "./ProductsCategory";
+
 type FormData = {
   description: string;
   price: number;
   name: string;
   productImage: FileList;
+  productCategory: string;
 };
 const FormDataSchema = z
   .object({
     description: z.string(),
     price: z.number().min(0, "price must be greater than 0"),
     name: z.string(),
+    productCategory: z.string(),
   })
   .passthrough();
 const AddProductPage = () => {
@@ -36,7 +48,6 @@ const AddProductPage = () => {
     handleSubmit,
     register,
     reset,
-    getValues,
     formState: { isSubmitting, errors },
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -56,6 +67,7 @@ const AddProductPage = () => {
 
   async function onSubmit(formData: FormData) {
     const data: FormData = {
+      productCategory: formData.productCategory,
       name: formData.name,
       description: formData.description,
       price: Number(formData.price),
@@ -73,6 +85,7 @@ const AddProductPage = () => {
       });
       return;
     }
+    console.log(data);
     console.log(data.productImage[0]);
     if (data.productImage[0]) {
       try {
@@ -91,6 +104,7 @@ const AddProductPage = () => {
           sellerName: session?.user?.name,
           //@ts-ignore
           sellerId: session?.user.user_id,
+          productCategory: data.productCategory,
         });
         console.log(response);
         if (response.data.status === "success") {
@@ -115,15 +129,6 @@ const AddProductPage = () => {
         alert("error");
       }
     }
-  }
-  /**
-   * redirect user to homepage
-   * after logging out
-   */
-  const router = useRouter();
-  const session = useSession();
-  if (!session.data) {
-    router.push("/");
   }
 
   return (
@@ -173,6 +178,26 @@ const AddProductPage = () => {
           type="number"
           id="productPrice"
         />
+        <p className="text-red-700">{errors.productCategory?.message}</p>
+
+        <select
+          className={cn("form-label", "px-3 py-3 bg-blue-100/75 rounded")}
+          {...register("productCategory", {
+            required: {
+              value: true,
+              message: "you must pick a category for your product",
+            },
+          })}
+        >
+          <option value="">Select a category</option>
+          {categories.map((category) => {
+            return (
+              <option key={category.categoryId} value={category.categoryId}>
+                {category.categoryId}
+              </option>
+            );
+          })}
+        </select>
         <label className="form-label" htmlFor="productDescription">
           Product Description
         </label>

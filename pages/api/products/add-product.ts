@@ -41,6 +41,7 @@ export default async function handler(
       imagePath: product.imagePath,
       sellerName: product.sellerName,
       sellerId: product.sellerId,
+      productCategory: product.productCategory,
     });
     if (!dbResp) {
       return res.status(500).json({
