@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
-import { categories } from "./ProductsCategory";
+import { categories } from "../../components/products/ProductsCategory";
 
 type FormData = {
   description: string;

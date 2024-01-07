@@ -11,7 +11,7 @@ import {
   PocketKnifeIcon,
   ShirtIcon,
 } from "lucide-react";
-import ListIem from "./ListItem";
+import ListIem from "../../pages/products/ListItem";
 export const categories = [
   {
     categoryId: "Clothing",
@@ -48,19 +48,22 @@ export const categories = [
   { categoryId: "Food", categoryIcon: <AppleIcon /> },
   { categoryId: "Gadget", categoryIcon: <PocketKnifeIcon /> },
 ] as const;
+export type CategoriesType = (typeof categories)[number]["categoryId"] | "";
+
 function ProductsCategory({
-  setProductCategory,
+  updateCategory,
 }: {
-  setProductCategory: Dispatch<SetStateAction<string>>;
+  updateCategory: (x: CategoriesType) => void;
 }) {
   return (
     <ul className="flex overflow-x-scroll items-center mx-auto justify-evenly px-4 sm:mx-auto sm:px-32 md:px-12">
       {categories.map((category) => {
         return (
           <ListIem
+            key={category.categoryId}
             categoryIcon={category.categoryIcon}
             categoryId={category.categoryId}
-            setProductCategory={setProductCategory}
+            updateCategory={updateCategory}
           />
         );
       })}

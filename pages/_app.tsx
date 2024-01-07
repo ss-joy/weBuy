@@ -8,6 +8,7 @@ import CartContextProvider from "@/contexts/cart-context";
 import { Inter } from "next/font/google";
 import MetaData from "@/components/ui/MetaData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import ProductCategoryContextProvider from "@/contexts/category-filter-context";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -23,17 +24,19 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <CartContextProvider>
-          <MainLayout>
-            <Head>
-              <MetaData />
-            </Head>
-            <MainHeader />
-            <main className={interFont.className}>
-              <Component {...pageProps} />
-            </main>
-          </MainLayout>
-        </CartContextProvider>
+        <ProductCategoryContextProvider>
+          <CartContextProvider>
+            <MainLayout>
+              <Head>
+                <MetaData />
+              </Head>
+              <MainHeader />
+              <main className={interFont.className}>
+                <Component {...pageProps} />
+              </main>
+            </MainLayout>
+          </CartContextProvider>
+        </ProductCategoryContextProvider>
       </QueryClientProvider>
     </SessionProvider>
   );

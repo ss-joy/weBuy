@@ -1,6 +1,8 @@
 import React from "react";
 import ProductItem from "./ProductItem";
+import { sortStype } from "@/types/products-type";
 interface ProductItemProps {
+  sortBy: sortStype;
   isLoading: boolean;
   products: {
     _id: string;
@@ -10,9 +12,11 @@ interface ProductItemProps {
     imagePath: string;
     sellerId: string;
     sellerName: string;
+    sellCount: number;
   }[];
 }
 const ProductsList = ({
+  sortBy,
   products,
   isLoading,
 }: ProductItemProps): JSX.Element => {
@@ -23,9 +27,20 @@ const ProductsList = ({
       </p>
     );
   }
+  console.log(products);
+  let finalProducts = structuredClone(products);
+  if (sortBy === "priceLowToHigh") {
+    finalProducts.sort((a, b) => a.price - b.price);
+  } else if (sortBy === "priceHighToLow") {
+    finalProducts.sort((a, b) => b.price - a.price);
+  } else if (sortBy === "soldLeast") {
+    finalProducts.sort((a, b) => a.sellCount - b.sellCount);
+  } else if (sortBy === "soldMost") {
+    finalProducts.sort((a, b) => b.sellCount - a.sellCount);
+  }
   return (
     <ul className="mt-10 p-2 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly ">
-      {products.map((p, id) => {
+      {finalProducts.map((p, id) => {
         return (
           <ProductItem
             key={p._id ? p._id : id}
