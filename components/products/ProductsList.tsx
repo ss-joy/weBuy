@@ -13,6 +13,7 @@ interface ProductItemProps {
     sellerId: string;
     sellerName: string;
     sellCount: number;
+    productCategory: string;
   }[];
 }
 const ProductsList = ({
@@ -39,7 +40,7 @@ const ProductsList = ({
     finalProducts.sort((a, b) => b.sellCount - a.sellCount);
   }
   return (
-    <ul className="mt-10 p-2 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly ">
+    <ul className="mt-10 p-2 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly">
       {finalProducts.map((p, id) => {
         return (
           <ProductItem

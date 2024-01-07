@@ -4,7 +4,12 @@ import Link from "next/link";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/lib/queryFunctions";
-import { CopyIcon, Share2Icon, ShoppingBasketIcon } from "lucide-react";
+import {
+  CopyIcon,
+  Share2Icon,
+  ShoppingBagIcon,
+  ShoppingBasketIcon,
+} from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -23,10 +28,21 @@ interface ProductItemProps {
     imagePath: string;
     sellerId: string;
     sellerName: string;
+    productCategory: string;
+    sellCount: number;
   };
 }
 const ProductItem = ({
-  product: { sellerId, imagePath, name, price, _id, sellerName },
+  product: {
+    sellerId,
+    imagePath,
+    name,
+    price,
+    _id,
+    sellerName,
+    productCategory,
+    sellCount,
+  },
   isLoading,
 }: ProductItemProps): JSX.Element => {
   const {
@@ -55,47 +71,59 @@ const ProductItem = ({
         <ProductSkeleton />
       ) : (
         <>
-          <li className="shadow-lg max-w-lg mx-auto shadow-slate-700 rounded-md flex flex-col p-2 pb-4 lg:mx-4 lg:justify-evenly transition-all hover:shadow-slate-500 hover:shadow-2xl lg:p-4 my-5">
+          <li className="transition-all relative shadow-2xl shadow-slate-500 hover:shadow-md hover:shadow-slate-600 rounded mx-auto my-4 p-2 w-[99%] min-[521px]:w-[90%]  min-[521px]:h-auto md:w-[400px] pb-[56px]">
             <Image
-              className="rounded block mb-7 h-[480px] object-cover"
+              className="rounded block object-cover w-full h-[370px]"
               alt="Product image"
               src={imagePath}
               width={700}
               height={700}
             />
+            {/* <div className="mt-auto"> */}
+            <h2 className="text-2xl font-bold text-orange-600">{name}</h2>
+            <p className="mb-2 text-blue-500 font-bold">{productCategory}</p>
+            <p className="flex items-center">
+              <ShoppingBagIcon className="text-slate-500 mr-2" />
+              <span className="mr-1">{sellCount}</span>
+              other people purchased this
+            </p>
+            <p className="my-4 text-slate-600 font-bold flex items-center justify-start w-full">
+              <Image
+                className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
+                src={
+                  data?.data.user.profilePicture
+                    ? data?.data.user.profilePicture
+                    : "/ui-images/dummy-user.jpg"
+                }
+                width={40}
+                height={40}
+                alt="profile image of user"
+              />
+              <span className="ml-4">{sellerName}</span>
+            </p>
 
-            <div className="mt-auto">
-              <h2 className="text-2xl font-bold text-orange-600">{name}</h2>
-              {/* <p className="mb-2">rating,category</p> */}
-              <p className="my-4 text-slate-600 font-bold flex items-center justify-start w-full">
-                <Image
-                  className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
-                  src={
-                    data?.data.user.profilePicture
-                      ? data?.data.user.profilePicture
-                      : "/ui-images/dummy-user.jpg"
-                  }
-                  width={40}
-                  height={40}
-                  alt="profile image of user"
-                />
-                <span className="ml-4">{sellerName}</span>
-              </p>
-
-              <section className="flex items-center justify-between w-full mt-6">
-                <span className="p-3 rounded-md font-semibold text-white text-2xl bg-orange-400">
-                  $ {price}
-                </span>
+            <section
+              id="price-details"
+              className="absolute bottom-2 left-2 flex items-center justify-start w-[96%]"
+            >
+              <span className="p-3 rounded-md font-semibold text-white text-2xl bg-orange-400">
+                {price}$
+              </span>
+              <div
+                id="price-share-holder"
+                className="flex items-center ml-auto"
+              >
                 <Link
-                  className="bg-blue-500 ml-auto mr-3 flex transition-all text-white font-semibold p-5 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
+                  id="view-products-button"
+                  className="bg-blue-500 mr-1 flex items-center transition-all text-white font-semibold px-3 py-4 rounded hover:bg-white hover:text-blue-800 hover:font-bold hover:shadow hover:shadow-blue-400"
                   href={`/products/${_id}`}
                 >
-                  <span className="mr-6">View Product</span>{" "}
+                  <span className="">View Product</span>
                   <ShoppingBasketIcon />
                 </Link>
                 <Popover>
                   <PopoverTrigger>
-                    <Share2Icon className="w-10 h-10 text-slate-500 rounded" />
+                    <Share2Icon className="w-7 h-7 text-slate-500 rounded md:mx-4" />
                   </PopoverTrigger>
                   <PopoverContent
                     onClick={copyText}
@@ -105,8 +133,9 @@ const ProductItem = ({
                     <CopyIcon />
                   </PopoverContent>
                 </Popover>
-              </section>
-            </div>
+              </div>
+            </section>
+            {/* </div> */}
           </li>
           <Toaster />
         </>

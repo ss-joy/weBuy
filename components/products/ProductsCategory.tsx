@@ -56,7 +56,7 @@ function ProductsCategory({
   updateCategory: (x: CategoriesType) => void;
 }) {
   return (
-    <ul className="flex overflow-x-scroll items-center mx-auto justify-evenly px-4 sm:mx-auto sm:px-32 md:px-12">
+    <ul className="flex overflow-x-scroll items-center mx-auto justify-start sm:mx-auto">
       {categories.map((category) => {
         return (
           <ListIem
