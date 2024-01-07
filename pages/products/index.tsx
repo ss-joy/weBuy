@@ -63,9 +63,9 @@ export default function ProductsListPage(): JSX.Element {
                 onClick={() => {
                   setSortBy("");
                 }}
-                className="focus:text-orange-500 focus:font-bold"
+                className="focus:text-orange-500 focus:font-bold flex justify-between"
               >
-                Dont sort <XCircleIcon className="ml-4" />
+                Dont sort <XCircleIcon />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -75,19 +75,19 @@ export default function ProductsListPage(): JSX.Element {
                 onClick={() => {
                   setSortBy("priceHighToLow");
                 }}
-                className="focus:text-orange-500 focus:font-bold"
+                className="focus:text-orange-500 focus:font-bold flex justify-between"
               >
                 Price high to low
-                <ArrowDownNarrowWideIcon className="ml-4" />
+                <ArrowDownNarrowWideIcon />
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   setSortBy("priceLowToHigh");
                 }}
-                className="focus:text-orange-500 focus:font-bold"
+                className="focus:text-orange-500 focus:font-bold flex justify-between"
               >
                 Price low to high
-                <ArrowUpNarrowWideIcon className="ml-4" />
+                <ArrowUpNarrowWideIcon />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -96,19 +96,19 @@ export default function ProductsListPage(): JSX.Element {
                 onClick={() => {
                   setSortBy("soldMost");
                 }}
-                className="focus:text-orange-500 focus:font-bold"
+                className="focus:text-orange-500 focus:font-bold flex justify-between"
               >
                 Most sold first
-                <ThumbsUpIcon className="ml-4" />
+                <ThumbsUpIcon />
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
                   setSortBy("soldLeast");
                 }}
-                className="focus:text-orange-500 focus:font-bold"
+                className="focus:text-orange-500 focus:font-bold flex justify-between"
               >
                 Least sold first
-                <ThumbsDownIcon className="ml-4" />
+                <ThumbsDownIcon />
               </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>

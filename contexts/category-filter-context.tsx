@@ -18,7 +18,6 @@ export default function ProductCategoryContextProvider({
   children,
 }: ProductCategoryContextProviderProps) {
   const [productCategory, setProductCategory] = useState<CategoriesType>("");
-  console.log("context category", productCategory);
   function updateCategory(cat: CategoriesType) {
     setProductCategory((prev) => {
       if (cat === prev) {

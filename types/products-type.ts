@@ -12,3 +12,11 @@ export const productSchema = z.object({
 });
 
 export type productSchemaType = z.infer<typeof productSchema>;
+export type sortStype =
+  | "priceLowToHigh"
+  | "priceHighToLow"
+  | "soldMost"
+  | "soldLeast"
+  | "";
+
+export type OrdersSortStype = "priceLowToHigh" | "priceHighToLow" | "";

@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import OrderTable from "./OrderTable";
+import { OrdersSortStype } from "@/types/products-type";
 type TransactionItem = {
   productId: string;
   productQuantity: number;
@@ -9,6 +10,7 @@ type TransactionItem = {
 };
 
 type DisplayTransactionsTableProps = {
+  sortBy: OrdersSortStype;
   trxData: {
     trxId: string;
     totalCost: number;
@@ -21,10 +23,16 @@ type DisplayTransactionsTableProps = {
     _v: 0;
   }[];
 };
-function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
+function DisplayOrders({ trxData, sortBy }: DisplayTransactionsTableProps) {
+  let finalTrxData = structuredClone(trxData);
+  if (sortBy === "priceLowToHigh") {
+    finalTrxData.sort((a, b) => a.totalCost - b.totalCost);
+  } else if (sortBy === "priceHighToLow") {
+    finalTrxData.sort((a, b) => b.totalCost - a.totalCost);
+  }
   return (
     <>
-      {trxData.map((trx) => {
+      {finalTrxData.map((trx, id) => {
         return (
           <div
             key={trx.trxId}
@@ -33,7 +41,7 @@ function DisplayOrders({ trxData }: DisplayTransactionsTableProps) {
             <header className="p-3 flex justify-between">
               <div id="order-details ">
                 <h1 className="text-2xl text-slate-700 font-bold mb-2">
-                  Transaction Id
+                  Transaction #{id + 1}
                 </h1>
                 <p className="text-slate-500 mb-2 w-64 overflow-hidden md:w-full">
                   {trx.trxId} <span className="sm:hidden">...</span>

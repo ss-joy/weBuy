@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import {
   AppleIcon,
   ArmchairIcon,
@@ -11,7 +11,7 @@ import {
   PocketKnifeIcon,
   ShirtIcon,
 } from "lucide-react";
-import ListIem from "../../pages/products/ListItem";
+import ListIem from "./ListItem";
 export const categories = [
   {
     categoryId: "Clothing",
