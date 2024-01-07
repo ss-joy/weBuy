@@ -14,7 +14,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-
 function HamburgerSlider() {
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -43,7 +42,9 @@ function HamburgerSlider() {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Welcome to webuy</SheetTitle>
+            <SheetTitle className="text-slate-500 text-2xl pt-3">
+              Welcome to webuy
+            </SheetTitle>
           </SheetHeader>
           <nav className={""}>
             <ul className="flex flex-col items-end pt-20">
