@@ -15,6 +15,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { categories } from "../../components/products/ProductsCategory";
+import { Cross1Icon } from "@radix-ui/react-icons";
 
 type FormData = {
   description: string;
@@ -38,6 +39,7 @@ const AddProductPage = () => {
   const {
     handleSubmit,
     register,
+    resetField,
     reset,
     formState: { isSubmitting, errors },
   } = useForm<FormData>();
@@ -227,8 +229,18 @@ const AddProductPage = () => {
           className="my-4 border-2 border-blue-300 rounded p-2"
           onChange={handleFileChange}
         /> */}
+
         {imagePreview && (
-          <img className="w-[300px] rounded mb-6" src={imagePreview} />
+          <div className="relative border-2">
+            <img className="w-[300px] rounded mb-6" src={imagePreview} />
+            <Cross1Icon
+              onClick={() => {
+                resetField("productImage");
+                setImagePreview("");
+              }}
+              className="rounded-full bg-white absolute top-0 right-0 border-red-600 border-2 w-[30px] h-[30px]"
+            />
+          </div>
         )}
         <button
           type="submit"

@@ -217,7 +217,7 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
         />
 
         {imagePreview && (
-          <div className="border-red-600 relative border-2">
+          <div className="relative border-2">
             <img className="w-[300px] rounded mb-6" src={imagePreview} />
             <Cross1Icon
               onClick={() => {

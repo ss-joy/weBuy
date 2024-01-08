@@ -53,7 +53,7 @@ export default function ProductsListPage(): JSX.Element {
         <section>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex justify-between shadow-sm shadow-slate-500 w-[165px] hover:text-orange-500 mx-3 px-3 text-slate-600 rounded my-4 md:text-2xl lg:my-8">
+              <button className="flex justify-between shadow-sm shadow-slate-500 w-[205px] hover:text-orange-500 mx-3 px-3 text-slate-600 rounded my-4 md:text-2xl lg:my-8">
                 {sortBy ? sortBy : "sort by..."} <ArrowDownAZIcon />
               </button>
             </DropdownMenuTrigger>
