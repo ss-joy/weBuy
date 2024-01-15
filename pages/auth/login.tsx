@@ -1,21 +1,20 @@
-import { getSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import Head from "next/head";
 import Loading from "@/components/ui/Loading";
 import { cn } from "@/lib/utils";
 import FormErrorMsg from "@/components/form/FormErrorMsg";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
   const [hidePwd, setHidePwd] = useState<boolean>(true);
 
-  const { toast } = useToast();
   const {
     handleSubmit,
     register,
@@ -32,16 +31,15 @@ export default function LoginPage(): JSX.Element {
     });
 
     if (ans?.error && !ans.ok) {
-      toast({
-        variant: "destructive",
-        title: "Sign Up failed!",
-        description: ans.error || "Login failed. Try again..",
+      console.log(ans);
+      toast.warning("Sign Up failed!", {
+        description: "Login failed. Try again..",
       });
     } else if (!ans?.error && ans?.ok) {
-      toast({
-        title: "Login Successful!",
+      toast.success("Login Successful!", {
         description: "You will be shortly redirected...",
       });
+
       setTimeout(() => {
         router.push("/products");
       }, 1000);
@@ -126,7 +124,7 @@ export default function LoginPage(): JSX.Element {
           )}
         </button>
       </form>
-      <Toaster />
+      <Toaster richColors closeButton theme="light" />
     </>
   );
 }

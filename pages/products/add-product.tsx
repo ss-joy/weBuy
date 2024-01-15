@@ -3,8 +3,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { v4 } from "uuid";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
 import axios from "axios";
@@ -16,6 +14,7 @@ import { authOptions } from "../api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
 import { categories } from "../../components/products/ProductsCategory";
 import { Cross1Icon } from "@radix-ui/react-icons";
+import { Toaster, toast } from "sonner";
 
 type FormData = {
   description: string;
@@ -35,7 +34,6 @@ const FormDataSchema = z
 const AddProductPage = () => {
   const [imagePreview, setImagePreview] = useState<string | null>("");
 
-  const { toast } = useToast();
   const {
     handleSubmit,
     register,
@@ -71,9 +69,7 @@ const AddProductPage = () => {
       FormDataSchema.parse(data);
     } catch (error) {
       console.log(error);
-      toast({
-        variant: "destructive",
-        title: "Adding product failed",
+      toast.warning("Adding product failed", {
         description: "Invalid inputs. Check everything and try againxd",
       });
       return;
@@ -103,15 +99,12 @@ const AddProductPage = () => {
         if (response.data.status === "success") {
           reset();
           setImagePreview("");
-          toast({
-            title: "Product added Successfully!",
+          toast.success("Product added Successfully!", {
             description:
               "You have successfully added the product. Visit shop here page to view it...",
           });
         } else if (response.data.status === "error") {
-          toast({
-            variant: "destructive",
-            title: "Adding product failed",
+          toast.error("Adding product failed", {
             description:
               response.data.message ||
               "Something went wrong. Please check everything carefully and try again",
@@ -254,7 +247,7 @@ const AddProductPage = () => {
           )}
         </button>
       </form>
-      <Toaster />
+      <Toaster richColors theme="light" closeButton />
     </div>
   );
 };

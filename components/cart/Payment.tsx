@@ -1,12 +1,10 @@
 import { cartContext } from "@/contexts/cart-context";
 import React, { useContext, useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
+import { Toaster, toast } from "sonner";
 const Payment = (): JSX.Element => {
-  const { toast } = useToast();
   const router = useRouter();
   const cartCtx = useContext(cartContext);
 
@@ -24,11 +22,10 @@ const Payment = (): JSX.Element => {
     setIsloading(true);
     const userSession = await getSession();
     if (!userSession) {
-      toast({
-        variant: "destructive",
-        title: "You must log in to buy anything",
+      toast("You must log in to buy anything", {
         description: "Try again..",
       });
+
       setIsloading(false);
       return;
     }
@@ -54,10 +51,10 @@ const Payment = (): JSX.Element => {
 
       const pResponse = await response.json();
       if (pResponse.status === "success") {
-        toast({
-          title: "Transaction Successful!",
+        toast.success("Transaction Successful!", {
           description: "You will be shortly redirected...",
         });
+
         cartCtx?.emptyCart();
         setIsloading(false);
         setTimeout(() => {
@@ -66,19 +63,16 @@ const Payment = (): JSX.Element => {
         return;
       } else if (pResponse.status === "error") {
         setIsloading(false);
-        toast({
-          variant: "destructive",
-          title: "Transaction failed",
+        toast.warning("Transaction failed", {
           description: pResponse.message || "Try again..",
         });
+
         return;
       }
       setIsloading(false);
     } catch (error) {
       setIsloading(false);
-      toast({
-        variant: "destructive",
-        title: "Transaction failed",
+      toast.warning("Transaction failed", {
         description: "Try again..",
       });
       console.log(error);
@@ -122,7 +116,7 @@ const Payment = (): JSX.Element => {
           )}
         </button>
       </section>
-      <Toaster />
+      <Toaster richColors theme="light" closeButton />
     </div>
   );
 };

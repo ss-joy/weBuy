@@ -1,19 +1,16 @@
 import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
-import { Toaster } from "@/components/ui/toaster";
-import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 import { ApiResponse } from "@/types/apiResponse";
 import Head from "next/head";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import FormErrorMsg from "@/components/form/FormErrorMsg";
+import { Toaster, toast } from "sonner";
 export default function SignUpPage(): JSX.Element {
   const [hidePwd, setHidePwd] = useState<boolean>(true);
   const [hideConfirmPwd, setHideConfirmPwd] = useState<boolean>(true);
-
   const router = useRouter();
-  const { toast } = useToast();
   type FormData = {
     userName: string;
     userPwd: string;
@@ -45,18 +42,16 @@ export default function SignUpPage(): JSX.Element {
 
     if (ans.status === "success") {
       reset();
-      toast({
-        title: "Sign Up Successful!",
+      toast.success("Sign Up Successful!", {
         description:
           "You have been successfully signed up. You will be shortly taken to the login page...",
       });
+
       setTimeout(() => {
         router.push("/auth/login");
       }, 1000);
     } else if (ans.status === "error") {
-      toast({
-        variant: "destructive",
-        title: "Sign Up failed!",
+      toast.warning("Sign Up failed!", {
         description:
           ans.message ||
           "Something went wrong. Please check everything carefully and try again",
@@ -189,7 +184,7 @@ export default function SignUpPage(): JSX.Element {
           Sign Up
         </button>
       </form>
-      <Toaster />
+      <Toaster richColors closeButton theme="light" />
     </>
   );
 }

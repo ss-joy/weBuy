@@ -3,8 +3,6 @@ import { useForm } from "react-hook-form";
 import Loading from "../ui/Loading";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { useToast } from "../ui/use-toast";
-import { Toaster } from "../ui/toaster";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { v4 } from "uuid";
@@ -13,7 +11,8 @@ import Image from "next/image";
 import { Input } from "../ui/input";
 import { makeGetRequest } from "@/lib/queryFunctions";
 import NoItemSelectedWarning from "./NoItemSelectedWarning";
-import { Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { Toaster, toast } from "sonner";
 
 type UpdateProfileProps = {
   userId: string | null;
@@ -26,7 +25,6 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
   };
   const [imagePreview, setImagePreview] = useState<string | null>("");
   const [noItemSelected, setNoItemSelected] = useState<boolean>(false);
-  const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const {
@@ -71,17 +69,16 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
           });
           console.log(response.data.status);
           if (response.data.status === "success") {
-            toast({
-              title: "Information Updated Successful!",
-              description:
-                "You have been successfully changed your name and password....",
+            toast.success("Information Updated Successful!", {
+              description: "You have been successfully updated your info....",
             });
+
             return;
           } else if (response.data.status === "error") {
-            toast({
-              title: "Something went wrong",
+            toast.warning("Something went wrong", {
               description: "please try again later",
             });
+
             return;
           }
         } catch (error) {
@@ -96,15 +93,13 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
         });
         console.log(response.data.status);
         if (response.data.status === "success") {
-          toast({
-            title: "Information Updated Successful!",
-            description:
-              "You have been successfully changed your name and password....",
+          toast.success("Information Updated Successful!", {
+            description: "You have been successfully updated your info....",
           });
+
           return;
         } else if (response.data.status === "error") {
-          toast({
-            title: "Something went wrong",
+          toast.warning("Something went wrong", {
             description: "please try again later",
           });
           return;
@@ -240,7 +235,7 @@ function UpdateProfile({ userId }: UpdateProfileProps): JSX.Element {
           )}
         </button>
       </form>
-      <Toaster />
+      <Toaster richColors theme="light" closeButton />
     </>
   );
 }

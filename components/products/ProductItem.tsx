@@ -15,8 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useToast } from "../ui/use-toast";
-import { Toaster } from "../ui/toaster";
+import { Toaster, toast } from "sonner";
 
 interface ProductItemProps {
   isLoading: boolean;
@@ -54,14 +53,12 @@ const ProductItem = ({
     queryFn: () => makeGetRequest(`/api/user/profile/${sellerId}`),
     enabled: sellerId ? true : false,
   });
-  const { toast } = useToast();
 
   async function copyText() {
     await navigator.clipboard.writeText(
       `https://we-buy-omega.vercel.app/products/${_id}`
     );
-    toast({
-      title: "Link copied!!!",
+    toast.info("Link copied!!!", {
       description: "Keep sharing!",
     });
   }
@@ -135,9 +132,8 @@ const ProductItem = ({
                 </Popover>
               </div>
             </section>
-            {/* </div> */}
           </li>
-          <Toaster />
+          <Toaster richColors theme="light" closeButton />
         </>
       )}
     </>
