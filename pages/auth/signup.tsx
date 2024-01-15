@@ -5,7 +5,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/router";
 import { ApiResponse } from "@/types/apiResponse";
 import Head from "next/head";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import FormErrorMsg from "@/components/form/FormErrorMsg";
 export default function SignUpPage(): JSX.Element {
+  const [hidePwd, setHidePwd] = useState<boolean>(true);
+  const [hideConfirmPwd, setHideConfirmPwd] = useState<boolean>(true);
+
   const router = useRouter();
   const { toast } = useToast();
   type FormData = {
@@ -22,13 +28,6 @@ export default function SignUpPage(): JSX.Element {
     getValues,
     handleSubmit,
   } = useForm<FormData>();
-  //imported schema from zod resolves to-->
-  // type FormData = {
-  //   userName: string;
-  //   userPwd: string;
-  //   userConfirmPwd: string;
-  //   userEmail: string;
-  // };
 
   async function onSubmit(data: UserSignUpSchemaType) {
     const response = await fetch("/api/auth/signup", {
@@ -81,7 +80,8 @@ export default function SignUpPage(): JSX.Element {
         <label className="form-label" htmlFor="userName">
           Your name*
         </label>
-        <p className="text-red-700">{errors.userName?.message}</p>
+        <FormErrorMsg erMsg={errors.userName?.message} />
+
         <input
           className="form-input"
           {...register("userName", {
@@ -97,7 +97,8 @@ export default function SignUpPage(): JSX.Element {
         <label className="form-label" htmlFor="userEmail">
           Your email*
         </label>
-        <p className="text-red-700">{errors.userEmail?.message}</p>
+        <FormErrorMsg erMsg={errors.userEmail?.message} />
+
         <input
           className="form-input"
           {...register("userEmail", {
@@ -116,45 +117,75 @@ export default function SignUpPage(): JSX.Element {
         <label className="form-label" htmlFor="userPwd">
           Choose a password*
         </label>
-        <p className="text-red-700">{errors.userPwd?.message}</p>
-        <input
-          className="form-input"
-          {...register("userPwd", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-            minLength: {
-              value: 5,
-              message: "Password must be greater than 5 characters",
-            },
-          })}
-          id="userPwd"
-          type="text"
-        />
+        <FormErrorMsg erMsg={errors.userPwd?.message} />
+
+        <div className="relative flex items-center mb-3">
+          <input
+            className="form-input m-0 w-full"
+            {...register("userPwd", {
+              required: {
+                value: true,
+                message: "Please enter your password",
+              },
+              minLength: {
+                value: 5,
+                message: "Password must be greater than 5 characters",
+              },
+            })}
+            id="userPwd"
+            type={hidePwd ? "password" : "text"}
+          />
+          <button
+            className="m-0 p-0 absolute right-4"
+            type="button"
+            onClick={() => {
+              setHidePwd((prev) => {
+                return !prev;
+              });
+            }}
+          >
+            {hidePwd ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
+        </div>
         <label className="form-label" htmlFor="userConfirmPwd">
           Confirm your password*
         </label>
-        <p className="text-red-700">{errors.userConfirmPwd?.message}</p>
-        <input
-          className="form-input"
-          {...register("userConfirmPwd", {
-            required: {
-              value: true,
-              message: "Please match your passwords",
-            },
-            validate: (fieldValue) => {
-              if (getValues("userPwd") === fieldValue) {
-                return true;
-              }
-              return "Passwords must match";
-            },
-          })}
-          id="userConfirmPwd"
-          type="text"
-        />
+        <FormErrorMsg erMsg={errors.userConfirmPwd?.message} />
+        <div className="relative flex items-center">
+          <input
+            className="form-input m-0 w-full"
+            {...register("userConfirmPwd", {
+              required: {
+                value: true,
+                message: "Please match your passwords",
+              },
+              validate: (fieldValue) => {
+                if (getValues("userPwd") === fieldValue) {
+                  return true;
+                }
+                return "Passwords must match";
+              },
+            })}
+            id="userConfirmPwd"
+            type={hideConfirmPwd ? "password" : "text"}
+          />
+          <button
+            className="m-0 p-0 absolute right-4"
+            type="button"
+            onClick={() => {
+              setHideConfirmPwd((prev) => {
+                return !prev;
+              });
+            }}
+          >
+            {hideConfirmPwd ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
+        </div>
 
-        <button className="btn2 disabled:bg-gray-500" disabled={isSubmitting}>
+        <button
+          className="btn2 disabled:bg-gray-500 mt-4"
+          disabled={isSubmitting}
+        >
           Sign Up
         </button>
       </form>

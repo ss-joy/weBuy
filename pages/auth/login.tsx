@@ -7,9 +7,13 @@ import { Toaster } from "@/components/ui/toaster";
 import Head from "next/head";
 import Loading from "@/components/ui/Loading";
 import { cn } from "@/lib/utils";
+import FormErrorMsg from "@/components/form/FormErrorMsg";
+import { useState } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
+  const [hidePwd, setHidePwd] = useState<boolean>(true);
 
   const { toast } = useToast();
   const {
@@ -59,7 +63,7 @@ export default function LoginPage(): JSX.Element {
         <label className="form-label" htmlFor="userEmail">
           Enter email
         </label>
-        <p className="text-red-700">{errors.userEmail?.message}</p>
+        <FormErrorMsg erMsg={errors.userEmail?.message} />
         <input
           {...register(
             "userEmail",
@@ -79,26 +83,39 @@ export default function LoginPage(): JSX.Element {
         <label className="form-label" htmlFor="userPwd">
           Enter password
         </label>
-        <p className="text-red-700">{errors.userPwd?.message}</p>
-        <input
-          {...register("userPwd", {
-            required: {
-              value: true,
-              message: "Please enter your password",
-            },
-            minLength: {
-              value: 5,
-              message: "Password must be greater than 5 characters",
-            },
-          })}
-          id="userPwd"
-          className="form-input"
-          type="password"
-        />
+        <FormErrorMsg erMsg={errors.userPwd?.message} />
+        <div className="relative flex items-center">
+          <input
+            {...register("userPwd", {
+              required: {
+                value: true,
+                message: "Please enter your password",
+              },
+              minLength: {
+                value: 5,
+                message: "Password must be greater than 5 characters",
+              },
+            })}
+            id="userPwd"
+            className="form-input m-0 w-full"
+            type={hidePwd ? "password" : "text"}
+          />
+          <button
+            className="m-0 p-0 absolute right-4"
+            type="button"
+            onClick={() => {
+              setHidePwd((prev) => {
+                return !prev;
+              });
+            }}
+          >
+            {hidePwd ? <EyeOffIcon /> : <EyeIcon />}
+          </button>
+        </div>
         <button
           type="submit"
           disabled={isSubmitting}
-          className={cn("btn2", {
+          className={cn("btn2 mt-4", {
             "py-0": isSubmitting,
           })}
         >
