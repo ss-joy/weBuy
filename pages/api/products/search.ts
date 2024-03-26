@@ -14,7 +14,7 @@ export default async function handler(
       console.log("error connecting to databse from api folder");
       console.log(err);
     }
-    console.log(req.query.productName);
+    console.log(String(req.query.productName).replace(/\n|\r/g, ""));
     if (req.query) {
       if (!req.query.productName) {
         res.status(500).json({
