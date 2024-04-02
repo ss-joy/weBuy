@@ -43,15 +43,23 @@ const AddProductPage = () => {
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files![0];
-    console.log(e.target.files![0]);
+    
     if (file) {
       const reader = new FileReader();
+      /**
+      *onload is called when the file reader
+      *finishes loading a file.
+      */
       reader.onload = () => {
         if (typeof reader.result === "string") {
           setImagePreview(reader.result);
         }
       };
-
+      /**
+      *We gotta call this so that
+      *the file reader starts
+      *loading/reading the file
+      */
       reader.readAsDataURL(file);
     }
   }
