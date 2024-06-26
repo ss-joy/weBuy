@@ -1,4 +1,4 @@
-import { cutOutFirst100Words } from "@/lib/custom-utils";
+import { cutOutFirst100Words } from "@/lib";
 import Image from "next/image";
 import React, { useState } from "react";
 interface SiteFeatureProps {

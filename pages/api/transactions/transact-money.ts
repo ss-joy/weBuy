@@ -1,4 +1,4 @@
-import { incrementProductSellCOunt } from "@/lib/increase-product";
+import { incrementProductSellCOunt } from "@/lib";
 import {
   ShoppingTransactionSchemaType,
   shoppingTransactionSchema,

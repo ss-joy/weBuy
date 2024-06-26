@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { cartContext } from "@/contexts/cart-context";
 import { z } from "zod";
-import { cutOutFirst100Words } from "@/lib/custom-utils";
+import { cutOutFirst100Words } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/queries";
 import ErrorMsg from "@/components/ui/ErrorMsg";
