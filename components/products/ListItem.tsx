@@ -16,7 +16,7 @@ function ListIem({ categoryIcon, categoryId, updateCategory }: ListIemProps) {
         updateCategory(categoryId);
       }}
       className={cn(
-        "m-2 flex shadow p-2 shadow-slate-500 rounded-md hover:text-orange-500",
+        "m-2 flex shadow p-2 shadow-slate-500 rounded-md hover:text-orange-500 cursor-pointer select-none",
         {
           "bg-orange-500 text-white font-bold hover:text-white": isActive,
         }
