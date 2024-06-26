@@ -7,6 +7,7 @@ import { ApiResponse } from "@/types/apiResponse";
 import dbConnect from "@/utils/database";
 import axios, { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
+import { bankBaseUrl } from "@/config";
 
 export default async function handler(
   req: NextApiRequest,
@@ -37,9 +38,6 @@ export default async function handler(
     }
 
     // const response = await fetch(
-    //   // "https://we-bank.vercel.app/api/transactions/transact-money",
-    //   "http://localhost:3001/api/transactions/transact-money",
-
     //   {
     //     method: "POST",
     //     headers: {
@@ -56,7 +54,7 @@ export default async function handler(
     let response;
     try {
       response = await axios.post(
-        "https://we-bank.vercel.app/api/transactions/transact-money",
+        `${bankBaseUrl}/api/transactions/transact-money`,
         {
           buyerEmail: body.buyerEmail,
           buyerId: body.buyerId,

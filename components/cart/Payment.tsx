@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 import { Toaster, toast } from "sonner";
+import { bankBaseUrl } from "@/config";
 const Payment = (): JSX.Element => {
   const router = useRouter();
   const cartCtx = useContext(cartContext);
@@ -93,7 +94,7 @@ const Payment = (): JSX.Element => {
         <p>
           <a
             className="text-center mx-auto  text-blue-400 font-bold flex items-center "
-            href="https://we-bank.vercel.app/"
+            href={bankBaseUrl}
             target="_blank"
           >
             visit we Bank <ExternalLinkIcon className="ml-2 md:ml-5" />

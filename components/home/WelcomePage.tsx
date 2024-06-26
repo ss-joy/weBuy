@@ -7,6 +7,7 @@ import {
   LockIcon,
   ShoppingCartIcon,
 } from "lucide-react";
+import { bankBaseUrl } from "@/config";
 
 type SiteFeatures = {
   h2: string;
@@ -98,7 +99,7 @@ const WelcomePage = (): JSX.Element => {
           <p className="mt-4 text-xl">
             Easily pay with{" "}
             <Link
-              href={"https://we-bank.vercel.app/"}
+              href={bankBaseUrl}
               target="_blank"
               className="font-bold rounded-md text-green-600"
             >

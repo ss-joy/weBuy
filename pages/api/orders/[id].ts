@@ -1,3 +1,4 @@
+import { bankBaseUrl } from "@/config";
 import { ApiResponse } from "@/types/apiResponse";
 import connectToDB from "@/utils/database";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -24,8 +25,7 @@ export default async function handler(
       });
     }
     const response = await fetch(
-      // `https://we-bank.vercel.app/api/orders/${req.query.id}`
-      `https://we-bank.vercel.app/api/transactions/${req.query.id}`
+      `${bankBaseUrl}/api/transactions/${req.query.id}`
     );
     if (!response.ok) {
       return res.status(500).json({
