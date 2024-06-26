@@ -1,4 +1,4 @@
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";

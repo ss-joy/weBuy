@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import Head from "next/head";
 import { useQuery } from "@tanstack/react-query";
 import ErrorMsg from "@/components/ui/ErrorMsg";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import { FetchTransactionSchemaType } from "@/schemas/shopping-transaction-schema";
 import { ShowOrderDetailsApiResponse } from "@/types/apiResponse";
 import DisplayOrders from "@/components/orders/DisplayOrders";

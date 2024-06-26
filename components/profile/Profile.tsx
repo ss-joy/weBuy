@@ -14,7 +14,7 @@ import { LogOutIcon, User2Icon } from "lucide-react";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 type ProfileProps = {
   logout: () => void;
   userId: string;

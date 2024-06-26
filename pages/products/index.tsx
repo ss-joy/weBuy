@@ -2,7 +2,7 @@ import ProductsList from "@/components/products/ProductsList";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import ProductsCategory from "../../components/products/ProductsCategory";
 import { useContext, useState } from "react";
 import {

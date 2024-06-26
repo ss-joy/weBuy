@@ -3,8 +3,9 @@ import React from "react";
 import { z } from "zod";
 import ErrorMsg from "../ui/ErrorMsg";
 import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/lib/queryFunctions";
+
 import Loading from "../ui/Loading";
+import { makeGetRequest } from "@/queries";
 
 interface SingleCartProductDetailsProps {
   productQuantity: number;

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProductSkeleton } from "./ProductSkeleton";
 import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import {
   CopyIcon,
   Share2Icon,

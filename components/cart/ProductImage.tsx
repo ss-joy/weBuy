@@ -1,4 +1,4 @@
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLinkIcon, PackageSearch } from "lucide-react";
 import Image from "next/image";

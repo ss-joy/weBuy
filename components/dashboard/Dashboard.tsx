@@ -1,10 +1,10 @@
-import { makeGetRequest } from "@/lib/queryFunctions";
 import { useQuery } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import React from "react";
 import Loading from "../ui/Loading";
 import ErrorMsg from "../ui/ErrorMsg";
 import SalesAndRevenue from "./SalesAndRevenue";
+import { makeGetRequest } from "@/queries";
 const NoSSRBarChart = dynamic(() => import("../Charts/BarChart"), {
   ssr: false,
 });

@@ -8,7 +8,7 @@ import { cartContext } from "@/contexts/cart-context";
 import { z } from "zod";
 import { cutOutFirst100Words } from "@/lib/custom-utils";
 import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 
 export default function SingleProductDetailsPage(): JSX.Element {

@@ -9,7 +9,7 @@ import { v4 } from "uuid";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Input } from "../ui/input";
-import { makeGetRequest } from "@/lib/queryFunctions";
+import { makeGetRequest } from "@/queries";
 import NoItemSelectedWarning from "./NoItemSelectedWarning";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Toaster, toast } from "sonner";
