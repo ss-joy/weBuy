@@ -35,6 +35,6 @@ const cartSchema = new Schema<Icart>({
   product: [cartProductSchema],
 });
 
-const Cart = models.Cart || model<Icart>("Cart", cartSchema);
+const Cart = models?.Cart || model<Icart>("Cart", cartSchema);
 
 export default Cart;
