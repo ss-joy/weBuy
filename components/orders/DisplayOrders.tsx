@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import OrderTable from "./OrderTable";
 import { OrdersSortStype } from "@/types/products-type";
 type TransactionItem = {

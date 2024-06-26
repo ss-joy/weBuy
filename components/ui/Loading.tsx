@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./Loading.module.css";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 type LoadingProps = {
   className?: string;
 };

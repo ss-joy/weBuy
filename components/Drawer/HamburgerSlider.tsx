@@ -13,7 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 function HamburgerSlider() {
   const { data: session, status } = useSession();
   const router = useRouter();

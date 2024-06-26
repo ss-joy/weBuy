@@ -6,7 +6,7 @@ import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { v4 } from "uuid";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import Image from "next/image";
 import { Input } from "../ui/input";
 import { makeGetRequest } from "@/queries";

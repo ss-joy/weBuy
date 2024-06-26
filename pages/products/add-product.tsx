@@ -7,7 +7,7 @@ import { getSession } from "next-auth/react";
 import { z } from "zod";
 import axios from "axios";
 import Loading from "@/components/ui/Loading";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import { Input } from "@/components/ui/input";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
@@ -43,23 +43,23 @@ const AddProductPage = () => {
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files![0];
-    
+
     if (file) {
       const reader = new FileReader();
       /**
-      *onload is called when the file reader
-      *finishes loading a file.
-      */
+       *onload is called when the file reader
+       *finishes loading a file.
+       */
       reader.onload = () => {
         if (typeof reader.result === "string") {
           setImagePreview(reader.result);
         }
       };
       /**
-      *We gotta call this so that
-      *the file reader starts
-      *loading/reading the file
-      */
+       *We gotta call this so that
+       *the file reader starts
+       *loading/reading the file
+       */
       reader.readAsDataURL(file);
     }
   }

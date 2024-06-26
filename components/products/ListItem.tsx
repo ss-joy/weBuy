@@ -1,6 +1,6 @@
 import { CategoriesType } from "@/components/products/ProductsCategory";
 import { productCategoryContext } from "@/contexts/category-filter-context";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import React, { useContext } from "react";
 type ListIemProps = {
   categoryId: CategoriesType;

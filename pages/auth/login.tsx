@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";
 import Head from "next/head";
 import Loading from "@/components/ui/Loading";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 import FormErrorMsg from "@/components/form/FormErrorMsg";
 import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";

@@ -3,7 +3,7 @@ import { SearchIcon } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib";
 
 interface Product {
   _id: string;
@@ -146,7 +146,7 @@ export default SearchBox;
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 // import Link from "next/link";
-// import { cn } from "@/lib/utils";
+// import { cn } from "@/lib";
 // interface Product {
 //   _id: string;
 //   name: string;
