@@ -16,6 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Toaster, toast } from "sonner";
+import { ecomBaseUrl } from "@/config";
 
 interface ProductItemProps {
   isLoading: boolean;
@@ -55,9 +56,7 @@ const ProductItem = ({
   });
 
   async function copyText() {
-    await navigator.clipboard.writeText(
-      `https://we-buy-omega.vercel.app/products/${_id}`
-    );
+    await navigator.clipboard.writeText(`${ecomBaseUrl}/products/${_id}`);
     toast.info("Link copied!!!", {
       description: "Keep sharing!",
     });
