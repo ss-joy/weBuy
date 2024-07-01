@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import { makeGetRequest } from "@/queries";
 import { FetchTransactionSchemaType } from "@/schemas/shopping-transaction-schema";
-import { ShowOrderDetailsApiResponse } from "@/types/apiResponse";
+import { ApiResponse, OrderDetails } from "@/types/apiResponse";
 import DisplayOrders from "@/components/orders/DisplayOrders";
 import {
   ArrowDownAZIcon,
@@ -30,7 +30,7 @@ import { OrdersSortStype } from "@/types/products-type";
 export default function ShowOrders(): JSX.Element {
   const [sortBy, setSortBy] = useState<OrdersSortStype>("");
 
-  const { data, isLoading, error } = useQuery<ShowOrderDetailsApiResponse>({
+  const { data, isLoading, error } = useQuery<ApiResponse<OrderDetails[]>>({
     queryKey: ["get-all-orders"],
     queryFn: async () => {
       const userSession = await getSession();

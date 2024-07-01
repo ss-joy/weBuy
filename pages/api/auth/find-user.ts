@@ -1,7 +1,7 @@
 import connectToDB from "@/utils/database";
 import User from "@/models/user-model";
-import { NextApiRequest, NextApiResponse } from "next";
-import { ApiResponse } from "@/types/apiResponse";
+import type { NextApiRequest, NextApiResponse } from "next";
+import type { ApiResponse } from "@/types/apiResponse";
 
 export default async function handler(
   req: NextApiRequest,

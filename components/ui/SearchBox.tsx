@@ -27,11 +27,7 @@ function SearchBox() {
     };
   }, [input]);
 
-  interface SearchResult extends ApiResponse {
-    data: productSchemaType[];
-  }
-
-  const { data, isFetching } = useQuery<SearchResult>({
+  const { data, isFetching } = useQuery<ApiResponse<productSchemaType[]>>({
     queryKey: ["search-for-product", searchValue],
     queryFn: () =>
       makeGetRequest(`/api/products/search?productName=${searchValue}`),
@@ -74,7 +70,7 @@ function SearchBox() {
               "absolute z-50 top-[60px] left-0 shadow-lg shadow-slate-400 rounded-md bg-white border-2 border-blue-300 w-full"
             )}
           >
-            {data?.data.map((e, index) => (
+            {data?.data?.map((e, index) => (
               <div key={e._id} className="w-full">
                 <li
                   className={`shadow my-1 p-1 text-center w-full transition-all bg-white hover:bg-slate-300 text-slate-700 rounded hover:text-white hover:font-bold text-xl overflow-clip`}

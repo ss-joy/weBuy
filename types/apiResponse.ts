@@ -1,6 +1,6 @@
-export interface ApiResponse {
+export interface ApiResponse<TData = {}> {
   status: "success" | "error";
-  data?: unknown;
+  data?: TData;
   message:
     | "User created successfully"
     | "Some error happend. Please check details."
@@ -25,6 +25,7 @@ export interface ApiResponse {
     errorBody?: any;
   };
 }
+
 type TransactionItem = {
   productId: string;
   productQuantity: number;
@@ -32,16 +33,14 @@ type TransactionItem = {
   _id: string;
 };
 
-export interface ShowOrderDetailsApiResponse extends ApiResponse {
-  data: {
-    trxId: string;
-    totalCost: number;
-    buyerId: string;
-    buyerEmail: string;
-    trxDate: Date;
-    trxStatus: string;
-    _id: string;
-    transactionsItemsLists: TransactionItem[];
-    _v: 0;
-  }[];
-}
+export type OrderDetails = {
+  trxId: string;
+  totalCost: number;
+  buyerId: string;
+  buyerEmail: string;
+  trxDate: Date;
+  trxStatus: string;
+  _id: string;
+  transactionsItemsLists: TransactionItem[];
+  _v: 0;
+};
