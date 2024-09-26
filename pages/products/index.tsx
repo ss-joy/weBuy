@@ -23,18 +23,15 @@ import {
   XCircleIcon,
 } from "lucide-react";
 import { sortStype } from "@/types/products-type";
-import { productCategoryContext } from "@/contexts/category-filter-context";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 
 export default function ProductsListPage(): JSX.Element {
-  const { productCategory, updateCategory } = useContext(
-    productCategoryContext
-  );
+  const { category } = useAppSelector((state) => state.categoryFilter);
 
   const [sortBy, setSortBy] = useState<sortStype>("");
   const { error, data, isLoading } = useQuery({
-    queryKey: ["get-products-list", productCategory],
-    queryFn: () =>
-      makeGetRequest(`/api/products/?productCategory=${productCategory}`),
+    queryKey: ["get-products-list", category],
+    queryFn: () => makeGetRequest(`/api/products/?productCategory=${category}`),
   });
   if (error) {
     return <ErrorMsg />;
@@ -48,7 +45,7 @@ export default function ProductsListPage(): JSX.Element {
       </Head>
       <main className="mx-auto w-[90%] sm:w-[450px] md:w-[650px] lg:w-[80%] 2xl:w-[1400px] h-full">
         <section>
-          <ProductsCategory updateCategory={updateCategory} />
+          <ProductsCategory />
         </section>
         <section>
           <DropdownMenu>

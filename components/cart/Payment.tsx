@@ -1,18 +1,20 @@
-import { cartContext } from "@/contexts/cart-context";
 import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { bankBaseUrl } from "@/config";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { emptyCart } from "@/store/features/cart/cartSlice";
 const Payment = (): JSX.Element => {
   const router = useRouter();
-  const cartCtx = useContext(cartContext);
+  const { cartItems } = useAppSelector((state) => state.cart);
 
   const [loading, setIsloading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
   function calculateTotalPrice() {
     let sum = 0;
-    cartCtx?.products.map((element) => {
+    cartItems.map((element) => {
       return (sum += element.productQuantity * element.productPrice);
     });
 
@@ -45,7 +47,7 @@ const Payment = (): JSX.Element => {
             //@ts-ignore
             buyerId: userSession.user!.user_id,
             totalCost: calculateTotalPrice(),
-            cartProductsDetails: cartCtx?.products,
+            cartProductsDetails: cartItems,
           }),
         }
       );
@@ -55,8 +57,7 @@ const Payment = (): JSX.Element => {
         toast.success("Transaction Successful!", {
           description: "You will be shortly redirected...",
         });
-
-        cartCtx?.emptyCart();
+        dispatch(emptyCart());
         setIsloading(false);
         setTimeout(() => {
           router.push("/orders");

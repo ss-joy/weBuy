@@ -28,7 +28,6 @@ const ProductsList = ({
       </p>
     );
   }
-  console.log(products);
   let finalProducts = structuredClone(products);
   if (sortBy === "priceLowToHigh") {
     finalProducts.sort((a, b) => a.price - b.price);

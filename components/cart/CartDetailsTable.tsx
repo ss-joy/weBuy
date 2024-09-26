@@ -18,9 +18,11 @@ type Product = {
   productPrice: number;
   productSellerId: string;
 };
+
 type CartDetailsTableProps = {
   products: Product[];
 };
+
 const COLUMNS = [
   {
     Header: "Name",
@@ -46,6 +48,7 @@ function CartDetailsTable({ products }: CartDetailsTableProps): JSX.Element {
   const memoData = useMemo(() => {
     return products;
   }, []);
+  console.log("products---", products);
   const {
     getTableProps,
     getTableBodyProps,

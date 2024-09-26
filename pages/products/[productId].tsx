@@ -1,34 +1,32 @@
 import { useRouter } from "next/router";
 import Loading from "@/components/ui/Loading";
 import Image from "next/image";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { cartContext } from "@/contexts/cart-context";
 import { z } from "zod";
 import { cutOutFirst100Words } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/queries";
 import ErrorMsg from "@/components/ui/ErrorMsg";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import {
+  decreaseCartItemQuantity,
+  increaseCartItemQuantity,
+} from "@/store/features/cart/cartSlice";
 
 export default function SingleProductDetailsPage(): JSX.Element {
   const { data: session, status } = useSession();
   const [showFullText, setShowFullText] = useState<boolean>(false);
   const isAuthenticated = status === "authenticated" && session;
-  const cartCtx = useContext(cartContext);
-  if (!cartCtx) {
-    throw new Error("Cart Context cannot be null");
-  }
+
   const router = useRouter();
-  function findSingleProductQuantity() {
-    if (!cartCtx) {
-      throw new Error("Cart context cannot be null");
-    }
-    const product = cartCtx.products.find((element) => {
-      return element.productId === router.query.productId;
-    });
-    return product?.productQuantity;
-  }
+  const productId = router.query.productId;
+
+  const dispatch = useAppDispatch();
+  const productFound = useAppSelector((state) =>
+    state.cart.cartItems.find((data) => data.productId === productId)
+  );
 
   const apiResponseSchema = z.object({
     status: z.string(),
@@ -118,28 +116,29 @@ export default function SingleProductDetailsPage(): JSX.Element {
                   <button
                     className="bg-orange-300 transition-all p-4 rounded w-16 text-white font-bold text-3xl hover:text-orange-300 hover:bg-white shadow shadow-orange-300"
                     onClick={() => {
-                      cartCtx.increaseProductQuanity(
-                        router.query.productId as string,
-                        data?.data.product.price as number,
-                        data?.data.product.sellerId as string
+                      dispatch(
+                        increaseCartItemQuantity({
+                          productId: productId?.toString() as string,
+                          productPrice: data?.data.product.price as number,
+                          productSellerId: data?.data.product
+                            .sellerId as string,
+                        })
                       );
                     }}
                   >
                     +
                   </button>
                   <span className="text-orange-300 inline-block text-center text-2xl font-bold w-16">
-                    <p>
-                      {findSingleProductQuantity() === undefined
-                        ? 0
-                        : findSingleProductQuantity()}
-                    </p>
+                    <p>{productFound ? productFound.productQuantity : 0}</p>
                   </span>
                   <button
                     className={`bg-orange-300 transition-all p-4 rounded w-16 text-white font-bold text-3xl hover:text-orange-300 hover:bg-white shadow shadow-orange-300 disabled:bg-slate-500 disabled:cursor-not-allowed`}
-                    disabled={!findSingleProductQuantity()}
+                    disabled={!productFound}
                     onClick={() => {
-                      cartCtx.decreaseProductQuantity(
-                        router.query.productId as string
+                      dispatch(
+                        decreaseCartItemQuantity({
+                          productId: productId?.toString() as string,
+                        })
                       );
                     }}
                   >

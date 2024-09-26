@@ -50,11 +50,7 @@ export const categories = [
 ] as const;
 export type CategoriesType = (typeof categories)[number]["categoryId"] | "";
 
-function ProductsCategory({
-  updateCategory,
-}: {
-  updateCategory: (x: CategoriesType) => void;
-}) {
+function ProductsCategory() {
   return (
     <ul className="flex overflow-x-scroll items-center mx-auto justify-start sm:mx-auto">
       {categories.map((category) => {
@@ -63,7 +59,6 @@ function ProductsCategory({
             key={category.categoryId}
             categoryIcon={category.categoryIcon}
             categoryId={category.categoryId}
-            updateCategory={updateCategory}
           />
         );
       })}

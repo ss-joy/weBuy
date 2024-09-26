@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { cartContext } from "@/contexts/cart-context";
 import Payment from "@/components/cart/Payment";
 import Image from "next/image";
 import { getServerSession } from "next-auth";
@@ -9,14 +7,12 @@ import Head from "next/head";
 
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import CartDetailsTable from "@/components/cart/CartDetailsTable";
+
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
-  // console.log(props);
-  const cartCtx = useContext(cartContext);
-  if (!cartContext) {
-    throw new Error("cart context cannot be null");
-  }
+  const { cartItems } = useAppSelector((state) => state.cart);
 
   return (
     <>
@@ -27,15 +23,9 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
         id="full-cart-container"
         className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mt-12 mx-auto"
       >
-        {cartCtx!.products.length > 0 ? (
+        {cartItems.length >= 0 ? (
           <>
-            <ul>
-              {
-                <CartDetailsTable
-                  products={cartCtx?.products ? cartCtx?.products : []}
-                />
-              }
-            </ul>
+            <ul>{<CartDetailsTable products={cartItems} />}</ul>
             <Payment />
           </>
         ) : (
@@ -56,21 +46,21 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
     </>
   );
 }
-export const getServerSideProps = (async (context) => {
-  const sessionFound = await getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-  if (!sessionFound) {
-    return {
-      redirect: {
-        destination: "/helper/no-auth",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}) satisfies GetServerSideProps<{}>;
+// export const getServerSideProps = (async (context) => {
+//   const sessionFound = await getServerSession(
+//     context.req,
+//     context.res,
+//     authOptions
+//   );
+//   if (!sessionFound) {
+//     return {
+//       redirect: {
+//         destination: "/helper/no-auth",
+//         permanent: false,
+//       },
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }) satisfies GetServerSideProps<{}>;
