@@ -29,16 +29,16 @@ jobs:
           node-version: lts/*
 
       - name: Install step
-        run: "pnpm i"
+        run: "deno i"
 
       - name: Build step
-        run: "pnpm build"
+        run: "deno task build"
 
       - name: Upload to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "mdsakilsazz-webuy-62"
-          entrypoint: "dist/main.js"
+          project: "mdsakilsazz-webuy-47-nest"
+          entrypoint: "dist/main"
           root: "server"
           
           
