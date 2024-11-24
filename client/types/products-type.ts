@@ -9,7 +9,10 @@ export const productSchema = z.object({
   sellerName: z.string(),
   sellerId: z.string(),
   productCategory: z.string(),
+  sellCount: z.number(),
 });
+
+export type Product = z.infer<typeof productSchema>;
 
 export type productSchemaType = z.infer<typeof productSchema>;
 export type sortStype =

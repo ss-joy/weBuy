@@ -1,27 +1,23 @@
 import React from "react";
 import ProductItem from "./ProductItem";
-import { sortStype } from "@/types/products-type";
+import { Product, sortStype } from "@/types/products-type";
+import Loading from "../ui/Loading";
 interface ProductItemProps {
   sortBy: sortStype;
   isLoading: boolean;
-  products: {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    imagePath: string;
-    sellerId: string;
-    sellerName: string;
-    sellCount: number;
-    productCategory: string;
-  }[];
+  products: Product[] | undefined;
 }
+
 const ProductsList = ({
   sortBy,
   products,
   isLoading,
 }: ProductItemProps): JSX.Element => {
-  if (products.length === 0) {
+  if (isLoading) {
+    return <Loading />;
+  }
+
+  if (!products || products.length === 0) {
     return (
       <p className=" mt-20 font-bold text-slate-500 mx-auto text-3xl w-[300px]">
         Sorry...we didnt find anything ..
@@ -38,16 +34,11 @@ const ProductsList = ({
   } else if (sortBy === "soldMost") {
     finalProducts.sort((a, b) => b.sellCount - a.sellCount);
   }
+
   return (
     <ul className="mt-10 p-2 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly">
       {finalProducts.map((p, id) => {
-        return (
-          <ProductItem
-            key={p._id ? p._id : id}
-            product={p}
-            isLoading={isLoading}
-          />
-        );
+        return <ProductItem key={p._id} product={p} isLoading={isLoading} />;
       })}
     </ul>
   );

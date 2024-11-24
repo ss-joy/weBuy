@@ -22,16 +22,22 @@ import {
   ThumbsUpIcon,
   XCircleIcon,
 } from "lucide-react";
-import { sortStype } from "@/types/products-type";
+import { Product, sortStype } from "@/types/products-type";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { ecomBackendUrl } from "@/config";
 
 export default function ProductsListPage(): JSX.Element {
   const { category } = useAppSelector((state) => state.categoryFilter);
 
   const [sortBy, setSortBy] = useState<sortStype>("");
-  const { error, data, isLoading } = useQuery({
+  const {
+    error,
+    data: products,
+    isLoading,
+  } = useQuery<Product[]>({
     queryKey: ["get-products-list", category],
-    queryFn: () => makeGetRequest(`/api/products/?productCategory=${category}`),
+    queryFn: () =>
+      makeGetRequest(`${ecomBackendUrl}/products/?productCategory=${category}`),
   });
   if (error) {
     return <ErrorMsg />;
@@ -50,7 +56,7 @@ export default function ProductsListPage(): JSX.Element {
         <section>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex justify-between shadow-sm shadow-slate-500 w-[205px] hover:text-orange-500 mx-3 px-3 text-slate-600 rounded my-4 md:text-2xl lg:my-8">
+              <button className="flex justify-between shadow-sm shadow-slate-500 w-[205px] p-2 hover:text-orange-500 mx-3 px-3 text-slate-600 rounded my-4 md:text-2xl lg:my-8">
                 {sortBy ? sortBy : "sort by..."} <ArrowDownAZIcon />
               </button>
             </DropdownMenuTrigger>
@@ -116,9 +122,15 @@ export default function ProductsListPage(): JSX.Element {
         <ProductsList
           sortBy={sortBy}
           //this cool hack works!! :v <3
-          products={data ? data?.data : [{}, {}, {}]}
+          products={products}
           isLoading={isLoading}
         />
+
+        {/* <section className="border-2">
+          <div></div>
+          <div></div>
+          <div></div>
+        </section> */}
       </main>
     </>
   );

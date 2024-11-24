@@ -8,7 +8,8 @@ export class ProductsRepository {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
+
   getAllProducts() {
-    return this.productModel.find().exec();
+    return this.productModel.find().select('-__v').exec();
   }
 }
