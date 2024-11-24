@@ -9,7 +9,12 @@ export class ProductsRepository {
     @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
-  getAllProducts() {
-    return this.productModel.find().select('-__v').exec();
+  getAllProducts(skip: number, limit: number) {
+    return this.productModel
+      .find()
+      .select('-__v')
+      .skip(skip)
+      .limit(limit)
+      .exec();
   }
 }

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
 import { makeGetRequest } from "@/queries";
 import ProductsCategory from "../../components/products/ProductsCategory";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,8 @@ import {
   ArrowDownAZIcon,
   ArrowDownNarrowWideIcon,
   ArrowUpNarrowWideIcon,
+  ChevronLeft,
+  ChevronRight,
   ThumbsDownIcon,
   ThumbsUpIcon,
   XCircleIcon,
@@ -25,9 +27,22 @@ import {
 import { Product, sortStype } from "@/types/products-type";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { ecomBackendUrl } from "@/config";
+import { useRouter } from "next/router";
+import Pagination from "@/components/ui/Pagination";
 
 export default function ProductsListPage(): JSX.Element {
   const { category } = useAppSelector((state) => state.categoryFilter);
+
+  const router = useRouter();
+  const {
+    query: { page, limit },
+  } = router;
+
+  useEffect(() => {
+    if (!page || !limit) {
+      router.push(`/products?page=${1}&limit=${10}`);
+    }
+  }, []);
 
   const [sortBy, setSortBy] = useState<sortStype>("");
   const {
@@ -35,12 +50,27 @@ export default function ProductsListPage(): JSX.Element {
     data: products,
     isLoading,
   } = useQuery<Product[]>({
-    queryKey: ["get-products-list", category],
+    queryKey: ["get-products-list", category, page, limit],
     queryFn: () =>
-      makeGetRequest(`${ecomBackendUrl}/products/?productCategory=${category}`),
+      makeGetRequest(
+        `${ecomBackendUrl}/products/?productCategory=${category}&page=${page}&limit=${limit}`
+      ),
+    enabled: page !== undefined && limit !== undefined,
   });
+
   if (error) {
     return <ErrorMsg />;
+  }
+
+  function increasePageNumber() {
+    router.push(`/products?page=${Number(page) + 1}&limit=${10}`);
+  }
+
+  function decreasePageNumber() {
+    if (Number(page) === 1 || page === undefined) {
+      return;
+    }
+    router.push(`/products?page=${Number(page) - 1}&limit=${10}`);
   }
 
   return (
@@ -121,16 +151,14 @@ export default function ProductsListPage(): JSX.Element {
         </section>
         <ProductsList
           sortBy={sortBy}
-          //this cool hack works!! :v <3
           products={products}
           isLoading={isLoading}
         />
-
-        {/* <section className="border-2">
-          <div></div>
-          <div></div>
-          <div></div>
-        </section> */}
+        <Pagination
+          page={page ? Number(page) : 0}
+          decreasePageNumber={decreasePageNumber}
+          increasePageNumber={increasePageNumber}
+        />
       </main>
     </>
   );
