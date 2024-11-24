@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/queries";
 import { ApiResponse } from "@/types/apiResponse";
 import { productSchemaType } from "@/types/products-type";
+import { ecomBackendUrl } from "@/config";
 
 function SearchBox() {
   const [input, setInput] = useState<string>("");
@@ -30,7 +31,7 @@ function SearchBox() {
   const { data, isFetching } = useQuery<ApiResponse<productSchemaType[]>>({
     queryKey: ["search-for-product", searchValue],
     queryFn: () =>
-      makeGetRequest(`/api/products/search?productName=${searchValue}`),
+      makeGetRequest(`${ecomBackendUrl}/products/search?name=${searchValue}`),
     enabled: !!(searchValue !== ""),
   });
 

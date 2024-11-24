@@ -15,6 +15,7 @@ import { GetServerSideProps } from "next";
 import { categories } from "../../components/products/ProductsCategory";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Toaster, toast } from "sonner";
+import { ecomBackendUrl } from "@/config";
 
 type FormData = {
   description: string;
@@ -93,7 +94,7 @@ const AddProductPage = () => {
         await uploadBytes(imageRef, data.productImage[0]);
         const url = await getDownloadURL(imageRef);
         const session = await getSession();
-        const response = await axios.post("/api/products/add-product", {
+        const response = await axios.post(`${ecomBackendUrl}/products`, {
           name: data.name,
           description: data.description,
           price: Number(data.price),
@@ -104,7 +105,7 @@ const AddProductPage = () => {
           productCategory: data.productCategory,
         });
         console.log(response);
-        if (response.data.status === "success") {
+        if (response.status === 201) {
           reset();
           setImagePreview("");
           toast.success("Product added Successfully!", {
