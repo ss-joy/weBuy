@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     MongooseModule.forRoot(
       'mongodb+srv://mongo_user:12345@cluster1.exfjbjn.mongodb.net/prod_we_buy?retryWrites=true&w=majority',
     ),
+    OrdersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

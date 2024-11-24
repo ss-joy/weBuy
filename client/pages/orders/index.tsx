@@ -26,6 +26,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { useState } from "react";
 import { OrdersSortStype } from "@/types/products-type";
+import Loading from "@/components/ui/Loading";
+import { ecomBackendUrl } from "@/config";
 
 export default function ShowOrders(): JSX.Element {
   const [sortBy, setSortBy] = useState<OrdersSortStype>("");
@@ -36,15 +38,12 @@ export default function ShowOrders(): JSX.Element {
       const userSession = await getSession();
       //@ts-ignore
       const userId = userSession?.user!.user_id;
-      return makeGetRequest(`/api/orders/${userId}`);
+      return makeGetRequest(`${ecomBackendUrl}/orders/${userId}`);
     },
   });
+  console.log(error);
   if (isLoading) {
-    return (
-      <p className="font-bold text-2xl text-slate-500 mt-16 text-center mx-auto">
-        Loading your orders...
-      </p>
-    );
+    return <Loading />;
   }
   if (error) {
     return <ErrorMsg />;
