@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { z } from "zod";
 import { cutOutFirst100Words } from "@/lib";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/queries";
@@ -14,6 +13,8 @@ import {
   decreaseCartItemQuantity,
   increaseCartItemQuantity,
 } from "@/store/features/cart/cartSlice";
+import { ecomBackendUrl } from "@/config";
+import { Product } from "@/types/products-type";
 
 export default function SingleProductDetailsPage(): JSX.Element {
   const { data: session, status } = useSession();
@@ -28,25 +29,10 @@ export default function SingleProductDetailsPage(): JSX.Element {
     state.cart.cartItems.find((data) => data.productId === productId)
   );
 
-  const apiResponseSchema = z.object({
-    status: z.string(),
-    message: z.string(),
-    data: z.object({
-      product: z.object({
-        _id: z.string(),
-        name: z.string(),
-        description: z.string(),
-        price: z.number(),
-        imagePath: z.string(),
-        sellerId: z.string(),
-      }),
-    }),
-  });
-  type ApiResponseType = z.infer<typeof apiResponseSchema>;
-
-  const { data, isLoading, error } = useQuery<ApiResponseType>({
+  const { data, isLoading, error } = useQuery<Product>({
     queryKey: ["get-single-product-details", router.query.productId],
-    queryFn: () => makeGetRequest(`/api/products/${router.query.productId}`),
+    queryFn: () =>
+      makeGetRequest(`${ecomBackendUrl}/products/${router.query.productId}`),
   });
 
   if (isLoading) {
@@ -71,7 +57,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
           <Image
             className="rounded mx-auto w-full max-w-2xl shadow shadow-slate-500 transition-all"
             alt="Product image"
-            src={data?.data.product.imagePath as string}
+            src={data ? data.imagePath : ""}
             width={700}
             height={700}
           />
@@ -82,15 +68,15 @@ export default function SingleProductDetailsPage(): JSX.Element {
         >
           <div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-500">
-              {data?.data.product.name}
+              {data?.name}
             </h2>
             <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-2xl lg:text-3xl text-orange-400">
-              $ {data?.data.product.price}
+              $ {data?.price}
             </div>
             <p className="my-5 text-lg">
               {showFullText
-                ? data?.data.product.description
-                : cutOutFirst100Words(data!.data.product.description)}
+                ? data?.description
+                : cutOutFirst100Words(data ? data.description : "")}
               <button
                 onClick={() => {
                   setShowFullText((prev) => {
@@ -119,9 +105,8 @@ export default function SingleProductDetailsPage(): JSX.Element {
                       dispatch(
                         increaseCartItemQuantity({
                           productId: productId?.toString() as string,
-                          productPrice: data?.data.product.price as number,
-                          productSellerId: data?.data.product
-                            .sellerId as string,
+                          productPrice: data?.price as number,
+                          productSellerId: data?.sellerId as string,
                         })
                       );
                     }}

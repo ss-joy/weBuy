@@ -17,4 +17,7 @@ export class ProductsRepository {
       .limit(limit)
       .exec();
   }
+  getProductById(id: string) {
+    return this.productModel.findById(id).exec();
+  }
 }

@@ -2,6 +2,7 @@ import {
   Controller,
   DefaultValuePipe,
   Get,
+  Param,
   ParseIntPipe,
   Query,
 } from '@nestjs/common';
@@ -17,5 +18,10 @@ export class ProductsController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
   ) {
     return this.productsService.getAllProducts(page, limit);
+  }
+
+  @Get(':id')
+  getProductById(@Param('id') id: string) {
+    return this.productsService.getProductById(id);
   }
 }
