@@ -34,7 +34,7 @@ export class ProductsController {
   }
 
   @Post()
-  addProduct(@Body() body: CreateProductDto) {
-    this.productsService.addProduct(body);
+  addProduct(@Body() createProductDto: CreateProductDto) {
+    this.productsService.addProduct(createProductDto);
   }
 }

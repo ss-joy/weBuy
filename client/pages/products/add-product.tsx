@@ -1,7 +1,7 @@
 import { storage } from "@/lib/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
@@ -16,6 +16,16 @@ import { categories } from "../../components/products/ProductsCategory";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Toaster, toast } from "sonner";
 import { ecomBackendUrl } from "@/config";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DevTool } from "@hookform/devtools";
 
 type FormData = {
   description: string;
@@ -40,6 +50,8 @@ const AddProductPage = () => {
     register,
     resetField,
     reset,
+    watch,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<FormData>();
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -64,7 +76,7 @@ const AddProductPage = () => {
       reader.readAsDataURL(file);
     }
   }
-
+  console.log(watch());
   async function onSubmit(formData: FormData) {
     const data: FormData = {
       productCategory: formData.productCategory,
@@ -166,7 +178,7 @@ const AddProductPage = () => {
             required: { value: true, message: "Product price is required" },
             min: {
               value: 0,
-              message: "Product price must be at least 0.",
+              message: "Product price must be at least 1.",
             },
           })}
           className={cn("form-input", "rounded-xl")}
@@ -175,24 +187,36 @@ const AddProductPage = () => {
         />
         <p className="text-red-700">{errors.productCategory?.message}</p>
 
-        <select
-          className={cn("form-label", "px-3 py-3 bg-blue-100/75 rounded")}
-          {...register("productCategory", {
-            required: {
-              value: true,
-              message: "you must pick a category for your product",
-            },
-          })}
-        >
-          <option value="">Select a category</option>
-          {categories.map((category) => {
-            return (
-              <option key={category.categoryId} value={category.categoryId}>
-                {category.categoryId}
-              </option>
-            );
-          })}
-        </select>
+        <Controller
+          control={control}
+          name="productCategory"
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} {...field}>
+              <SelectTrigger className={cn("form-input", "p-4  h-16")}>
+                <SelectValue
+                  className={cn("form-label", "p-4 min-h-8 rounded")}
+                  placeholder="Select a category"
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Select a category</SelectLabel>
+                  {categories.map((category) => {
+                    return (
+                      <SelectItem
+                        key={category.categoryId}
+                        value={category.categoryId}
+                      >
+                        {category.categoryId}
+                      </SelectItem>
+                    );
+                  })}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
+        />
+
         <label className="form-label" htmlFor="productDescription">
           Product Description
         </label>
@@ -220,17 +244,6 @@ const AddProductPage = () => {
           onChange={handleFileChange}
           type="file"
         />
-        {/* <input
-          type="file"
-          {...register("productImage", {
-            required: {
-              value: true,
-              message: "Please select an image for the product",
-            },
-          })}
-          className="my-4 border-2 border-blue-300 rounded p-2"
-          onChange={handleFileChange}
-        /> */}
 
         {imagePreview && (
           <div className="relative border-2">
@@ -256,6 +269,7 @@ const AddProductPage = () => {
           )}
         </button>
       </form>
+      {/* <DevTool control={control} /> */}
       <Toaster richColors theme="light" closeButton />
     </div>
   );
