@@ -16,7 +16,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Toaster, toast } from "sonner";
-import { ecomBaseUrl } from "@/config";
+import { ecomBackendUrl, ecomBaseUrl } from "@/config";
 
 interface ProductItemProps {
   isLoading: boolean;
@@ -50,8 +50,8 @@ const ProductItem = ({
     isLoading: isQueryLoading,
     data,
   } = useQuery({
-    queryKey: ["get-single-user-profile", sellerId],
-    queryFn: () => makeGetRequest(`/api/user/profile/${sellerId}`),
+    queryKey: ["user", sellerId],
+    queryFn: () => makeGetRequest(`${ecomBackendUrl}/api/user/${sellerId}`),
     enabled: sellerId ? true : false,
   });
 
@@ -67,7 +67,7 @@ const ProductItem = ({
         <ProductSkeleton />
       ) : (
         <>
-          <li className="transition-all relative shadow-2xl shadow-slate-500 hover:shadow-md hover:shadow-slate-600 rounded mx-auto my-4 p-2 w-[99%] min-[521px]:w-[90%]  min-[521px]:h-auto md:w-[400px] pb-[56px]">
+          <li className="transition-all relative shadow-xl shadow-slate-500 hover:shadow-2xl hover:shadow-slate-600 rounded mx-auto sm:mx-0 my-4 p-2 w-[99%] min-[521px]:w-[90%]  min-[521px]:h-auto md:w-[400px] pb-[56px]">
             <Image
               className="rounded block object-cover w-full h-[370px]"
               alt="Product image"

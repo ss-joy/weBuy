@@ -15,6 +15,10 @@ import { useRouter } from "next/router";
 import { getSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import { makeGetRequest } from "@/queries";
+import { ecomBackendUrl } from "@/config";
+import axios from "axios";
+import { User } from "@/types";
+
 type ProfileProps = {
   logout: () => void;
   userId: string;
@@ -31,8 +35,8 @@ function Profile({ logout, userId }: ProfileProps) {
     router.push(`/user/profile/${session?.user!.user_id}`);
   }
   const { error, isLoading, data } = useQuery({
-    queryKey: ["get-single-user-profile", userId],
-    queryFn: () => makeGetRequest(`/api/user/profile/${userId}`),
+    queryKey: ["user", userId],
+    queryFn: () => axios.get<User>(`${ecomBackendUrl}/user/${userId}`),
   });
   return (
     <DropdownMenu>
@@ -40,8 +44,8 @@ function Profile({ logout, userId }: ProfileProps) {
         <Image
           className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
           src={
-            data?.data.user.profilePicture
-              ? data?.data.user.profilePicture
+            data?.data?.profilePicture
+              ? data?.data?.profilePicture
               : "/ui-images/dummy-user.jpg"
           }
           width={40}

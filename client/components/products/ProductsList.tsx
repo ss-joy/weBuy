@@ -36,7 +36,7 @@ const ProductsList = ({
   }
 
   return (
-    <ul className="mt-10 p-2 flex flex-col lg:flex-row lg:flex-wrap lg:justify-evenly">
+    <ul className="mt-10 flex flex-col lg:flex-row lg:flex-wrap lg:justify-between">
       {finalProducts.map((p, id) => {
         return <ProductItem key={p._id} product={p} isLoading={isLoading} />;
       })}

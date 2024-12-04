@@ -4,7 +4,7 @@ import MainHeader from "@/components/ui/MainHeader";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import type { AppProps } from "next/app";
-import { Inter } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 import MetaData from "@/components/ui/MetaData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
@@ -14,6 +14,12 @@ const interFont = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
   style: "normal",
   subsets: ["latin", "cyrillic", "greek"],
+});
+
+const robotoFont = Roboto({
+  weight: ["100", "300", "400", "500", "700", "900"],
+  style: "normal",
+  subsets: ["latin"],
 });
 
 const queryClient = new QueryClient();
@@ -30,7 +36,7 @@ export default function App({
               <MetaData />
             </Head>
             <MainHeader />
-            <main className={interFont.className}>
+            <main className={robotoFont.className}>
               <Component {...pageProps} />
             </main>
           </MainLayout>

@@ -37,7 +37,6 @@ export class ProductsRepository {
   }
 
   async searchProductByName(name: string) {
-    console.log(name, 'sdsd');
     return this.productModel
       .find({
         name: new RegExp(name, 'i'),
