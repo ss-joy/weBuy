@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import { PackageOpen, TableOfContents, UserPen } from "lucide-react";
 import Link from "next/link";
 import UserProfile from "@/components/profile/UserProfile";
+import Inventory from "@/components/dashboard/Inventory";
+import Loading from "@/components/ui/Loading";
 
 function UserProfilePage() {
   const [userId, setUserId] = useState<string | null>("");
@@ -55,6 +57,7 @@ function UserProfilePage() {
       router.push(`/user/${userId}?tab=${"profile"}`);
     }
   }, [tab, userId]);
+  if (!userId) return <Loading />;
 
   return (
     <>
@@ -88,8 +91,8 @@ function UserProfilePage() {
           className="border-2 w-4/5 p-4 rounded-md"
         >
           {tab === "profile" ? <UserProfile userId={userId} /> : null}
-          {tab === "inventory"}
           {tab === "overview" ? <Dashboard userId={userId} /> : null}
+          {tab === "inventory" ? <Inventory userId={userId} /> : null}
         </section>
       </main>
     </>
