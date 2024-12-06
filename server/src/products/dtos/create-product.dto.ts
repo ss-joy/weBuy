@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsMongoId, IsNumber, IsString } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
@@ -13,10 +13,7 @@ export class CreateProductDto {
   @IsString()
   imagePath: string;
 
-  @IsString()
-  sellerName: string;
-
-  @IsString()
+  @IsMongoId()
   sellerId: string;
 
   @IsString()

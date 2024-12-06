@@ -41,4 +41,9 @@ export class UsersController {
   ) {
     return this.usersService.addUserImage(id, addUserImageDto.imageLink);
   }
+
+  @Get(':id/products')
+  getProductsByUserId(@Param('id') id: string) {
+    return this.usersService.getProductsByUserId(id);
+  }
 }

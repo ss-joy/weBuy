@@ -1,13 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { User } from 'src/users/users.schema';
 
 export type ProductDocument = HydratedDocument<Product>;
 
 @Schema()
 export class Product {
   @Prop({
-    required: [true, 'name is required'],
+    required: [true, 'Product name is required'],
   })
   name: string;
 
@@ -22,22 +23,23 @@ export class Product {
   price: number;
 
   @Prop({
-    required: [true, 'Seller name is required'],
+    required: [true, 'Selled id is required'],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
   })
-  sellerName: string;
-
-  @Prop({
-    required: [true, 'is required'],
-  })
-  sellerId: string;
+  sellerId: User;
 
   @Prop()
   imagePath: string;
 
-  @Prop()
+  @Prop({
+    default: 0,
+  })
   sellCount: number;
 
-  @Prop()
+  @Prop({
+    required: [true, 'Product category is requied'],
+  })
   productCategory: string;
 }
 

@@ -21,7 +21,7 @@ export class ProductsService {
     return this.productsRepository.getProductById(id);
   }
 
-  addProduct(product: CreateProductDto) {
+  async addProduct(product: CreateProductDto) {
     return this.productsRepository.addProduct(product);
   }
 

@@ -25,4 +25,9 @@ export class UsersService {
     await this.usersRepository.getUser(userId);
     return this.usersRepository.addUserImage(userId, imageLink);
   }
+
+  async getProductsByUserId(userId: string) {
+    await this.usersRepository.getUser(userId);
+    return this.usersRepository.getProductsByUserId(userId);
+  }
 }

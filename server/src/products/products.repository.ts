@@ -1,39 +1,58 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './product.schema';
-import { Model } from 'mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { User } from 'src/users/users.schema';
 
 @Injectable()
 export class ProductsRepository {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  getAllProducts(skip: number, limit: number) {
-    return this.productModel
+  async getAllProducts(skip: number, limit: number) {
+    const products = await this.productModel
       .find()
       .select('-__v')
+      .populate('sellerId', '-password -__v -products')
       .skip(skip)
       .limit(limit)
       .exec();
+    return products;
   }
 
   getProductById(id: string) {
-    return this.productModel.findById(id).exec();
+    return this.productModel
+      .findById(id)
+      .select('-__v')
+      .populate('sellerId', '-password -__v')
+      .exec();
   }
 
-  addProduct(product: CreateProductDto) {
-    return this.productModel.create({
+  async addProduct(product: CreateProductDto) {
+    if (!isValidObjectId(product.sellerId)) {
+      throw new BadRequestException('invalid mongo id');
+    }
+
+    const newProduct = await this.productModel.create({
       name: product.name,
       description: product.description,
       price: product.price,
       imagePath: product.imagePath,
       sellCount: 0,
       sellerId: product.sellerId,
-      sellerName: product.sellerName,
       productCategory: product.productCategory,
     });
+
+    await this.userModel.findByIdAndUpdate(product.sellerId, {
+      $push: {
+        products: newProduct._id,
+      },
+    });
+
+    return newProduct;
   }
 
   async searchProductByName(name: string) {
