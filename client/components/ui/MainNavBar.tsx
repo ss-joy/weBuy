@@ -24,7 +24,7 @@ const MainNavBar = (): JSX.Element => {
   const isAuthenticated = status === "authenticated" && session;
   return (
     <>
-      <nav className="hidden lg:block">
+      <nav className="hidden lg:block bg-white">
         <ul className="flex justify-around items-center">
           {!isAuthenticated && (
             <li className="nav-btn">
@@ -41,13 +41,6 @@ const MainNavBar = (): JSX.Element => {
             </li>
           )}
 
-          {isAuthenticated && (
-            <li className="nav-btn">
-              <Link className="nav-btn-link" href={"/orders"}>
-                Orders <ShoppingBagIcon className="ml-4" />
-              </Link>
-            </li>
-          )}
           {
             <li className="nav-btn">
               <Link className="nav-btn-link" href={"/products"}>

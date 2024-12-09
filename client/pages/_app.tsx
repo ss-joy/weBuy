@@ -33,7 +33,7 @@ export default function App({
               <MetaData />
             </Head>
             <MainHeader />
-            <main className={robotoFont.className}>
+            <main className={`${robotoFont.className} pt-[110px]`}>
               <Component {...pageProps} />
             </main>
           </MainLayout>
