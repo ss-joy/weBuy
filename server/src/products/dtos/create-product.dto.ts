@@ -18,4 +18,7 @@ export class CreateProductDto {
 
   @IsString()
   productCategory: string;
+
+  @IsNumber()
+  availableCount: number;
 }

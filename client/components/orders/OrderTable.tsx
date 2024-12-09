@@ -40,6 +40,7 @@ type OrderTableProps = {
   orderItem: OrderItem[];
 };
 function calulcateTotalPrice(orderItem: OrderItem[]): number {
+  console.log("xxx", orderItem);
   const totalPrice = orderItem.reduce((prev, curr) => {
     return prev + curr.productQuantity * curr.productPrice;
   }, 0);
@@ -105,21 +106,6 @@ function OrderTable({ orderItem }: OrderTableProps): JSX.Element {
             );
           })}
         </TableBody>
-        {/* <TableFooter>
-          {footerGroups.map((footerGroup) => {
-            return (
-              <TableRow {...footerGroup.getFooterGroupProps()}>
-                {footerGroup.headers.map((footer) => {
-                  return (
-                    <TableCell {...footer.getFooterProps()}>
-                      {footer.render("Footer")}
-                    </TableCell>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
-        </TableFooter> */}
         <TableFooter>
           <TableRow>
             <TableCell className="text-right xl:text-xl" colSpan={2}>

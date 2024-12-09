@@ -9,6 +9,7 @@ import MetaData from "@/components/ui/MetaData";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "@/store/store";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -23,6 +24,7 @@ const robotoFont = Roboto({
 });
 
 const queryClient = new QueryClient();
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
@@ -31,6 +33,7 @@ export default function App({
     <SessionProvider session={session}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
+          <ReactQueryDevtools />
           <MainLayout>
             <Head>
               <MetaData />

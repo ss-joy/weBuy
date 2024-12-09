@@ -28,4 +28,11 @@ export class ProductsService {
   searchProductByName(name: string) {
     return this.productsRepository.searchProductByName(name);
   }
+
+  deleteProductById(id: string) {
+    return this.productsRepository.deleteProductById(id);
+  }
+  updateProductById(id: string, createProductDto: CreateProductDto) {
+    return this.productsRepository.updateProductById(id, createProductDto);
+  }
 }

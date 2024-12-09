@@ -1,30 +1,20 @@
 import Loading from "@/components/ui/Loading";
 import { ecomBackendUrl } from "@/config";
 import { UserProducts } from "@/types";
-import { Product } from "@/types/products-type";
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {
-  BookOpen,
-  BoxIcon,
-  BoxSelect,
-  FolderOpen,
-  PenIcon,
-  Trash2Icon,
-  ViewIcon,
-} from "lucide-react";
+import { PenIcon, ViewIcon } from "lucide-react";
 import Image from "next/image";
-import React, { useState } from "react";
+import React from "react";
 import ProductDeleteModal from "./ProductDeleteModal";
+import ViewProductModal from "./ViewProductModal";
+import EditProductModal from "./EditProductModal";
 
 type ProductsInventoryProps = {
   userId: string;
 };
 
 const ProductsInventory = ({ userId }: ProductsInventoryProps) => {
-  const queryClient = new QueryClient();
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-
   const { data, error, refetch, isLoading } = useQuery({
     queryFn: () => {
       return axios.get<UserProducts>(
@@ -36,25 +26,6 @@ const ProductsInventory = ({ userId }: ProductsInventoryProps) => {
     staleTime: 5 * 60 * 1000,
   });
 
-  console.log(data);
-
-  const { mutate, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) =>
-      axios.delete(`${ecomBackendUrl}/products/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products", userId],
-      });
-      console.log("success");
-      setIsDeleteModalOpen(false);
-      refetch();
-    },
-  });
-
-  function deleteProduct(id: string) {
-    mutate(id);
-  }
-
   if (isLoading) return <Loading />;
   return (
     <div>
@@ -62,7 +33,7 @@ const ProductsInventory = ({ userId }: ProductsInventoryProps) => {
         {data?.data.products.map((prod) => {
           return (
             <li
-              className="flex gap-5 my-4 items-center rounded-md pr-2 bg-slate-100"
+              className="flex gap-5 my-4 items-center rounded-md overflow-hidden pr-2 bg-slate-100"
               key={prod._id}
             >
               <Image
@@ -75,19 +46,14 @@ const ProductsInventory = ({ userId }: ProductsInventoryProps) => {
               <span>{prod.name}</span>
               <div className="ml-auto flex gap-4">
                 <span>{prod.availableCount} units available</span>
-                <ViewIcon
-                  className="hover:cursor-pointer"
-                  onClick={() => setIsDeleteModalOpen(true)}
-                />
-                <PenIcon className="hover:cursor-pointer hover:stroke-white hover:fill-slate-500 rounded-sm" />
+                <ViewProductModal productId={prod._id} key={prod._id} />
+                <EditProductModal product={prod} />
                 <ProductDeleteModal
                   key={prod._id}
-                  open={isDeleteModalOpen}
-                  onOpenChange={setIsDeleteModalOpen}
+                  refetch={refetch}
                   prodName={prod.name}
-                  deleteFunc={deleteProduct}
                   productId={prod._id}
-                  isDeleting={isDeleting}
+                  userId={userId}
                 />
               </div>
             </li>

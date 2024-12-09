@@ -24,23 +24,8 @@ import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import axios from "axios";
 import { ecomBackendUrl } from "@/config";
-
-type CreateProductSubmissionData = {
-  name: string;
-  description: string;
-  price: number;
-  imagePath: string;
-  sellerId: string;
-  productCategory: string;
-  availableCount: number;
-};
-type CreateProductFromData = {
-  description: string;
-  price: number;
-  name: string;
-  productCategory: string;
-  availableCount: number;
-};
+import { Trash2Icon } from "lucide-react";
+import { CreateProductFromData, CreateProductSubmissionData } from "@/types";
 
 type AddProductProps = {
   userId: string;
@@ -246,8 +231,8 @@ const AddProduct = ({ userId }: AddProductProps) => {
                 className="object-cover w-full h-full rounded-md"
                 alt="image"
               />
-              <Cross2Icon
-                className="absolute top-[-12px] right-[-12px] stroke-cyan-600 hover:cursor-pointer size-[30px]"
+              <Trash2Icon
+                className="absolute top-[-12px] right-[-12px] stroke-red-500 hover:cursor-pointer size-[30px]"
                 onClick={removeImage}
               />
             </div>

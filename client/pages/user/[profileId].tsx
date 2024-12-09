@@ -2,7 +2,7 @@ import GetUserProfile from "@/components/profile/UserProfile";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getSession, useSession } from "next-auth/react";
-import Dashboard from "@/components/dashboard/Dashboard";
+import Dashboard from "@/components/profile/dashboard/Dashboard";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { GetServerSideProps } from "next";
@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { PackageOpen, TableOfContents, UserPen } from "lucide-react";
 import Link from "next/link";
 import UserProfile from "@/components/profile/UserProfile";
-import Inventory from "@/components/dashboard/Inventory";
+import Inventory from "@/components/profile/dashboard/inventory/Inventory";
 import Loading from "@/components/ui/Loading";
 
 function UserProfilePage() {

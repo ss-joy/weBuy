@@ -37,6 +37,7 @@ function Profile({ logout, userId }: ProfileProps) {
   const { error, isLoading, data } = useQuery({
     queryKey: ["user", userId],
     queryFn: () => axios.get<User>(`${ecomBackendUrl}/user/${userId}`),
+    staleTime: Infinity,
   });
   return (
     <DropdownMenu>

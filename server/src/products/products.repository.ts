@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Product } from './product.schema';
 import { isValidObjectId, Model } from 'mongoose';
@@ -44,6 +48,7 @@ export class ProductsRepository {
       sellCount: 0,
       sellerId: product.sellerId,
       productCategory: product.productCategory,
+      availableCount: product.availableCount,
     });
 
     await this.userModel.findByIdAndUpdate(product.sellerId, {
@@ -61,5 +66,33 @@ export class ProductsRepository {
         name: new RegExp(name, 'i'),
       })
       .exec();
+  }
+
+  async deleteProductById(id: string) {
+    const user = await this.userModel.findOne({
+      products: id,
+    });
+    if (!user) throw new NotFoundException('The product no longer exists');
+    await this.userModel.findByIdAndUpdate(user._id, {
+      $pull: {
+        products: id,
+      },
+    });
+    return this.productModel.findByIdAndDelete(id);
+  }
+
+  updateProductById(id: string, createProductDto: CreateProductDto) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('invalid mongo id');
+    }
+
+    return this.productModel.findByIdAndUpdate(id, {
+      productCategory: createProductDto.productCategory,
+      availableCount: createProductDto.availableCount,
+      description: createProductDto.description,
+      name: createProductDto.name,
+      imagePath: createProductDto.imagePath,
+      price: createProductDto.price,
+    });
   }
 }

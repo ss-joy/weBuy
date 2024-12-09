@@ -10,6 +10,7 @@ export const productSchema = z.object({
   sellerId: z.string(),
   productCategory: z.string(),
   sellCount: z.number(),
+  availableCount: z.number(),
 });
 
 export type Product = z.infer<typeof productSchema>;

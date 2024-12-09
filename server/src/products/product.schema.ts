@@ -41,6 +41,12 @@ export class Product {
     required: [true, 'Product category is requied'],
   })
   productCategory: string;
+
+  @Prop({
+    required: [true, 'Avaialable count is needed'],
+    type: Number,
+  })
+  availableCount: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

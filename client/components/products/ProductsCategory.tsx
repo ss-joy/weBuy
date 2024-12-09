@@ -12,6 +12,8 @@ import {
   ShirtIcon,
 } from "lucide-react";
 import ListIem from "./ListItem";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
+
 export const categories = [
   {
     categoryId: "Clothing",
@@ -52,7 +54,10 @@ export type CategoriesType = (typeof categories)[number]["categoryId"] | "";
 
 function ProductsCategory() {
   return (
-    <ul className="flex overflow-x-scroll items-center mx-auto justify-start sm:mx-auto">
+    <ScrollArea
+      className="flex 
+    flex-row items-center justify-start sm:mx-auto whitespace-nowrap rounded-md border bg-red-500"
+    >
       {categories.map((category) => {
         return (
           <ListIem
@@ -62,7 +67,19 @@ function ProductsCategory() {
           />
         );
       })}
-    </ul>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+    // <ul className="flex overflow-x-scroll items-center mx-auto justify-start sm:mx-auto">
+    //   {categories.map((category) => {
+    //     return (
+    //       <ListIem
+    //         key={category.categoryId}
+    //         categoryIcon={category.categoryIcon}
+    //         categoryId={category.categoryId}
+    //       />
+    //     );
+    //   })}
+    // </ul>
   );
 }
 

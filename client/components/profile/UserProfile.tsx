@@ -1,4 +1,3 @@
-import { makeGetRequest } from "@/queries";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
@@ -19,14 +18,9 @@ function UserProfile({ userId }: GetUserProfileProps) {
   console.log("userid from userProfile", userId);
   const { error, isLoading, data } = useQuery({
     queryKey: ["user", userId],
-    queryFn: async () => {
-      const data = await axios.get<User>(`${ecomBackendUrl}/user/${userId}`);
-      return data.data;
-    },
+    queryFn: () => axios.get<User>(`${ecomBackendUrl}/user/${userId}`),
     enabled: userId ? true : false,
-    //TODO: fix caching
-    // refetchOnWindowFocus: false,
-    // staleTime: Infinity,
+    staleTime: Infinity,
   });
   console.log("here====>", data);
 
@@ -45,8 +39,8 @@ function UserProfile({ userId }: GetUserProfileProps) {
         <Image
           className="rounded-full w-full transition-all h-full block mx-auto object-cover"
           src={
-            data?.profilePicture
-              ? data?.profilePicture
+            data?.data.profilePicture
+              ? data?.data.profilePicture
               : "/ui-images/dummy-user.jpg"
           }
           width={300}
@@ -54,9 +48,9 @@ function UserProfile({ userId }: GetUserProfileProps) {
           alt="profile image of user"
         />
         <EditProfileModal
-          name={data?.name as string}
-          email={data?.email as string}
-          profileImage={data?.profilePicture as string}
+          name={data?.data.name as string}
+          email={data?.data.email as string}
+          profileImage={data?.data.profilePicture as string}
           userId={userId as string}
         />
       </div>
@@ -67,15 +61,15 @@ function UserProfile({ userId }: GetUserProfileProps) {
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <UserCircleIcon />
-          {isLoading ? "Loading..." : data?.name}
+          {isLoading ? "Loading..." : data?.data.name}
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <MailIcon />
-          {isLoading ? "loading..." : data?.email}
+          {isLoading ? "loading..." : data?.data.email}
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <FingerprintIcon />
-          {isLoading ? "Loading..." : data?._id}
+          {isLoading ? "Loading..." : data?.data._id}
         </p>
       </div>
       {/* <ReactQueryDevtoolsPanel

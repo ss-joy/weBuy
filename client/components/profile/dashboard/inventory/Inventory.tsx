@@ -7,6 +7,8 @@ import AddProduct from "./AddProduct";
 import Loading from "@/components/ui/Loading";
 import ProductsInventory from "./ProductsInventory";
 
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 type InventoryProps = {
   userId: string | undefined;
 };
@@ -14,8 +16,18 @@ type InventoryProps = {
 const Inventory = ({ userId }: InventoryProps) => {
   return (
     <div>
-      <AddProduct userId={userId as string} />
-      <ProductsInventory userId={userId as string} />
+      <Tabs defaultValue="addProduct" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="addProduct">Account</TabsTrigger>
+          <TabsTrigger value="inventory">Password</TabsTrigger>
+        </TabsList>
+        <TabsContent value="addProduct">
+          <AddProduct userId={userId as string} />
+        </TabsContent>
+        <TabsContent value="inventory">
+          <ProductsInventory userId={userId as string} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };

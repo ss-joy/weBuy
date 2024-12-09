@@ -63,14 +63,7 @@ const MainNavBar = (): JSX.Element => {
               </Link>
             </li>
           )}
-          {isAuthenticated && (
-            <li className="nav-btn">
-              <Link className="nav-btn-link" href={"/products/add-product"}>
-                Add product
-                <PackagePlusIcon className="ml-4" />
-              </Link>
-            </li>
-          )}
+
           {isAuthenticated && (
             <li className="nav-btn">
               <Profile
