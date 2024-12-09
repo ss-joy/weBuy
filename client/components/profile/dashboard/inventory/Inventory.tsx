@@ -18,8 +18,8 @@ const Inventory = ({ userId }: InventoryProps) => {
     <div>
       <Tabs defaultValue="addProduct" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="addProduct">Account</TabsTrigger>
-          <TabsTrigger value="inventory">Password</TabsTrigger>
+          <TabsTrigger value="addProduct">Add New Product</TabsTrigger>
+          <TabsTrigger value="inventory">Product Inventory</TabsTrigger>
         </TabsList>
         <TabsContent value="addProduct">
           <AddProduct userId={userId as string} />

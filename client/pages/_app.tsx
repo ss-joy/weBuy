@@ -11,12 +11,6 @@ import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const interFont = Inter({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: "normal",
-  subsets: ["latin", "cyrillic", "greek"],
-});
-
 const robotoFont = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
   style: "normal",
