@@ -7,6 +7,7 @@ import {
   Param,
   Patch,
   Post,
+  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -22,7 +23,10 @@ export class UsersController {
   }
 
   @Patch(':id')
-  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  updateUser(
+    @Param('id') id: string,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+  ) {
     return this.usersService.updateUser(updateUserDto, id);
   }
 
@@ -36,7 +40,7 @@ export class UsersController {
   @Post('image/:id')
   @HttpCode(201)
   addUserImage(
-    @Body() addUserImageDto: AddUserImageDto,
+    @Body(ValidationPipe) addUserImageDto: AddUserImageDto,
     @Param('id') id: string,
   ) {
     return this.usersService.addUserImage(id, addUserImageDto.imageLink);

@@ -31,7 +31,7 @@ export class ProductsRepository {
     return this.productModel
       .findById(id)
       .select('-__v')
-      .populate('sellerId', '-password -__v')
+      .populate('sellerId', '-password -__v -products')
       .exec();
   }
 

@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dtos/create-product.dto';
@@ -36,7 +37,7 @@ export class ProductsController {
   }
 
   @Post()
-  addProduct(@Body() createProductDto: CreateProductDto) {
+  addProduct(@Body(ValidationPipe) createProductDto: CreateProductDto) {
     return this.productsService.addProduct(createProductDto);
   }
 
