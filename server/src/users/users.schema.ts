@@ -35,6 +35,20 @@ export class User {
     required: [true, 'User id is required'],
   })
   products: Product[];
+
+  @Prop({
+    type: [String],
+    enum: ['user', 'admin'],
+    default: ['user'],
+    required: [true, 'user role is required'],
+  })
+  roles: string[];
+
+  @Prop({
+    type: Date,
+    default: Date.now,
+  })
+  createdAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

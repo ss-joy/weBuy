@@ -7,12 +7,15 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { AddUserImageDto } from './dtos/add-user-image.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('user')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}

@@ -9,10 +9,12 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dtos/create-product.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -36,16 +38,19 @@ export class ProductsController {
     return this.productsService.getProductById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   addProduct(@Body(ValidationPipe) createProductDto: CreateProductDto) {
     return this.productsService.addProduct(createProductDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   deleteProductById(@Param('id') id: string) {
     return this.productsService.deleteProductById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   updateProductById(
     @Param('id') id: string,
