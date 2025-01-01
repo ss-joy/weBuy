@@ -5,6 +5,8 @@ export type User = {
   name: string;
   email: string;
   profilePicture: string;
+  roles: string[];
+  createdAt: Date;
 };
 
 export type UpdateProfileFormData = {

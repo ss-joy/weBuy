@@ -1,13 +1,8 @@
 import Payment from "@/components/cart/Payment";
 import Image from "next/image";
-import { getServerSession } from "next-auth";
-import { GetServerSideProps } from "next";
-import { authOptions } from "../api/auth/[...nextauth]";
 import Head from "next/head";
 
-import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { useAppSelector } from "@/hooks/redux-hooks";
 import CartDetailsTable from "@/components/cart/CartDetailsTable";
 
 type CartIndexPageProps = {};

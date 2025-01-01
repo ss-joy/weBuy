@@ -7,8 +7,7 @@ const AuthWrapper = ({ children }: { children: ReactNode }) => {
   //polling polls the server
   //auto logs out user
   useCheckAuthStatusQuery(undefined, {
-    pollingInterval: 5 * 1000,
-    skip: !isAuthenticated,
+    pollingInterval: 1 * 60 * 1000,
   });
 
   return <>{children}</>;

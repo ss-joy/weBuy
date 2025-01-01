@@ -7,7 +7,7 @@ const apiSlice = createApi({
     baseUrl: ecomBackendUrl,
     credentials: "include",
   }),
-
+  keepUnusedDataFor: 10 * 60,
   endpoints: (builder) => ({}),
 });
 export default apiSlice;

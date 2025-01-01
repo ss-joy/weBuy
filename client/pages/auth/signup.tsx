@@ -7,6 +7,9 @@ import { useState } from "react";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 import FormErrorMsg from "@/components/form/FormErrorMsg";
 import { Toaster, toast } from "sonner";
+import { ecomBackendUrl } from "@/config";
+import { Button } from "@/components/ui/button";
+import axios from "axios";
 export default function SignUpPage(): JSX.Element {
   const [hidePwd, setHidePwd] = useState<boolean>(true);
   const [hideConfirmPwd, setHideConfirmPwd] = useState<boolean>(true);
@@ -19,44 +22,35 @@ export default function SignUpPage(): JSX.Element {
   };
 
   const {
-    formState: { isSubmitSuccessful, isSubmitting, errors },
+    formState: { isSubmitting, errors },
     register,
     reset,
     getValues,
     handleSubmit,
   } = useForm<FormData>();
 
-  async function onSubmit(data: UserSignUpSchemaType) {
-    const response = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userName: data.userName,
-        userEmail: data.userEmail,
-        userPwd: data.userPwd,
-      }),
-    });
-    const ans: ApiResponse = await response.json();
-
-    if (ans.status === "success") {
-      reset();
-      toast.success("Sign Up Successful!", {
-        description:
-          "You have been successfully signed up. You will be shortly taken to the login page...",
-      });
-
-      setTimeout(() => {
+  function onSubmit(data: UserSignUpSchemaType) {
+    axios
+      .post(`${ecomBackendUrl}/auth/signup`, {
+        name: data.userName,
+        email: data.userEmail,
+        password: data.userPwd,
+      })
+      .then(() => {
+        reset();
+        toast.success("Sign Up Successful!", {
+          description:
+            "You have been successfully signed up. You will be shortly taken to the login page...",
+        });
         router.push("/auth/login");
-      }, 1000);
-    } else if (ans.status === "error") {
-      toast.warning("Sign Up failed!", {
-        description:
-          ans.message ||
-          "Something went wrong. Please check everything carefully and try again",
+      })
+      .catch((err) => {
+        toast.warning("Sign Up failed!", {
+          description:
+            "Something went wrong. Please check everything carefully and try again",
+        });
+        console.log(err);
       });
-    }
   }
 
   return (
@@ -81,10 +75,6 @@ export default function SignUpPage(): JSX.Element {
           className="form-input"
           {...register("userName", {
             required: { value: true, message: "Your name is required" },
-            minLength: {
-              value: 5,
-              message: "Your name cant must be at least 5 characters",
-            },
           })}
           id="userName"
           type="text"
@@ -177,12 +167,12 @@ export default function SignUpPage(): JSX.Element {
           </button>
         </div>
 
-        <button
+        <Button
           className="btn2 disabled:bg-gray-500 mt-4"
           disabled={isSubmitting}
         >
-          Sign Up
-        </button>
+          Sign up
+        </Button>
       </form>
       <Toaster richColors closeButton theme="light" />
     </>

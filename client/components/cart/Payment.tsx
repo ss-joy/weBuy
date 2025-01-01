@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { getSession } from "next-auth/react";
 import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { bankBaseUrl } from "@/config";
@@ -9,9 +8,12 @@ import { emptyCart } from "@/store/features/cart/cartSlice";
 const Payment = (): JSX.Element => {
   const router = useRouter();
   const { cartItems } = useAppSelector((state) => state.cart);
-
   const [loading, setIsloading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+  const { isAuthenticated, userId, userEmail } = useAppSelector(
+    (state) => state.auth
+  );
+
   function calculateTotalPrice() {
     let sum = 0;
     cartItems.map((element) => {
@@ -23,8 +25,7 @@ const Payment = (): JSX.Element => {
 
   async function payWithBank() {
     setIsloading(true);
-    const userSession = await getSession();
-    if (!userSession) {
+    if (!isAuthenticated) {
       toast("You must log in to buy anything", {
         description: "Try again..",
       });
@@ -43,9 +44,8 @@ const Payment = (): JSX.Element => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            buyerEmail: userSession.user?.email,
-            //@ts-ignore
-            buyerId: userSession.user!.user_id,
+            buyerEmail: userEmail,
+            buyerId: userId,
             totalCost: calculateTotalPrice(),
             cartProductsDetails: cartItems,
           }),

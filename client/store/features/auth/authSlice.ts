@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
   userId?: string;
+  userEmail?: string;
   roles?: string[];
 };
 
@@ -12,6 +13,7 @@ export type AuthSliceType = User & {
 const initialState: AuthSliceType = {
   userId: undefined,
   roles: undefined,
+  userEmail: undefined,
   isAuthenticated: false,
 };
 
@@ -22,14 +24,17 @@ const authSlice = createSlice({
     loginUser: (state, action: PayloadAction<User>) => {
       state.userId = action.payload.userId;
       state.roles = action.payload.roles;
+      state.userEmail = action.payload.userEmail;
     },
     logoutUser: (state) => {
       state.userId = undefined;
       state.roles = undefined;
+      state.userEmail = undefined;
     },
     setUserAuthData: (state, action: PayloadAction<User>) => {
       state.userId = action.payload.userId;
       state.roles = action.payload.roles;
+      state.userEmail = action.payload.userEmail;
     },
     setAuthStatus: (
       state,

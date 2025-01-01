@@ -1,4 +1,3 @@
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { UserSignUpSchemaType } from "@/schemas/user-signup-schema";

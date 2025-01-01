@@ -31,6 +31,7 @@ const authApi = apiSlice.injectEndpoints({
             loginUser({
               userId: data.data.userId,
               roles: data.data.roles,
+              userEmail: data.data.userEmail,
             })
           );
           dispatch(
@@ -69,6 +70,7 @@ const authApi = apiSlice.injectEndpoints({
             setUserAuthData({
               userId: userData.data.userId,
               roles: userData.data.roles,
+              userEmail: userData.data.userEmail,
             })
           );
           dispatch(
@@ -81,6 +83,7 @@ const authApi = apiSlice.injectEndpoints({
             setUserAuthData({
               userId: undefined,
               roles: undefined,
+              userEmail: undefined,
             })
           );
           dispatch(

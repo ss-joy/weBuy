@@ -2,24 +2,19 @@ import { useRouter } from "next/router";
 import Loading from "@/components/ui/Loading";
 import Image from "next/image";
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { cutOutFirst100Words } from "@/lib";
-import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/queries";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
   decreaseCartItemQuantity,
   increaseCartItemQuantity,
 } from "@/store/features/cart/cartSlice";
-import { ecomBackendUrl } from "@/config";
-import { Product } from "@/types/products-type";
+import { useGetProductQuery } from "@/store/features/products/productsApi";
 
 export default function SingleProductDetailsPage(): JSX.Element {
-  const { data: session, status } = useSession();
   const [showFullText, setShowFullText] = useState<boolean>(false);
-  const isAuthenticated = status === "authenticated" && session;
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
 
   const router = useRouter();
   const productId = router.query.productId;
@@ -29,11 +24,12 @@ export default function SingleProductDetailsPage(): JSX.Element {
     state.cart.cartItems.find((data) => data.productId === productId)
   );
 
-  const { data, isLoading, error } = useQuery<Product>({
-    queryKey: ["get-single-product-details", router.query.productId],
-    queryFn: () =>
-      makeGetRequest(`${ecomBackendUrl}/products/${router.query.productId}`),
-  });
+  const { isLoading, error, data } = useGetProductQuery(
+    { id: productId as string },
+    {
+      skip: !productId,
+    }
+  );
 
   if (isLoading) {
     return <Loading />;

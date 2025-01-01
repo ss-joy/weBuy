@@ -25,6 +25,7 @@ export class UsersController {
     return this.usersService.getUser(id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   updateUser(
     @Param('id') id: string,
@@ -40,6 +41,7 @@ export class UsersController {
     return this.usersService.deleteUserImage(id);
   }
 
+  @UseGuards(AuthGuard)
   @Post('image/:id')
   @HttpCode(201)
   addUserImage(

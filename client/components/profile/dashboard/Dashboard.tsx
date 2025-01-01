@@ -26,7 +26,6 @@ function Dashboard({ userId }: DashboardProps) {
     return <Loading />;
   }
   if (error) {
-    console.log(error);
     return <ErrorMsg />;
   }
   return (

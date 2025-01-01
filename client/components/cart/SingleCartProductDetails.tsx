@@ -2,10 +2,9 @@ import Image from "next/image";
 import React from "react";
 import { z } from "zod";
 import ErrorMsg from "../ui/ErrorMsg";
-import { useQuery } from "@tanstack/react-query";
 
 import Loading from "../ui/Loading";
-import { makeGetRequest } from "@/queries";
+import { useGetProductQuery } from "@/store/features/products/productsApi";
 
 interface SingleCartProductDetailsProps {
   productQuantity: number;
@@ -30,10 +29,12 @@ const SingleCartProductDetails = ({
   });
   type ApiResponseType = z.infer<typeof apiResponseSchema>;
 
-  const { data, isLoading, error } = useQuery<ApiResponseType>({
-    queryKey: ["get-single-product-details-for-cart", productId],
-    queryFn: () => makeGetRequest(`/api/products/${productId}`),
-  });
+  const { data, isLoading, error } = useGetProductQuery(
+    { id: productId },
+    {
+      skip: !productId,
+    }
+  );
   if (error) {
     return <ErrorMsg />;
   }
@@ -49,26 +50,26 @@ const SingleCartProductDetails = ({
         <Image
           width={500}
           height={500}
-          src={data?.data.product.imagePath as string}
+          src={data?.imagePath as string}
           alt="product image"
           className="w-full block md:w-full rounded-md"
         />
         <h2 className="text-slate-500 font-bold text-start text-2xl xs:text-3xl">
-          {data?.data.product.name}
+          {data?.name}
         </h2>
       </section>
       <section
         id="unit-price-details"
         className="text-orange-400 border-2 font-bold text-center text-3xl flex justify-around  md:flex-col md:justify-center md:px-12"
       >
-        <p>{productQuantity}pc's</p>X<p>{data?.data.product.price}$</p>
+        <p>{productQuantity}pc's</p>X<p>{data?.price}$</p>
       </section>
       <section id="total-per-product" className="flex flex-col border-2">
         <p className="bg-orange-400 font-bold text-white text-center text-2xl md:mb-24 md:px-12">
           Total
         </p>
         <p className="text-orange-400 font-bold text-center text-3xl">
-          {productQuantity * data?.data.product.price!}$
+          {productQuantity * data?.price!}$
         </p>
       </section>
     </li>

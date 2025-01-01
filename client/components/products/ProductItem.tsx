@@ -2,8 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ProductSkeleton } from "./ProductSkeleton";
-import { useQuery } from "@tanstack/react-query";
-import { makeGetRequest } from "@/queries";
 import {
   CopyIcon,
   Share2Icon,
@@ -16,21 +14,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Toaster, toast } from "sonner";
-import { ecomBackendUrl, ecomBaseUrl } from "@/config";
+import { ecomBaseUrl } from "@/config";
+import { useGetUserQuery } from "@/store/features/user/userApi";
+import { Product } from "@/types/products-type";
 
 interface ProductItemProps {
   isLoading: boolean;
-  product: {
-    _id: string;
-    name: string;
-    description: string;
-    price: number;
-    imagePath: string;
-    sellerId: string;
-    sellerName: string;
-    productCategory: string;
-    sellCount: number;
-  };
+  product: Product;
 }
 const ProductItem = ({
   product: {
@@ -45,15 +35,17 @@ const ProductItem = ({
   },
   isLoading,
 }: ProductItemProps): JSX.Element => {
+  const { _id: sellerMongoId } = sellerId;
   const {
     error,
     isLoading: isQueryLoading,
     data,
-  } = useQuery({
-    queryKey: ["user", sellerId],
-    queryFn: () => makeGetRequest(`${ecomBackendUrl}/api/user/${sellerId}`),
-    enabled: sellerId ? true : false,
-  });
+  } = useGetUserQuery(
+    { userId: sellerMongoId },
+    {
+      skip: !sellerId,
+    }
+  );
 
   async function copyText() {
     await navigator.clipboard.writeText(`${ecomBaseUrl}/products/${_id}`);
@@ -87,8 +79,8 @@ const ProductItem = ({
               <Image
                 className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
                 src={
-                  data?.data.user.profilePicture
-                    ? data?.data.user.profilePicture
+                  data?.profilePicture
+                    ? data?.profilePicture
                     : "/ui-images/dummy-user.jpg"
                 }
                 width={40}

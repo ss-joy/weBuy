@@ -1,10 +1,8 @@
 import ProductsList from "@/components/products/ProductsList";
 import ErrorMsg from "@/components/ui/ErrorMsg";
-import { useQuery } from "@tanstack/react-query";
 import Head from "next/head";
-import { makeGetRequest } from "@/queries";
 import ProductsCategory from "../../components/products/ProductsCategory";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,11 +22,11 @@ import {
   ThumbsUpIcon,
   XCircleIcon,
 } from "lucide-react";
-import { Product, sortStype } from "@/types/products-type";
-import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { ecomBackendUrl } from "@/config";
+import { sortStype } from "@/types/products-type";
+import { useAppSelector } from "@/hooks/redux-hooks";
 import { useRouter } from "next/router";
 import Pagination from "@/components/ui/Pagination";
+import { useGetAllProductQuery } from "@/store/features/products/productsApi";
 
 export default function ProductsListPage(): JSX.Element {
   const { category } = useAppSelector((state) => state.categoryFilter);
@@ -45,18 +43,21 @@ export default function ProductsListPage(): JSX.Element {
   }, []);
 
   const [sortBy, setSortBy] = useState<sortStype>("");
+
   const {
-    error,
     data: products,
+    error,
     isLoading,
-  } = useQuery<Product[]>({
-    queryKey: ["get-products-list", category, page, limit],
-    queryFn: () =>
-      makeGetRequest(
-        `${ecomBackendUrl}/products/?productCategory=${category}&page=${page}&limit=${limit}`
-      ),
-    enabled: page !== undefined && limit !== undefined,
-  });
+  } = useGetAllProductQuery(
+    {
+      category,
+      page: +page!,
+      limit: +limit!,
+    },
+    {
+      skip: page === undefined || limit === undefined,
+    }
+  );
 
   if (error) {
     return <ErrorMsg />;

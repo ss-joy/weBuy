@@ -1,4 +1,3 @@
-import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -14,17 +13,15 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { cn } from "@/lib";
+import { useAppSelector } from "@/hooks/redux-hooks";
+import { useLogOutMutation } from "@/store/features/auth/authApi";
+
 function HamburgerSlider() {
-  const { data: session, status } = useSession();
   const router = useRouter();
-  function logOut() {
-    signOut({
-      redirect: false,
-    });
-  }
-  const isAuthenticated = status === "authenticated" && session;
-  //@ts-ignore
-  const userId = session?.user!.user_id;
+  const { userId } = useAppSelector((state) => state.auth);
+  const [logOut] = useLogOutMutation();
+  const isAuthenticated = !!userId;
+
   return (
     <>
       <Sheet>
@@ -63,7 +60,7 @@ function HamburgerSlider() {
                   <Link href={"/orders"}>Orders</Link>
                 </li>
               )}
-              {router.pathname !== "/products" && (
+              {router.pathname !== "/products" && isAuthenticated && (
                 <li className={cn("nav-btn my-2", "hover:text-orange-300")}>
                   <Link href={"/products"}>Shop Here</Link>
                 </li>
@@ -80,7 +77,13 @@ function HamburgerSlider() {
               )}
               {isAuthenticated && (
                 <li className={cn("nav-btn my-2", "hover:text-orange-300")}>
-                  <button onClick={logOut}>Log Out</button>
+                  <button
+                    onClick={() => {
+                      logOut(undefined);
+                    }}
+                  >
+                    Log Out
+                  </button>
                 </li>
               )}
               {isAuthenticated && (

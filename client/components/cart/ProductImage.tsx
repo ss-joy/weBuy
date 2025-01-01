@@ -1,21 +1,22 @@
-import { ecomBackendUrl } from "@/config";
-import { makeGetRequest } from "@/queries";
-import { Product } from "@/types/products-type";
-import { useQuery } from "@tanstack/react-query";
+import { useGetProductQuery } from "@/store/features/products/productsApi";
 import { ExternalLinkIcon, PackageSearch } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { z } from "zod";
+
 type ProductImageProps = {
   productId: string;
 };
 
 function ProductImage({ productId }: ProductImageProps) {
-  const { data, isLoading, error } = useQuery<Product>({
-    queryKey: ["get-single-product-details", productId],
-    queryFn: () => makeGetRequest(`${ecomBackendUrl}/products/${productId}`),
-  });
+  const { data, isLoading, error } = useGetProductQuery(
+    {
+      id: productId,
+    },
+    {
+      skip: !productId,
+    }
+  );
 
   return (
     <>

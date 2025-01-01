@@ -1,28 +1,20 @@
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import React from "react";
 import ErrorMsg from "../ui/ErrorMsg";
 import Loading from "../ui/Loading";
 import { FingerprintIcon, MailIcon, Pen, UserCircleIcon } from "lucide-react";
 import EditProfileModal from "./EditProfileModal";
-import axios from "axios";
-import { User } from "@/types";
-import { ecomBackendUrl } from "@/config";
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
+import { useGetUserQuery } from "@/store/features/user/userApi";
 
 type GetUserProfileProps = {
-  userId: string | null;
+  userId: string;
 };
 
 function UserProfile({ userId }: GetUserProfileProps) {
-  console.log("userid from userProfile", userId);
-  const { error, isLoading, data } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: () => axios.get<User>(`${ecomBackendUrl}/user/${userId}`),
-    enabled: userId ? true : false,
-    staleTime: Infinity,
-  });
-  console.log("here====>", data);
+  const { error, isLoading, data } = useGetUserQuery(
+    { userId },
+    { skip: !userId }
+  );
 
   if (error) {
     return <ErrorMsg />;
@@ -39,8 +31,8 @@ function UserProfile({ userId }: GetUserProfileProps) {
         <Image
           className="rounded-full w-full transition-all h-full block mx-auto object-cover"
           src={
-            data?.data.profilePicture
-              ? data?.data.profilePicture
+            data?.profilePicture
+              ? data?.profilePicture
               : "/ui-images/dummy-user.jpg"
           }
           width={300}
@@ -48,9 +40,9 @@ function UserProfile({ userId }: GetUserProfileProps) {
           alt="profile image of user"
         />
         <EditProfileModal
-          name={data?.data.name as string}
-          email={data?.data.email as string}
-          profileImage={data?.data.profilePicture as string}
+          name={data?.name as string}
+          email={data?.email as string}
+          profileImage={data?.profilePicture as string}
           userId={userId as string}
         />
       </div>
@@ -61,22 +53,17 @@ function UserProfile({ userId }: GetUserProfileProps) {
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <UserCircleIcon />
-          {isLoading ? "Loading..." : data?.data.name}
+          {isLoading ? "Loading..." : data?.name}
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <MailIcon />
-          {isLoading ? "loading..." : data?.data.email}
+          {isLoading ? "loading..." : data?.email}
         </p>
         <p className="text-gray-600 font-bold mb-4 break-words flex items-center justify-start flex-wrap gap-2">
           <FingerprintIcon />
-          {isLoading ? "Loading..." : data?.data._id}
+          {isLoading ? "Loading..." : data?._id}
         </p>
       </div>
-      {/* <ReactQueryDevtoolsPanel
-        isOpen={true}
-        setIsOpen={() => true}
-        onDragStart={() => {}}
-      /> */}
     </div>
   );
 }

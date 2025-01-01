@@ -9,10 +9,6 @@ import {
 } from "@/components/ui/dialog";
 import { ViewIcon } from "lucide-react";
 import Image from "next/image";
-import { useQuery } from "@tanstack/react-query";
-import { Product } from "@/types/products-type";
-import { ecomBackendUrl } from "@/config";
-import axios from "axios";
 import Loading from "@/components/ui/Loading";
 import ErrorMsg from "@/components/ui/ErrorMsg";
 import {
@@ -21,16 +17,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useGetProductQuery } from "@/store/features/products/productsApi";
 
 type ViewProductModalProps = { productId: string };
 const ViewProductModal = ({ productId }: ViewProductModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["products", productId],
-    queryFn: () =>
-      axios.get<Product>(`${ecomBackendUrl}/products/${productId}`),
-  });
+  const { data, isLoading, error } = useGetProductQuery(
+    { id: productId },
+    {
+      skip: !productId,
+    }
+  );
 
   if (isLoading) {
     return <Loading />;
@@ -65,7 +63,7 @@ const ViewProductModal = ({ productId }: ViewProductModalProps) => {
             <Image
               className="rounded mx-auto w-full max-w-2xl shadow shadow-slate-500 transition-all"
               alt="Product image"
-              src={data ? data.data.imagePath : ""}
+              src={data ? data.imagePath : ""}
               width={700}
               height={700}
             />
@@ -76,21 +74,21 @@ const ViewProductModal = ({ productId }: ViewProductModalProps) => {
           >
             <div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-500">
-                {data?.data?.name}
+                {data?.name}
               </h2>
               <div className="w-24 mt-4 mb-4 rounded-md p-2 font-bold text-2xl lg:text-3xl text-orange-400">
-                $ {data?.data?.price}
+                $ {data?.price}
               </div>
               <Accordion type="single" collapsible className="w-full">
                 <AccordionItem value="item-1">
                   <AccordionTrigger className="hover:no-underline text-start">
-                    {data?.data.description.slice(0, 390)}
+                    {data?.description.slice(0, 390)}
                   </AccordionTrigger>
-                  <AccordionContent>{data?.data.description}</AccordionContent>
+                  <AccordionContent>{data?.description}</AccordionContent>
                 </AccordionItem>
               </Accordion>
               <div className="flex flex-wrap gap-2 mt-2 p-2 rounded-lg bg-orange-300 text-white font-bold">
-                {data?.data.productCategory}
+                {data?.productCategory}
               </div>
             </div>
           </section>

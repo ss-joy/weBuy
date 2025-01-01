@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useQuery } from "@tanstack/react-query";
 import { ecomBackendUrl } from "@/config";
 import axios from "axios";
 import { Product } from "@/types/products-type";

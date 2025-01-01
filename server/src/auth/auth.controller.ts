@@ -41,6 +41,7 @@ export class AuthController {
     });
     return {
       userId,
+      userEmail: loginUserDto.email,
       roles,
     };
   }
@@ -60,6 +61,7 @@ export class AuthController {
     return {
       userId: req.body.userData.sub,
       roles: req.body.userData.roles,
+      userEmail: req.body.userEmail,
     };
   }
 }

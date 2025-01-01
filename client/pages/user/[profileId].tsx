@@ -1,33 +1,18 @@
 import GetUserProfile from "@/components/profile/UserProfile";
 import React, { useEffect, useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getSession, useSession } from "next-auth/react";
 import Dashboard from "@/components/profile/dashboard/Dashboard";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { PackageOpen, TableOfContents, UserPen } from "lucide-react";
 import Link from "next/link";
 import UserProfile from "@/components/profile/UserProfile";
 import Inventory from "@/components/profile/dashboard/inventory/Inventory";
 import Loading from "@/components/ui/Loading";
+import { useAppSelector } from "@/hooks/redux-hooks";
 
 function UserProfilePage() {
-  const [userId, setUserId] = useState<string | null>("");
+  const { userId } = useAppSelector((state) => state.auth);
 
-  useEffect(() => {
-    async function getUserId() {
-      const session = await getSession();
-      if (session) {
-        //@ts-ignore
-        setUserId(session?.user!.user_id);
-      }
-    }
-    getUserId();
-  }, []);
   const router = useRouter();
-  console.log(router.query);
 
   const iconClassNames = "text-orange-400";
   const dashBoardNavigaitionItems = [
@@ -70,8 +55,9 @@ function UserProfilePage() {
             Dashboard
           </span>
           <section className="flex flex-col gap-2">
-            {dashBoardNavigaitionItems.map((item) => (
+            {dashBoardNavigaitionItems.map((item, index) => (
               <Link
+                key={index}
                 href={{
                   pathname: `/user/${userId}/`,
                   query: { tab: item.tabItem },
@@ -100,22 +86,3 @@ function UserProfilePage() {
 }
 
 export default UserProfilePage;
-
-export const getServerSideProps = (async (context) => {
-  const sessionFound = await getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
-  if (!sessionFound) {
-    return {
-      redirect: {
-        destination: "/helper/no-auth",
-        permanent: false,
-      },
-    };
-  }
-  return {
-    props: {},
-  };
-}) satisfies GetServerSideProps<{}>;
