@@ -11,9 +11,13 @@ import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 
+import { useAppDispatch } from "@/hooks/redux-hooks";
+import { useLoginMutation } from "@/store/features/auth/authApi";
+
 export default function LoginPage(): JSX.Element {
   const router = useRouter();
   const [hidePwd, setHidePwd] = useState<boolean>(true);
+  const dispatch = useAppDispatch();
 
   const {
     handleSubmit,
@@ -22,27 +26,23 @@ export default function LoginPage(): JSX.Element {
     formState: { errors, isSubmitting },
   } = useForm<UserSignUpSchemaType>();
 
-  async function onSubmit(data: UserSignUpSchemaType) {
-    const ans = await signIn("credentials", {
-      callbackUrl: "/",
-      redirect: false,
-      userEmail: data.userEmail,
-      userPwd: data.userPwd,
-    });
+  const [login] = useLoginMutation(undefined);
 
-    if (ans?.error && !ans.ok) {
-      console.log(ans);
-      toast.warning("Sign Up failed!", {
-        description: "Login failed. Try again..",
+  async function onSubmit(data: UserSignUpSchemaType) {
+    try {
+      await login({
+        email: data.userEmail,
+        password: data.userPwd,
       });
-    } else if (!ans?.error && ans?.ok) {
       toast.success("Login Successful!", {
         description: "You will be shortly redirected...",
       });
-
-      setTimeout(() => {
-        router.push("/products");
-      }, 1000);
+      router.push("/products");
+    } catch (error) {
+      console.log(error);
+      toast.warning("Sign Up failed!", {
+        description: "Login failed. Try again..",
+      });
     }
   }
   return (
@@ -68,10 +68,6 @@ export default function LoginPage(): JSX.Element {
 
             {
               required: { value: true, message: "Your name is required" },
-              minLength: {
-                value: 5,
-                message: "Your name cant must be at least 5 characters",
-              },
             }
           )}
           id="userEmail"
@@ -88,10 +84,6 @@ export default function LoginPage(): JSX.Element {
               required: {
                 value: true,
                 message: "Please enter your password",
-              },
-              minLength: {
-                value: 5,
-                message: "Password must be greater than 5 characters",
               },
             })}
             id="userPwd"

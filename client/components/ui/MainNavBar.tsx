@@ -1,27 +1,19 @@
 import React from "react";
 import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import Profile from "../profile/Profile";
 import {
   KeyRoundIcon,
   LockIcon,
-  PackagePlusIcon,
-  ShoppingBagIcon,
   ShoppingCartIcon,
   StoreIcon,
 } from "lucide-react";
 import HamburgerSlider from "../Drawer/HamburgerSlider";
+import { useAppSelector } from "@/hooks/redux-hooks";
 
 const MainNavBar = (): JSX.Element => {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-  function logOut() {
-    signOut({
-      redirect: false,
-    });
-  }
-  const isAuthenticated = status === "authenticated" && session;
+  const { userId, isAuthenticated } = useAppSelector((state) => state.auth);
+
   return (
     <>
       <nav className="hidden lg:block bg-white">
@@ -59,11 +51,7 @@ const MainNavBar = (): JSX.Element => {
 
           {isAuthenticated && (
             <li className="nav-btn">
-              <Profile
-                //@ts-ignore
-                userId={session.user!.user_id}
-                logout={logOut}
-              />
+              <Profile userId={userId as string} />
             </li>
           )}
         </ul>

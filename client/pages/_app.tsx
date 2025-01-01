@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import AuthWrapper from "@/components/shared/AuthWrapper";
 
 const robotoFont = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -33,9 +34,11 @@ export default function App({
               <MetaData />
             </Head>
             <MainHeader />
-            <main className={`${robotoFont.className} pt-[110px]`}>
-              <Component {...pageProps} />
-            </main>
+            <AuthWrapper>
+              <main className={`${robotoFont.className} pt-[110px]`}>
+                <Component {...pageProps} />
+              </main>
+            </AuthWrapper>
           </MainLayout>
         </QueryClientProvider>
       </Provider>

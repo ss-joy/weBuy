@@ -4,6 +4,7 @@ import {
   Get,
   HttpCode,
   Post,
+  Req,
   Res,
   UseGuards,
   ValidationPipe,
@@ -11,7 +12,7 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { LoginUserDto } from './dtos/login-user.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
@@ -44,9 +45,21 @@ export class AuthController {
     };
   }
 
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      sameSite: 'strict',
+    });
+    return;
+  }
+
   @UseGuards(AuthGuard)
-  @Get('test')
-  test() {
-    return 'hello';
+  @Get('me')
+  async validateToken(@Req() req: Request) {
+    return {
+      userId: req.body.userData.sub,
+      roles: req.body.userData.roles,
+    };
   }
 }
