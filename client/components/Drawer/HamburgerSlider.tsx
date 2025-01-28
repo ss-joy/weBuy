@@ -18,9 +18,11 @@ import { useLogOutMutation } from "@/store/features/auth/authApi";
 
 function HamburgerSlider() {
   const router = useRouter();
-  const { userId } = useAppSelector((state) => state.auth);
+  const {
+    user: { userId },
+    isAuthenticated,
+  } = useAppSelector((state) => state.auth);
   const [logOut] = useLogOutMutation();
-  const isAuthenticated = !!userId;
 
   return (
     <>

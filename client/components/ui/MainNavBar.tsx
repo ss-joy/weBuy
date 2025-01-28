@@ -12,7 +12,10 @@ import HamburgerSlider from "../Drawer/HamburgerSlider";
 import { useAppSelector } from "@/hooks/redux-hooks";
 
 const MainNavBar = (): JSX.Element => {
-  const { userId, isAuthenticated } = useAppSelector((state) => state.auth);
+  const {
+    user: { userId },
+    isAuthenticated,
+  } = useAppSelector((state) => state.auth);
 
   return (
     <>

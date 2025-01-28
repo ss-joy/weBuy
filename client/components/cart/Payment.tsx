@@ -10,9 +10,10 @@ const Payment = (): JSX.Element => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const [loading, setIsloading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { isAuthenticated, userId, userEmail } = useAppSelector(
-    (state) => state.auth
-  );
+  const {
+    isAuthenticated,
+    user: { userId, userEmail },
+  } = useAppSelector((state) => state.auth);
 
   function calculateTotalPrice() {
     let sum = 0;

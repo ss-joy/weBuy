@@ -6,14 +6,13 @@ export type User = {
   roles?: string[];
 };
 
-export type AuthSliceType = User & {
+export type AuthSliceType = {
+  user: User;
   isAuthenticated: boolean;
 };
 
 const initialState: AuthSliceType = {
-  userId: undefined,
-  roles: undefined,
-  userEmail: undefined,
+  user: {},
   isAuthenticated: false,
 };
 
@@ -22,19 +21,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action: PayloadAction<User>) => {
-      state.userId = action.payload.userId;
-      state.roles = action.payload.roles;
-      state.userEmail = action.payload.userEmail;
+      state.user.userId = action.payload.userId;
+      state.user.roles = action.payload.roles;
+      state.user.userEmail = action.payload.userEmail;
     },
     logoutUser: (state) => {
-      state.userId = undefined;
-      state.roles = undefined;
-      state.userEmail = undefined;
+      state.user.userId = undefined;
+      state.user.roles = undefined;
+      state.user.userEmail = undefined;
     },
     setUserAuthData: (state, action: PayloadAction<User>) => {
-      state.userId = action.payload.userId;
-      state.roles = action.payload.roles;
-      state.userEmail = action.payload.userEmail;
+      state.user.userId = action.payload.userId;
+      state.user.roles = action.payload.roles;
+      state.user.userEmail = action.payload.userEmail;
     },
     setAuthStatus: (
       state,
