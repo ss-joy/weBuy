@@ -15,7 +15,6 @@ import {
 } from "@/components/ui/popover";
 import { Toaster, toast } from "sonner";
 import { ecomBaseUrl } from "@/config";
-import { useGetUserQuery } from "@/store/features/user/userApi";
 import { Product } from "@/types/products-type";
 
 interface ProductItemProps {
@@ -24,29 +23,16 @@ interface ProductItemProps {
 }
 const ProductItem = ({
   product: {
-    sellerId,
+    sellerId: { name: sellerName, profilePicture, roles },
     imagePath,
     name,
     price,
     _id,
-    sellerName,
     productCategory,
     sellCount,
   },
   isLoading,
 }: ProductItemProps): JSX.Element => {
-  const { _id: sellerMongoId } = sellerId;
-  const {
-    error,
-    isLoading: isQueryLoading,
-    data,
-  } = useGetUserQuery(
-    { userId: sellerMongoId },
-    {
-      skip: !sellerId,
-    }
-  );
-
   async function copyText() {
     await navigator.clipboard.writeText(`${ecomBaseUrl}/products/${_id}`);
     toast.info("Link copied!!!", {
@@ -67,7 +53,6 @@ const ProductItem = ({
               width={700}
               height={700}
             />
-            {/* <div className="mt-auto"> */}
             <h2 className="text-2xl font-bold text-orange-600">{name}</h2>
             <p className="mb-2 text-blue-500 font-bold">{productCategory}</p>
             <p className="flex items-center">
@@ -77,11 +62,9 @@ const ProductItem = ({
             </p>
             <p className="my-4 text-slate-600 font-bold flex items-center justify-start w-full">
               <Image
-                className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
+                className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500 size-10 object-cover"
                 src={
-                  data?.profilePicture
-                    ? data?.profilePicture
-                    : "/ui-images/dummy-user.jpg"
+                  profilePicture ? profilePicture : "/ui-images/dummy-user.jpg"
                 }
                 width={40}
                 height={40}
