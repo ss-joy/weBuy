@@ -9,19 +9,27 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib";
 import { DevTool } from "@hookform/devtools";
-import { Pen, PlusCircleIcon, SaveIcon, Trash2Icon } from "lucide-react";
+import {
+  Edit2Icon,
+  EditIcon,
+  Pen,
+  PenIcon,
+  PlusCircleIcon,
+  SaveIcon,
+  Trash2Icon,
+} from "lucide-react";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "../shared/ErrorMessage";
-import { QueryClient, useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { ecomBackendUrl } from "@/config";
-import Loading from "../ui/Loading";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { SubmissionData, UpdateProfileFormData } from "@/types";
+import { ChangeEvent, useRef, useState } from "react";
+import { UpdateProfileFormData } from "@/types";
 import Image from "next/image";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/lib/firebase";
-import { v4 } from "uuid";
+
+import {
+  useAddUserImageMutation,
+  useDeleteUserImageMutation,
+  useSaveUserDataMutation,
+} from "@/store/features/user/userApi";
+import { toast } from "sonner";
 
 type EditProfileModalProps = {
   name: string;
@@ -44,7 +52,6 @@ export default function EditProfileModal({
     formState: { errors },
     register,
     handleSubmit,
-    control,
   } = useForm<UpdateProfileFormData>({
     defaultValues: {
       userEmail: email,
@@ -53,43 +60,32 @@ export default function EditProfileModal({
     },
   });
 
-  const queryClient = new QueryClient();
+  const [saveUserData, { isLoading: updatingUserInfo }] =
+    useSaveUserDataMutation();
 
-  const { mutate, isLoading } = useMutation({
-    mutationFn: (data: SubmissionData) => {
-      return axios.patch(`${ecomBackendUrl}/user/${userId}`, data);
-    },
-    onSuccess(data) {
-      setIsModalOpen(false);
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-    },
-  });
+  const [addUserImage, { isLoading: updatingUserImage }] =
+    useAddUserImageMutation();
 
-  const { mutate: mutateImage, isLoading: deletingImage } = useMutation({
-    mutationFn: () => {
-      return axios.delete(`${ecomBackendUrl}/user/image/${userId}`);
-    },
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-    },
-  });
+  const [deleteUserImage, { isLoading: deletingImage }] =
+    useDeleteUserImageMutation();
 
-  const { mutate: addImage, isLoading: addingImage } = useMutation({
-    mutationFn: async () => {
-      const imageRef = ref(
-        storage,
-        `user-profile-images/${File.name + v4() + Date.now()}`
-      );
-      await uploadBytes(imageRef, image!);
-      const url = await getDownloadURL(imageRef);
-      await axios.post(`${ecomBackendUrl}/user/image/${userId}`, {
-        imageLink: url,
-      });
-    },
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["user", userId] });
-    },
-  });
+  async function handleDeleteButtonClick(userId: string) {
+    await deleteUserImage({ userId });
+    toast("Image deleted Successfully", {
+      richColors: true,
+    });
+  }
+
+  async function handlePlusButtonClick() {
+    if (!image) return;
+    await addUserImage({
+      userId: userId,
+      userPofileImage: image,
+    });
+    toast("Image Updated Successfully", {
+      richColors: true,
+    });
+  }
 
   async function onSubmit(formData: UpdateProfileFormData) {
     if (!profileImage) {
@@ -101,12 +97,10 @@ export default function EditProfileModal({
       password: formData.userPwd,
       profilePicture: profileImage,
     };
-    mutate(data);
-  }
-
-  async function addUserImage() {
-    if (!image) return;
-    addImage();
+    await saveUserData({ userId, data });
+    toast("Info Updated Successfully", {
+      richColors: true,
+    });
   }
 
   function handleImageInputChange(e: ChangeEvent<HTMLInputElement>) {
@@ -128,7 +122,7 @@ export default function EditProfileModal({
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <Pen className="bg-orange-400 p-2 text-white size-[50px] rounded-full absolute bottom-2 right-2 hover:cursor-pointer" />
+        <EditIcon className="stroke-slate-400 bg-white size-[50px] rounded-lg absolute bottom-2 right-2 hover:cursor-pointer" />
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px] p-12 h-auto">
         <DialogHeader>
@@ -140,7 +134,7 @@ export default function EditProfileModal({
           </DialogDescription>
         </DialogHeader>
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-          <div className="relative size-[100px] rounded-full">
+          <div className="relative size-[150px] rounded-full mx-auto  ">
             <Image
               className="rounded-full my-2 object-cover w-full h-full"
               src={
@@ -166,7 +160,7 @@ export default function EditProfileModal({
             {profileImage ? (
               <Trash2Icon
                 className="absolute right-0 bottom-0 fill-red-400 size-8 hover:cursor-pointer"
-                onClick={() => mutateImage()}
+                onClick={() => handleDeleteButtonClick(userId)}
               />
             ) : null}
             {!profileImage ? (
@@ -178,7 +172,7 @@ export default function EditProfileModal({
             {imagePreview ? (
               <SaveIcon
                 className="absolute right-0 bottom-0 fill-green-400 size-8 hover:cursor-pointer"
-                onClick={() => addUserImage()}
+                onClick={() => handlePlusButtonClick()}
               />
             ) : null}
           </div>
@@ -235,10 +229,11 @@ export default function EditProfileModal({
             type="text"
           />
           <Button
-            disabled={isLoading}
-            className={`bg-orange-400 font-bold text-xl p-4 ${isLoading ? "disabled:" : ""}`}
+            disabled={updatingUserInfo}
+            isLoading={updatingUserInfo || deletingImage || updatingUserImage}
+            className={`bg-orange-400 font-bold text-xl p-4 ${updatingUserInfo ? "disabled:" : ""}`}
           >
-            {isLoading || deletingImage || addingImage ? <Loading /> : "save"}
+            save
           </Button>
         </form>
         {/* <DevTool control={control} /> */}

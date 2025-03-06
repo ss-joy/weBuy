@@ -23,10 +23,10 @@ function UserProfile({ userId }: GetUserProfileProps) {
     return <Loading />;
   }
   return (
-    <div className="mt-24 mx-auto w-1/2 shadow-md shadow-slate-400 p-4 flex flex-col gap-4 rounded-lg items-center text-center">
+    <div className="mt-24 mx-auto w-1/2 shadow p-4 flex flex-col gap-4 rounded-lg items-center text-center max-w-[400px]">
       <div
         id="image-container"
-        className="size-40 lg:size-56 rounded-full relative"
+        className="size-40 lg:size-52 rounded-full relative ring-slate-400 ring-2"
       >
         <Image
           className="rounded-full w-full transition-all h-full block mx-auto object-cover"

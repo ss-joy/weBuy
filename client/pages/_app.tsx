@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "@/store/store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthWrapper from "@/components/shared/AuthWrapper";
+import { Toaster } from "sonner";
 
 const robotoFont = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -35,6 +36,7 @@ export default function App({
           <AuthWrapper>
             <main className={`${robotoFont.className} pt-[110px]`}>
               <Component {...pageProps} />
+              <Toaster />
             </main>
           </AuthWrapper>
         </MainLayout>

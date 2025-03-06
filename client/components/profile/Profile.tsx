@@ -42,7 +42,7 @@ function Profile({ userId }: ProfileProps) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Image
-          className="rounded-full transition-all hover:shadow-md hover:shadow-slate-500"
+          className="rounded-full transition-all size-10 object-cover hover:shadow-md hover:shadow-slate-500"
           src={
             data?.profilePicture
               ? data?.profilePicture

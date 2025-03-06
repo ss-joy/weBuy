@@ -10,7 +10,7 @@ import Loading from "@/components/ui/Loading";
 import { useAppSelector } from "@/hooks/redux-hooks";
 
 function UserProfilePage() {
-  const { userId } = useAppSelector((state) => state.auth);
+  const { userId } = useAppSelector((state) => state.auth.user);
 
   const router = useRouter();
 
