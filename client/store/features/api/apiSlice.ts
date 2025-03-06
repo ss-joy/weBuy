@@ -8,7 +8,7 @@ const apiSlice = createApi({
     credentials: "include",
   }),
   keepUnusedDataFor: 10 * 60,
-  tagTypes: ["User"],
+  tagTypes: ["User", "Product", "Products"],
   endpoints: (builder) => ({}),
 });
 export default apiSlice;

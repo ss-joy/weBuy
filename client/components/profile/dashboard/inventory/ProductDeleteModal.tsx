@@ -7,41 +7,24 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Trash2Icon, ViewIcon } from "lucide-react";
-import { QueryClient, useMutation } from "@tanstack/react-query";
-import axios from "axios";
-import { ecomBackendUrl } from "@/config";
+import { Trash2Icon } from "lucide-react";
+import { useDeleteProductMutation } from "@/store/features/products/productsApi";
 
 type ProductDeleteModalProps = {
   prodName: string;
   productId: string;
   userId: string;
-  refetch: any;
 };
 const ProductDeleteModal = ({
   prodName,
   productId,
   userId,
-  refetch,
 }: ProductDeleteModalProps) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
-  const queryClient = new QueryClient();
+  const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
 
-  const { mutate, isPending: isDeleting } = useMutation({
-    mutationFn: (id: string) =>
-      axios.delete(`${ecomBackendUrl}/products/${id}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["products", userId],
-      });
-      console.log("success");
-      setIsDeleteModalOpen(false);
-      refetch();
-    },
-  });
-
-  function deleteProduct(id: string) {
-    mutate(id);
+  async function handleDeleteButtonClick() {
+    await deleteProduct({ productId: productId, userId });
   }
   return (
     <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
@@ -55,7 +38,7 @@ const ProductDeleteModal = ({
             <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
             <Button
               className="bg-red-400"
-              onClick={() => deleteProduct(productId)}
+              onClick={() => handleDeleteButtonClick()}
               isLoading={isDeleting}
             >
               Delete

@@ -78,9 +78,10 @@ export class UsersRepository {
     if (!isValidObjectId(userId)) {
       throw new BadRequestException('Invalid Mongo User id');
     }
-    return this.userModel
-      .findById(userId)
-      .select('-__v -password')
-      .populate('products', '-__v');
+
+    return this.productModel
+      .find({ sellerId: userId })
+      .populate('sellerId', '-roles -password -products -__v -createdAt')
+      .select('-__v');
   }
 }

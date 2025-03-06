@@ -12,20 +12,14 @@ import {
 import { categories } from "../../../products/ProductsCategory";
 import { cn } from "@/lib";
 import { Button } from "../../../ui/button";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "@/lib/firebase";
-import { v4 } from "uuid";
 import { toast, Toaster } from "sonner";
-import Loading from "../../../ui/Loading";
 import { useDropzone } from "react-dropzone";
 import UplaodImage from "@/assets/logos/Group 138.png";
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
-import axios from "axios";
-import { ecomBackendUrl } from "@/config";
 import { Trash2Icon } from "lucide-react";
-import { CreateProductFromData, CreateProductSubmissionData } from "@/types";
+import { CreateProductFromData } from "@/types";
+import { useAddNewProductMutation } from "@/store/features/products/productsApi";
 
 type AddProductProps = {
   userId: string;
@@ -61,43 +55,29 @@ const AddProduct = ({ userId }: AddProductProps) => {
     setPreviewUrl(null);
   }
 
-  async function storeImage() {
-    const imageRef = ref(
-      storage,
-      `product-images/${File.name + v4() + Date.now()}`
-    );
-    await uploadBytes(imageRef, file as File);
-    const url = await getDownloadURL(imageRef);
-    return url;
-  }
+  const [addNewProduct, { isLoading: creatingProduct }] =
+    useAddNewProductMutation();
 
   async function onSubmit(formData: CreateProductFromData) {
-    let imageUrl = "";
-    if (file) {
-      imageUrl = await storeImage();
-    }
+    if (!file) return;
+    await addNewProduct({
+      userId,
+      imageFile: file as File,
+      data: {
+        description: formData.description,
+        name: formData.name,
+        price: +formData.price,
+        productCategory: formData.productCategory,
+        availableCount: +formData.availableCount,
+      },
+    });
 
-    const data: CreateProductSubmissionData = {
-      description: formData.description,
-      imagePath: imageUrl,
-      name: formData.name,
-      price: +formData.price,
-      sellerId: userId as string,
-      productCategory: formData.productCategory,
-      availableCount: +formData.availableCount,
-    };
-
-    try {
-      await axios.post(`${ecomBackendUrl}/products`, data);
-      toast.success("Product added Successfully!", {
-        description:
-          "You have successfully added the product. Visit shop here page to view it...",
-      });
-      reset();
-      setFile(null);
-    } catch (error) {
-      console.log(error);
-    }
+    toast.success("Product added Successfully!", {
+      description:
+        "You have successfully added the product. Visit shop here page to view it...",
+    });
+    reset();
+    setFile(null);
   }
   return (
     <section>
@@ -217,6 +197,7 @@ const AddProduct = ({ userId }: AddProductProps) => {
           <Button
             className=" bg-green-400 font-extrabold text-xl"
             isLoading={isSubmitting}
+            disabled={isSubmitting}
           >
             Save
           </Button>
