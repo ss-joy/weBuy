@@ -3,8 +3,6 @@ import apiSlice from "../api/apiSlice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "@/lib/firebase";
 import { CreateProductSubmissionData } from "@/types";
-import axios from "axios";
-import { ecomBackendUrl } from "@/config";
 
 const productAPi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -25,11 +23,16 @@ const productAPi = apiSlice.injectEndpoints({
         data: CreateProductSubmissionData;
       }
     >({
-      async queryFn({
-        userId,
-        imageFile,
-        data: { availableCount, description, name, price, productCategory },
-      }) {
+      async queryFn(
+        {
+          userId,
+          imageFile,
+          data: { availableCount, description, name, price, productCategory },
+        },
+        _queryApi,
+        _extraOptions,
+        baseQuery
+      ) {
         try {
           const imageRef = ref(
             storage,
@@ -49,9 +52,14 @@ const productAPi = apiSlice.injectEndpoints({
             sellerId: userId,
             imagePath: url,
           };
-          await axios.post(`${ecomBackendUrl}/products`, producData, {
-            withCredentials: true,
+
+          await baseQuery({
+            url: `/products`,
+            method: "POST",
+            credentials: "include",
+            body: producData,
           });
+
           return {
             data: {} as Record<PropertyKey, any>,
           };

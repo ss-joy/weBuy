@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -25,6 +26,7 @@ const ProductDeleteModal = ({
 
   async function handleDeleteButtonClick() {
     await deleteProduct({ productId: productId, userId });
+    setIsDeleteModalOpen(false);
   }
   return (
     <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
@@ -33,18 +35,20 @@ const ProductDeleteModal = ({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="mb-2">Delete {prodName}</DialogTitle>
-          <div className="flex justify-between">
-            <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
-            <Button
-              className="bg-red-400"
-              onClick={() => handleDeleteButtonClick()}
-              isLoading={isDeleting}
-            >
-              Delete
-            </Button>
-          </div>
+          <DialogTitle>Delete product</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
+        Are you sure you want to delete {prodName}?
+        <div className="flex justify-between">
+          <Button onClick={() => setIsDeleteModalOpen(false)}>Cancel</Button>
+          <Button
+            className="bg-red-400"
+            onClick={() => handleDeleteButtonClick()}
+            isLoading={isDeleting}
+          >
+            Delete
+          </Button>
+        </div>
       </DialogContent>
     </Dialog>
   );
