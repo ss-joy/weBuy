@@ -4,10 +4,13 @@ import Head from "next/head";
 
 import { useAppSelector } from "@/hooks/redux-hooks";
 import CartDetailsTable from "@/components/cart/CartDetailsTable";
+import { Calendar } from "@/components/ui/calendar";
+import { useState } from "react";
 
 type CartIndexPageProps = {};
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   const { cartItems } = useAppSelector((state) => state.cart);
+  const [date, setDate] = useState<Date | undefined>(undefined);
 
   return (
     <>
@@ -20,8 +23,32 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
       >
         {cartItems.length >= 0 ? (
           <>
-            <ul>{<CartDetailsTable products={cartItems} />}</ul>
-            <Payment />
+            <section className="flex flex-col gap-4 justify-start">
+              <Payment expectedDate={date as Date} />
+              <p className="text-xl text-slate-500">
+                Please pick a date for delivery
+              </p>
+              <Calendar
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                disabled={{
+                  before: new Date(),
+                }}
+                className="rounded-md w-fit shadow"
+                footer={
+                  date ? (
+                    <p className="my-2 text-slate-500">
+                      Selected: {date.toLocaleDateString()}
+                    </p>
+                  ) : (
+                    "Pick a day."
+                  )
+                }
+              />
+            </section>
+
+            <CartDetailsTable products={cartItems} />
           </>
         ) : (
           <div className="flex flex-col mt-8">
@@ -41,21 +68,3 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
     </>
   );
 }
-// export const getServerSideProps = (async (context) => {
-//   const sessionFound = await getServerSession(
-//     context.req,
-//     context.res,
-//     authOptions
-//   );
-//   if (!sessionFound) {
-//     return {
-//       redirect: {
-//         destination: "/helper/no-auth",
-//         permanent: false,
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }) satisfies GetServerSideProps<{}>;

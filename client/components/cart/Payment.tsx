@@ -1,18 +1,23 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import React from "react";
 import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { bankBaseUrl } from "@/config";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { emptyCart } from "@/store/features/cart/cartSlice";
-const Payment = (): JSX.Element => {
-  const router = useRouter();
+import { usePlaceOrderMutation } from "@/store/features/order/orderApi";
+import { Button } from "../ui/button";
+import { ConfirmOrder } from "@/types";
+
+type PaymentProps = {
+  expectedDate: Date;
+};
+
+const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
   const { cartItems } = useAppSelector((state) => state.cart);
-  const [loading, setIsloading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const {
     isAuthenticated,
-    user: { userId, userEmail },
+    user: { userId },
   } = useAppSelector((state) => state.auth);
 
   function calculateTotalPrice() {
@@ -20,70 +25,45 @@ const Payment = (): JSX.Element => {
     cartItems.map((element) => {
       return (sum += element.productQuantity * element.productPrice);
     });
-
     return sum;
   }
+  const [placeOrder, { isLoading: placingOrder, error }] =
+    usePlaceOrderMutation();
 
   async function payWithBank() {
-    setIsloading(true);
-    if (!isAuthenticated) {
-      toast("You must log in to buy anything", {
-        description: "Try again..",
-      });
-
-      setIsloading(false);
-      return;
-    }
-
     try {
-      const response = await fetch(
-        `/api/transactions/transact-money`,
-
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            buyerEmail: userEmail,
-            buyerId: userId,
-            totalCost: calculateTotalPrice(),
-            cartProductsDetails: cartItems,
-          }),
-        }
-      );
-
-      const pResponse = await response.json();
-      if (pResponse.status === "success") {
-        toast.success("Transaction Successful!", {
-          description: "You will be shortly redirected...",
+      if (!expectedDate) {
+        toast("Please pick an expected data for delivery", {
+          richColors: true,
         });
-        dispatch(emptyCart());
-        setIsloading(false);
-        setTimeout(() => {
-          router.push("/orders");
-        }, 1000);
-        return;
-      } else if (pResponse.status === "error") {
-        setIsloading(false);
-        toast.warning("Transaction failed", {
-          description: pResponse.message || "Try again..",
-        });
-
         return;
       }
-      setIsloading(false);
+      const data: ConfirmOrder = {
+        buyerId: userId as string,
+        expectedDate: expectedDate.toISOString(),
+        transactionAmount: calculateTotalPrice(),
+        sellerIds: cartItems.map((c) => c.productSellerId),
+        orderedProducts: cartItems.map((c) => ({
+          orderedProductsCount: c.productQuantity,
+          productId: c.productId,
+        })),
+      };
+      await placeOrder({ data }).unwrap();
+
+      toast.success("Transaction Successful!", {
+        description: "You will be shortly redirected...",
+      });
+      dispatch(emptyCart());
     } catch (error) {
-      setIsloading(false);
+      console.log(error);
       toast.warning("Transaction failed", {
         description: "Try again..",
       });
-      console.log(error);
     }
   }
   return (
     <div>
-      <section className="border border-slate-400 lg:h-56 m-4 lg:sticky lg:top-1 rounded p-4">
+      <section className="border border-slate-400 w-full rounded p-4">
         <p className="bg-slate-600 text-white font-bold text-3xl mb-2 flex items-center rounded p-2">
           Pay with we bank <CreditCardIcon className="ml-2 md:ml-5" />
         </p>
@@ -103,13 +83,14 @@ const Payment = (): JSX.Element => {
           </a>
         </p>
       </section>
-      <section>
-        <button
-          disabled={loading}
+      {cartItems.length > 0 ? (
+        <Button
+          disabled={placingOrder}
           onClick={payWithBank}
-          className="bg-green-600 disabled:bg-slate-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto mb-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
+          isLoading={placingOrder}
+          className="bg-green-600 h-auto disabled:bg-slate-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto my-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
         >
-          {loading ? (
+          {placingOrder ? (
             "Contacting Bank"
           ) : (
             <span className="inline-flex items-center">
@@ -117,8 +98,8 @@ const Payment = (): JSX.Element => {
               <BanknoteIcon className="ml-4" />
             </span>
           )}
-        </button>
-      </section>
+        </Button>
+      ) : null}
       <Toaster richColors theme="light" closeButton />
     </div>
   );

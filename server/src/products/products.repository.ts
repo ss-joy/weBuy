@@ -20,7 +20,7 @@ export class ProductsRepository {
     const products = await this.productModel
       .find()
       .select('-__v')
-      .populate('sellerId', '-password -__v -products')
+      .populate('sellerId', '-password -__v -products -roles -email -createdAt')
       .skip(skip)
       .limit(limit)
       .exec();
@@ -31,7 +31,7 @@ export class ProductsRepository {
     return this.productModel
       .findById(id)
       .select('-__v')
-      .populate('sellerId', '-password -__v -products')
+      .populate('sellerId', '-password -__v -products -email -createdAt -roles')
       .exec();
   }
 

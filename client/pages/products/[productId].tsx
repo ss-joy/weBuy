@@ -102,7 +102,7 @@ export default function SingleProductDetailsPage(): JSX.Element {
                         increaseCartItemQuantity({
                           productId: productId?.toString() as string,
                           productPrice: data?.price as number,
-                          productSellerId: data?.sellerId as string,
+                          productSellerId: data?.sellerId._id as string,
                         })
                       );
                     }}
