@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
+import { PackageOpen } from "lucide-react";
 import Image from "next/image";
 import Loading from "@/components/ui/Loading";
 import ErrorMsg from "@/components/ui/ErrorMsg";
@@ -46,7 +45,7 @@ const ViewProductModal = ({ productId }: ViewProductModalProps) => {
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogTrigger asChild>
-        <ViewIcon
+        <PackageOpen
           className="hover:cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         />

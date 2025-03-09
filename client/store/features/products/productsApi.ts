@@ -121,6 +121,71 @@ const productAPi = apiSlice.injectEndpoints({
         ];
       },
     }),
+    editProduct: builder.mutation<
+      {},
+      {
+        file: File;
+        data: CreateProductSubmissionData;
+        productId: string;
+        userId: string;
+        imagePath: string;
+      }
+    >({
+      async queryFn(
+        { file, data, productId, imagePath },
+        _api,
+        _extraOptions,
+        baseQuery
+      ) {
+        try {
+          let url = "";
+          url = imagePath;
+          if (!url) {
+            const imageRef = ref(
+              storage,
+              `product-images/${(file as File).name + crypto.randomUUID() + Date.now()}`
+            );
+            await uploadBytes(imageRef, file as File);
+            url = await getDownloadURL(imageRef);
+          }
+
+          const producData: CreateProductSubmissionData & {
+            imagePath: string;
+          } = { ...data, imagePath: url };
+
+          await baseQuery({
+            url: `/products/${productId}`,
+            method: "PATCH",
+            body: producData,
+            credentials: "include",
+          });
+          return {
+            data: {},
+          };
+        } catch (error) {
+          return {
+            error: {
+              status: 500,
+              statusText: "Internal Server Error",
+              data: "Failed to create the product!",
+            },
+          };
+        }
+      },
+      invalidatesTags(_result, _error, arg) {
+        return [
+          {
+            type: "Product",
+            id: arg.productId,
+          },
+          {
+            type: "Products",
+            id: arg.userId,
+          },
+          { type: "Products" },
+        ];
+      },
+    }),
   }),
 });
 export const {
@@ -129,4 +194,5 @@ export const {
   useGetUsersProductsQuery,
   useDeleteProductMutation,
   useAddNewProductMutation,
+  useEditProductMutation,
 } = productAPi;

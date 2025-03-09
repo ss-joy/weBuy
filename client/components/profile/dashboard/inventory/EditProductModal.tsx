@@ -3,13 +3,10 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { ecomBackendUrl } from "@/config";
-import axios from "axios";
 import { Product } from "@/types/products-type";
 import { PenIcon, ShoppingBag, Trash2Icon } from "lucide-react";
 import Image from "next/image";
@@ -29,11 +26,8 @@ import { cn } from "@/lib";
 import { categories } from "@/components/products/ProductsCategory";
 import { useDropzone } from "react-dropzone";
 import UplaodImage from "@/assets/logos/Group 138.png";
-import Loading from "@/components/ui/Loading";
-import { storage } from "@/lib/firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { v4 } from "uuid";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
+import { useEditProductMutation } from "@/store/features/products/productsApi";
 
 type EditProductModalProps = {
   product: Product;
@@ -83,7 +77,6 @@ const EditProductModal = ({
 
   useEffect(() => {
     if (!file && !previewUrl) {
-      console.log("sex");
       setPreviewUrl(null);
       return;
     }
@@ -97,36 +90,30 @@ const EditProductModal = ({
     setFile(null);
     setPreviewUrl("");
   }
-  async function storeImage() {
-    const imageRef = ref(
-      storage,
-      `product-images/${File.name + v4() + Date.now()}`
-    );
-    await uploadBytes(imageRef, file as File);
-    const url = await getDownloadURL(imageRef);
-    console.log({ url });
-    return url;
-  }
+
+  const [editProduct, { isLoading: editingProduct }] = useEditProductMutation();
+
   async function onsubmit(formData: CreateProductFromData) {
-    console.log(formData);
-    let imageUrl = "";
-    if (file) {
-      imageUrl = await storeImage();
-    }
-    const data: CreateProductSubmissionData = {
-      description: formData.description,
-      imagePath: imageUrl === "" ? imagePath : imageUrl,
-      name: formData.name,
-      price: +formData.price,
-      sellerId: sellerId as string,
-      productCategory: formData.productCategory,
-      availableCount: +formData.availableCount,
-    };
     try {
-      await axios.patch(`${ecomBackendUrl}/products/${productId}`, data);
+      if (!file && !imagePath) {
+        return;
+      }
+      const data: CreateProductSubmissionData = {
+        description: formData.description,
+        name: formData.name,
+        price: +formData.price,
+        productCategory: formData.productCategory,
+        availableCount: +formData.availableCount,
+      };
+      await editProduct({
+        productId,
+        file: file as File,
+        data,
+        imagePath,
+        userId: sellerId._id,
+      });
       toast.success("Product added Successfully!", {
-        description:
-          "You have successfully added the product. Visit shop here page to view it...",
+        description: "Edit Successful!!",
       });
       setIsModalOpen(false);
       reset();
@@ -141,14 +128,14 @@ const EditProductModal = ({
       <DialogTrigger asChild>
         <PenIcon className="hover:cursor-pointer hover:stroke-white hover:fill-slate-500 rounded-sm" />
       </DialogTrigger>
-      <DialogContent className="w-[80%] max-w-full">
+      <DialogContent className="w-[80%] max-w-[1080px]">
         <DialogHeader>
-          <DialogTitle>Edit Product</DialogTitle>
+          <DialogTitle className="text-xl">Edit Product</DialogTitle>
           <DialogDescription>
             Make changes to your product here. Click save when you're done.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col items-center px-2 xl:flex-row xl:justify-evenly xl:items-start xl:mt-12 w-full 2xl:mx-auto 2xl:mt-16">
+        <div className="flex flex-col items-center gap-4 px-2 xl:flex-row xl:justify-center xl:items-start xl:mt-12 w-full 2xl:mx-auto 2xl:mt-16">
           <section
             id="image"
             className="w-full mb-4 sm:w-5/6 lg:w-4/5 lg:m-0 lg:mb-6"
@@ -200,21 +187,35 @@ const EditProductModal = ({
           <form
             onSubmit={handleSubmit(onsubmit)}
             id="product-details"
-            className="shadow-md px-2 pt-0 mt-0 shadow-slates-400 sm:w-5/6 lg:w-4/5 lg:mx-6 lg:p-4 lg:pt-0 rounded-md max-w-2xl"
+            className="px-2 pt-0 mt-0 lg:p-4 lg:pt-0 rounded-md max-w-2xl"
           >
             <div>
-              <input
-                className="text-3xl sm:text-4xl md:text-5xl 2xl:text-7xl 2xl:mb-6 font-bold text-orange-500 block w-full"
-                {...register("name", {
-                  required: {
-                    value: true,
-                    message: "Product name is required",
-                  },
-                })}
-              />
-              <div className="font-bold text-2xl lg:text-3xl text-orange-400">
+              <div>
+                <label
+                  htmlFor=""
+                  className="text-orange-500 text-lg font-bold block"
+                >
+                  Product Name
+                </label>
                 <input
-                  className="w-24 mt-4 mb-4 rounded-md  p-2 font-bold text-2xl lg:text-3xl text-orange-400"
+                  className="text-3xl  w-full border-2 border-slate-300 p-2 block rounded-lg"
+                  {...register("name", {
+                    required: {
+                      value: true,
+                      message: "Product name is required",
+                    },
+                  })}
+                />
+              </div>
+              <div className="font-bold text-lg lg:text-3xl text-orange-400">
+                <label
+                  htmlFor=""
+                  className="text-orange-500 text-lg font-bold block"
+                >
+                  Product Price
+                </label>
+                <input
+                  className="text-3xl  w-full border-2 border-slate-300 p-2 block rounded-lg"
                   {...register("price", {
                     required: {
                       value: true,
@@ -227,11 +228,16 @@ const EditProductModal = ({
                     },
                   })}
                 />
-                <span>$</span>
               </div>
-              <div className="font-bold text-2xl lg:text-3xl text-orange-400">
+              <div className="font-bold text-lg lg:text-3xl text-orange-400">
+                <label
+                  htmlFor=""
+                  className="text-orange-500 text-lg font-bold block"
+                >
+                  Product count
+                </label>
                 <input
-                  className="w-24 mt-4 mb-4 rounded-md p-2 "
+                  className="text-3xl  w-full border-2 border-slate-300 p-2 block rounded-lg"
                   {...register("availableCount", {
                     required: {
                       value: true,
@@ -243,18 +249,25 @@ const EditProductModal = ({
                       message: "Product price must be at least 1.",
                     },
                   })}
-                />{" "}
-                units available
+                />
               </div>
-              <textarea
-                className="mt-2 min-h-[200px] p-2 rounded-lg text-orange-300 font-bold block w-full"
-                {...register("description", {
-                  required: {
-                    value: true,
-                    message: "Product description is required",
-                  },
-                })}
-              />
+              <div>
+                <label
+                  htmlFor=""
+                  className="text-orange-500 text-lg font-bold block"
+                >
+                  Product Description
+                </label>
+                <textarea
+                  className="text-xl w-full border-2 border-slate-300 px-2 block rounded-lg min-h-[200px]"
+                  {...register("description", {
+                    required: {
+                      value: true,
+                      message: "Product description is required",
+                    },
+                  })}
+                />
+              </div>
               <Controller
                 control={control}
                 defaultValue={productCategory}
@@ -302,11 +315,14 @@ const EditProductModal = ({
                 )}
               />
             </div>
-            <Button className="my-4 bg-orange-400" isLoading={isSubmitting}>
+            <Button
+              className="my-4 bg-orange-400 mx-auto block"
+              isLoading={isSubmitting || editingProduct}
+              disabled={isSubmitting || editingProduct}
+            >
               Save
             </Button>
           </form>
-          <Toaster richColors theme="light" closeButton />
         </div>
       </DialogContent>
     </Dialog>
