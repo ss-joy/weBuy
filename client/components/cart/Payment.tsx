@@ -42,10 +42,10 @@ const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
         buyerId: userId as string,
         expectedDate: expectedDate.toISOString(),
         transactionAmount: calculateTotalPrice(),
-        sellerIds: cartItems.map((c) => c.productSellerId),
         orderedProducts: cartItems.map((c) => ({
           orderedProductsCount: c.productQuantity,
           productId: c.productId,
+          sellerId: c.productSellerId,
         })),
       };
       await placeOrder({ data }).unwrap();

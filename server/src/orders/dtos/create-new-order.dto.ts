@@ -17,16 +17,16 @@ class OrderedProductDetails {
   @IsMongoId()
   @IsNotEmpty()
   productId: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  sellerId: string;
 }
 
 export class CreateNewOrderDto {
   @IsMongoId()
   @IsNotEmpty()
   buyerId: string;
-
-  @IsArray()
-  @IsMongoId({ each: true })
-  sellerIds: string[];
 
   @IsNumber()
   @IsPositive()

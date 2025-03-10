@@ -21,13 +21,6 @@ export class Order {
   buyerId: User;
 
   @Prop({
-    type: [mongoose.Schema.ObjectId],
-    ref: User.name,
-    required: [true, 'Ids of the sellers are required'],
-  })
-  sellerIds: User[];
-
-  @Prop({
     type: Number,
     required: [true, 'Total transaction amount is required'],
   })
@@ -56,10 +49,13 @@ export class Order {
     type: [
       {
         orderedProductsCount: { type: Number, required: true },
+        sellerId: {
+          type: mongoose.Schema.ObjectId,
+          ref: User.name,
+        },
         productId: {
           type: mongoose.Schema.ObjectId,
           ref: Product.name,
-          required: true,
         },
       },
     ],

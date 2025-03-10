@@ -16,13 +16,7 @@ export class OrdersRepository {
   ) {}
 
   async createNewOrder({
-    cartData: {
-      buyerId,
-      expectedDate,
-      orderedProducts,
-      sellerIds,
-      transactionAmount,
-    },
+    cartData: { buyerId, expectedDate, orderedProducts, transactionAmount },
     trxId,
   }: {
     cartData: CreateNewOrderDto;
@@ -36,7 +30,6 @@ export class OrdersRepository {
         expectedDate: new Date(expectedDate),
         trxId,
         orderPlacementDate: Date.now(),
-        sellerIds,
         transactionAmount,
         orderedProducts,
       });
