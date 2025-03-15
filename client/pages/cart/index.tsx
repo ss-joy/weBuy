@@ -12,14 +12,16 @@ const NoSSRPayment = dynamic(() => import("@/components/cart/Payment"), {
 });
 
 import { useAppSelector } from "@/hooks/redux-hooks";
-import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
+import EmptyCart from "@/components/cart/EmptyCart";
+import DeliveryDatePickerModal from "@/components/cart/DeliveryDatePickerModal";
 
 type CartIndexPageProps = {};
 
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   const { cartItems } = useAppSelector((state) => state.cart);
   const [date, setDate] = useState<Date | undefined>(undefined);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   return (
     <>
@@ -30,48 +32,25 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
         id="full-cart-container"
         className="flex flex-col-reverse lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mt-12 mx-auto"
       >
-        {cartItems.length >= 0 ? (
-          <>
+        {cartItems.length > 0 ? (
+          <div className="flex flex-col md:flex-row-reverse gap-24 p-3">
             <section className="flex flex-col gap-4 justify-start">
-              <NoSSRPayment expectedDate={date as Date} />
-              <p className="text-xl text-slate-500 mx-auto">
-                Please pick a date for delivery
-              </p>
-              <Calendar
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                disabled={{
-                  before: new Date(),
-                }}
-                className="rounded-md w-fit shadow mx-auto"
-                footer={
-                  date ? (
-                    <p className="my-2 text-slate-500">
-                      Selected: {date.toLocaleDateString()}
-                    </p>
-                  ) : (
-                    "Pick a day."
-                  )
-                }
+              <NoSSRPayment
+                expectedDate={date as Date}
+                setShowDatePickerModal={setShowModal}
+              />
+              <DeliveryDatePickerModal
+                date={date}
+                setDate={setDate}
+                setShowModal={setShowModal}
+                showModal={showModal}
               />
             </section>
 
             <NoSSRCartDetailsTable products={cartItems} />
-          </>
-        ) : (
-          <div className="flex flex-col mt-8">
-            <p className="mx-auto text-center font-bold text-5xl text-slate-500">
-              Please add some products to see something here
-            </p>
-            <Image
-              className="block mx-auto"
-              src="/ui-images/cart.jpg"
-              alt="cart dummy image"
-              width={300}
-              height={300}
-            />
           </div>
+        ) : (
+          <EmptyCart />
         )}
       </div>
     </>

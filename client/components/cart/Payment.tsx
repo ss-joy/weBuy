@@ -1,5 +1,10 @@
-import React from "react";
-import { BanknoteIcon, CreditCardIcon, ExternalLinkIcon } from "lucide-react";
+import React, { Dispatch, SetStateAction } from "react";
+import {
+  BanknoteIcon,
+  Calendar1Icon,
+  CreditCardIcon,
+  ExternalLinkIcon,
+} from "lucide-react";
 import { Toaster, toast } from "sonner";
 import { bankBaseUrl } from "@/config";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
@@ -10,9 +15,13 @@ import { ConfirmOrder } from "@/types";
 
 type PaymentProps = {
   expectedDate: Date;
+  setShowDatePickerModal: Dispatch<SetStateAction<boolean>>;
 };
 
-const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
+const Payment = ({
+  expectedDate,
+  setShowDatePickerModal,
+}: PaymentProps): JSX.Element => {
   const { cartItems } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const {
@@ -84,21 +93,34 @@ const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
         </p>
       </section>
       {cartItems.length > 0 ? (
-        <Button
-          disabled={placingOrder}
-          onClick={payWithBank}
-          isLoading={placingOrder}
-          className="bg-green-600 h-auto disabled:bg-slate-600 text-white text-2xl rounded-md font-bold p-4 block shadow-lg shadow-slate-600 mx-auto my-8  hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400"
-        >
-          {placingOrder ? (
-            "Contacting Bank"
-          ) : (
+        <section className="flex p-2 pt-8 gap-2">
+          <Button
+            disabled={placingOrder}
+            onClick={payWithBank}
+            isLoading={placingOrder}
+            className="bg-green-600 h-auto disabled:bg-slate-600 text-white text-2xl rounded-md font-bold block shadow-lg shadow-slate-600 hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400 grow"
+          >
+            {placingOrder ? (
+              "Contacting Bank"
+            ) : (
+              <span className="inline-flex items-center">
+                Pay with weBank
+                <BanknoteIcon className="ml-4" />
+              </span>
+            )}
+          </Button>
+          <Button
+            className="bg-slate-600 h-auto disabled:bg-slate-600 text-white text-2xl rounded-md font-bold block shadow-lg shadow-slate-600 hover:shadow-xl hover:shadow-slate-600 transition-all active:bg-green-400 grow"
+            onClick={() => {
+              setShowDatePickerModal((prev) => !prev);
+            }}
+          >
             <span className="inline-flex items-center">
-              Pay with weBank
-              <BanknoteIcon className="ml-4" />
+              Pick a Date
+              <Calendar1Icon className="ml-4" />
             </span>
-          )}
-        </Button>
+          </Button>
+        </section>
       ) : null}
       <Toaster richColors theme="light" closeButton />
     </div>
