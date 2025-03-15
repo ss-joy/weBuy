@@ -27,7 +27,7 @@ const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
     });
     return sum;
   }
-  const [placeOrder, { isLoading: placingOrder, error }] =
+  const [placeOrder, { isLoading: placingOrder, error, data }] =
     usePlaceOrderMutation();
 
   async function payWithBank() {
@@ -41,7 +41,7 @@ const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
       const data: ConfirmOrder = {
         buyerId: userId as string,
         expectedDate: expectedDate.toISOString(),
-        transactionAmount: calculateTotalPrice(),
+        totalTransactionAmount: calculateTotalPrice(),
         orderedProducts: cartItems.map((c) => ({
           orderedProductsCount: c.productQuantity,
           productId: c.productId,
@@ -57,7 +57,7 @@ const Payment = ({ expectedDate }: PaymentProps): JSX.Element => {
     } catch (error) {
       console.log(error);
       toast.warning("Transaction failed", {
-        description: "Try again..",
+        description: data?.message || "Order placing failed. Please try again.",
       });
     }
   }

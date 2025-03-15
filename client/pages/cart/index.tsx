@@ -1,13 +1,22 @@
-import Payment from "@/components/cart/Payment";
 import Image from "next/image";
 import Head from "next/head";
+import dynamic from "next/dynamic";
+
+const NoSSRCartDetailsTable = dynamic(
+  () => import("@/components/cart/CartDetailsTable"),
+  { ssr: false }
+);
+
+const NoSSRPayment = dynamic(() => import("@/components/cart/Payment"), {
+  ssr: false,
+});
 
 import { useAppSelector } from "@/hooks/redux-hooks";
-import CartDetailsTable from "@/components/cart/CartDetailsTable";
 import { Calendar } from "@/components/ui/calendar";
 import { useState } from "react";
 
 type CartIndexPageProps = {};
+
 export default function ShowCart(props: CartIndexPageProps): JSX.Element {
   const { cartItems } = useAppSelector((state) => state.cart);
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -19,13 +28,13 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
       </Head>
       <div
         id="full-cart-container"
-        className="flex flex-col lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mt-12 mx-auto"
+        className="flex flex-col-reverse lg:flex-row-reverse lg:w-4/5 lg:justify-evenly mt-12 mx-auto"
       >
         {cartItems.length >= 0 ? (
           <>
             <section className="flex flex-col gap-4 justify-start">
-              <Payment expectedDate={date as Date} />
-              <p className="text-xl text-slate-500">
+              <NoSSRPayment expectedDate={date as Date} />
+              <p className="text-xl text-slate-500 mx-auto">
                 Please pick a date for delivery
               </p>
               <Calendar
@@ -35,7 +44,7 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
                 disabled={{
                   before: new Date(),
                 }}
-                className="rounded-md w-fit shadow"
+                className="rounded-md w-fit shadow mx-auto"
                 footer={
                   date ? (
                     <p className="my-2 text-slate-500">
@@ -48,7 +57,7 @@ export default function ShowCart(props: CartIndexPageProps): JSX.Element {
               />
             </section>
 
-            <CartDetailsTable products={cartItems} />
+            <NoSSRCartDetailsTable products={cartItems} />
           </>
         ) : (
           <div className="flex flex-col mt-8">

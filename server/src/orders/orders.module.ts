@@ -6,6 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/users.schema';
 import { Product, ProductSchema } from 'src/products/product.schema';
 import { Order, OrderSchema } from './orders.schema';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { Order, OrderSchema } from './orders.schema';
       { name: Product.name, schema: ProductSchema },
       { name: Order.name, schema: OrderSchema },
     ]),
+    UsersModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService, OrdersRepository],

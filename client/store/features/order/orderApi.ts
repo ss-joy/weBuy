@@ -6,7 +6,7 @@ const orderApi = apiSlice.injectEndpoints({
     getOrderList: builder.query<any, { userId: string }>({
       query: ({ userId }) => `/orders/${userId}`,
     }),
-    placeOrder: builder.mutation<any, { data: ConfirmOrder }>({
+    placeOrder: builder.mutation<{ message: string }, { data: ConfirmOrder }>({
       query: ({ data }) => ({
         url: "/orders",
         method: "POST",

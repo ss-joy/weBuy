@@ -36,7 +36,7 @@ export class AuthController {
     const { token, userId, roles } = await this.authService.login(loginUserDto);
     res.cookie('token', token, {
       httpOnly: true,
-      maxAge: 1 * 60 * 60 * 1000,
+      maxAge: 600 * 60 * 60 * 1000,
       sameSite: 'strict',
     });
     return {
@@ -59,9 +59,9 @@ export class AuthController {
   @Get('me')
   async validateToken(@Req() req: Request) {
     return {
-      userId: req.body.userData.sub,
-      roles: req.body.userData.roles,
-      userEmail: req.body.userEmail,
+      userId: req['userData'].sub,
+      roles: req['userData'].roles,
+      userEmail: req['userData'].userEmail,
     };
   }
 }

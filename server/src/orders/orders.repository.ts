@@ -11,12 +11,36 @@ export class OrdersRepository {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Product.name) private productModel: Model<Product>,
-    @InjectModel(Order.name) private orderModule: Model<Order>,
+    @InjectModel(Order.name) private orderModel: Model<Order>,
     @InjectConnection() private connection: Connection,
   ) {}
 
+  async getOrdersByUserId(id: string) {
+    return this.orderModel
+      .find({
+        buyerId: id,
+      })
+      .select('-__v');
+  }
+
+  async getDetailsOFEachCartProduct(createNewOrderDto: CreateNewOrderDto) {
+    const productsDetails = await this.productModel
+      .find({
+        _id: {
+          $in: createNewOrderDto.orderedProducts.map((oP) => oP.productId),
+        },
+      })
+      .select('_id price');
+    return productsDetails;
+  }
+
   async createNewOrder({
-    cartData: { buyerId, expectedDate, orderedProducts, transactionAmount },
+    cartData: {
+      buyerId,
+      expectedDate,
+      orderedProducts,
+      totalTransactionAmount,
+    },
     trxId,
   }: {
     cartData: CreateNewOrderDto;
@@ -25,12 +49,12 @@ export class OrdersRepository {
     const session = await this.connection.startSession();
     session.startTransaction();
     try {
-      await this.orderModule.create({
+      await this.orderModel.create({
         buyerId,
         expectedDate: new Date(expectedDate),
         trxId,
         orderPlacementDate: Date.now(),
-        transactionAmount,
+        totalTransactionAmount,
         orderedProducts,
       });
       await session.commitTransaction();

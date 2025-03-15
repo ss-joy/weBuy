@@ -30,7 +30,7 @@ export class CreateNewOrderDto {
 
   @IsNumber()
   @IsPositive()
-  transactionAmount: number;
+  totalTransactionAmount: number;
 
   @IsISO8601()
   expectedDate: Date;

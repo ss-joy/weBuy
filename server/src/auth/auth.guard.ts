@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       const decoded = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
-      request.body.userData = decoded;
+      request['userData'] = decoded;
     } catch (error) {
       response.clearCookie('token', {
         httpOnly: true,

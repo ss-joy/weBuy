@@ -11,7 +11,9 @@ import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ProductsModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot(
       'mongodb+srv://mongo_user:12345@cluster1.exfjbjn.mongodb.net/prod_we_buy?retryWrites=true&w=majority',
     ),

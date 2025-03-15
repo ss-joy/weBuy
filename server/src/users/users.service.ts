@@ -7,7 +7,7 @@ import { hash } from 'bcryptjs';
 export class UsersService {
   constructor(private readonly usersRepository: UsersRepository) {}
 
-  getUser(id: string) {
+  async getUser(id: string) {
     return this.usersRepository.getUser(id);
   }
 

@@ -24,7 +24,7 @@ export class Order {
     type: Number,
     required: [true, 'Total transaction amount is required'],
   })
-  transactionAmount: number;
+  totalTransactionAmount: number;
 
   @Prop({
     type: String,

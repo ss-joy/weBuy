@@ -41,12 +41,11 @@ export type CreateProductSubmissionData = {
 export type OrderedProductDetails = {
   orderedProductsCount: number;
   productId: string;
+  sellerId: string;
 };
 export type ConfirmOrder = {
   buyerId: string;
-  sellerIds: string[];
-  transactionAmount: number;
+  totalTransactionAmount: number;
   orderedProducts: OrderedProductDetails[];
-  ///utc time string
-  expectedDate: string;
+  expectedDate: string; ///utc time string
 };

@@ -1,5 +1,4 @@
-import React, { useMemo } from "react";
-import { useTable } from "react-table";
+import React, { Fragment } from "react";
 import {
   Table,
   TableBody,
@@ -10,8 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ExternalLinkIcon } from "lucide-react";
-import ProductImage from "@/components/cart/ProductImage";
+
+import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
+
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import ProductCard from "./ProductCard";
+import {
+  decreaseCartItemQuantity,
+  deleteProductFromCart,
+  increaseCartItemQuantity,
+} from "@/store/features/cart/cartSlice";
 type Product = {
   productId: string;
   productQuantity: number;
@@ -23,107 +30,92 @@ type CartDetailsTableProps = {
   products: Product[];
 };
 
-const COLUMNS = [
-  {
-    Header: "Name",
-    Footer: "Name",
-    accessor: "productId",
-  },
-  {
-    Header: "Quantity",
-    Footer: "Quantity",
-    accessor: "productQuantity",
-  },
-  {
-    Header: "Price(Each)",
-    Footer: "Price",
-    accessor: "productPrice",
-  },
-];
-
 function CartDetailsTable({ products }: CartDetailsTableProps): JSX.Element {
-  const columns = useMemo(() => {
-    return COLUMNS;
-  }, []);
-  const memoData = useMemo(() => {
-    return products;
-  }, []);
-  console.log("products---", products);
-  const {
-    getTableProps,
-    getTableBodyProps,
-    footerGroups,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    //columns
-    // @ts-ignore
-    columns: columns,
-
-    //rows or data
-    data: memoData,
-  });
   function calulcateTotalPrice(products: Product[]): number {
     const totalPrice = products.reduce((prev, curr) => {
       return prev + curr.productQuantity * curr.productPrice;
     }, 0);
-
     return totalPrice;
   }
+
+  const { cartItems } = useAppSelector((state) => state.cart);
+  const dispatch = useAppDispatch();
+
+  function handlePlusIconClick(
+    productId: string,
+    productPrice: number,
+    productSellerId: string
+  ) {
+    dispatch(
+      increaseCartItemQuantity({ productId, productPrice, productSellerId })
+    );
+  }
+  function handleMinusIconClick(productId: string) {
+    dispatch(decreaseCartItemQuantity({ productId }));
+  }
+  function handleDeleteIconClick(productId: string) {
+    dispatch(deleteProductFromCart({ productId }));
+  }
+
   return (
     <div>
-      <Table {...getTableProps()}>
-        <TableCaption>List of all your orders.</TableCaption>
+      <Table className="border shadow-md rounded-md select-none">
+        <TableCaption>Your Cart</TableCaption>
         <TableHeader>
-          {headerGroups.map((headerGroup) => {
-            return (
-              <TableRow
-                className="xl:text-xl"
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      className="text-slate-700"
-                      {...header.getHeaderProps()}
-                    >
-                      {header.render("Header")}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            );
-          })}
+          <TableRow>
+            <TableHead className="w-[100px]">Product</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead className="text-right">Total selected</TableHead>
+          </TableRow>
         </TableHeader>
-
-        <TableBody {...getTableBodyProps()}>
-          {rows.map((row) => {
-            prepareRow(row);
-            return (
-              <TableRow className="xl:text-xl" {...row.getRowProps()}>
-                {row.cells.map((cell) => {
-                  return (
-                    <TableCell {...cell.getCellProps()}>
-                      {cell.column.id === "productId" ? (
-                        <ProductImage key={cell.value} productId={cell.value} />
-                      ) : (
-                        cell.render("Cell")
-                      )}
-                    </TableCell>
-                  );
-                })}
+        <TableBody>
+          {cartItems.map((ci) => (
+            <Fragment key={ci.productId}>
+              <TableRow>
+                <TableCell className="border">
+                  <ProductCard productId={ci.productId} />
+                </TableCell>
+                <TableCell className="text-center">
+                  {ci.productPrice}$ per unit
+                </TableCell>
+                <TableCell className="text-center">
+                  {ci.productQuantity} units
+                </TableCell>
               </TableRow>
-            );
-          })}
+              <TableRow>
+                <TableCell>
+                  <PlusIcon
+                    className="mx-auto stroke-green-500 hover:cursor-pointer"
+                    onClick={() =>
+                      handlePlusIconClick(
+                        ci.productId,
+                        ci.productPrice,
+                        ci.productSellerId
+                      )
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <MinusIcon
+                    className="mx-auto stroke-orange-500 hover:cursor-pointer"
+                    onClick={() => handleMinusIconClick(ci.productId)}
+                  />
+                </TableCell>
+                <TableCell className="border">
+                  <TrashIcon
+                    className="mx-auto stroke-red-500 hover:cursor-pointer"
+                    onClick={() => handleDeleteIconClick(ci.productId)}
+                  />
+                </TableCell>
+              </TableRow>
+            </Fragment>
+          ))}
         </TableBody>
         <TableFooter>
           <TableRow>
-            <TableCell className="text-right xl:text-xl" colSpan={2}>
-              Total
-            </TableCell>
-            <TableCell className="text-right xl:text-xl">
-              {calulcateTotalPrice(products)}
+            <TableCell colSpan={2}>Total</TableCell>
+            <TableCell className="text-right">
+              ${calulcateTotalPrice(cartItems)}
             </TableCell>
           </TableRow>
         </TableFooter>

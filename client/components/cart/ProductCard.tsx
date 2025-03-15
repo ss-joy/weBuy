@@ -4,11 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type ProductImageProps = {
+type ProductCardProps = {
   productId: string;
 };
 
-function ProductImage({ productId }: ProductImageProps) {
+function ProductCard({ productId }: ProductCardProps) {
   const { data, isLoading, error } = useGetProductQuery(
     {
       id: productId,
@@ -21,7 +21,7 @@ function ProductImage({ productId }: ProductImageProps) {
   return (
     <>
       {data?.imagePath ? (
-        <div>
+        <div className="flex flex-col gap-2 select-none">
           <Image
             src={data?.imagePath}
             width={100}
@@ -45,4 +45,4 @@ function ProductImage({ productId }: ProductImageProps) {
   );
 }
 
-export default ProductImage;
+export default ProductCard;

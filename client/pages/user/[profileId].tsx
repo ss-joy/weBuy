@@ -2,12 +2,19 @@ import GetUserProfile from "@/components/profile/UserProfile";
 import React, { useEffect, useState } from "react";
 import Dashboard from "@/components/profile/dashboard/Dashboard";
 import { useRouter } from "next/router";
-import { PackageOpen, TableOfContents, UserPen } from "lucide-react";
+import {
+  AlarmClock,
+  PackageOpen,
+  ShoppingBagIcon,
+  TableOfContents,
+  UserPen,
+} from "lucide-react";
 import Link from "next/link";
 import UserProfile from "@/components/profile/UserProfile";
 import Inventory from "@/components/profile/dashboard/inventory/Inventory";
 import Loading from "@/components/ui/Loading";
 import { useAppSelector } from "@/hooks/redux-hooks";
+import ViewOrders from "@/components/profile/dashboard/ViewOrders";
 
 function UserProfilePage() {
   const { userId } = useAppSelector((state) => state.auth.user);
@@ -30,6 +37,16 @@ function UserProfilePage() {
       value: "Inventory",
       icon: <PackageOpen className={iconClassNames} />,
       tabItem: "inventory",
+    },
+    {
+      value: "Purchases",
+      icon: <ShoppingBagIcon className={iconClassNames} />,
+      tabItem: "purchases",
+    },
+    {
+      value: "Orders",
+      icon: <AlarmClock className={iconClassNames} />,
+      tabItem: "orders",
     },
   ] as const;
 
@@ -79,6 +96,8 @@ function UserProfilePage() {
           {tab === "profile" ? <UserProfile userId={userId} /> : null}
           {tab === "overview" ? <Dashboard userId={userId} /> : null}
           {tab === "inventory" ? <Inventory userId={userId} /> : null}
+          {tab === "purchases" ? <Inventory userId={userId} /> : null}
+          {tab === "orders" ? <ViewOrders userId={userId} /> : null}
         </section>
       </main>
     </>

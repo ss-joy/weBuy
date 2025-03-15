@@ -20,7 +20,7 @@ export class OrdersController {
   @UseGuards(AuthGuard)
   @Get(':id')
   getOrders(@Param('id') id: string) {
-    return this.ordersService.getOrders(id);
+    return this.ordersService.getOrdersByUserId(id);
   }
 
   @UseGuards(AuthGuard)
@@ -31,13 +31,19 @@ export class OrdersController {
   ) {
     try {
       await this.ordersService.createNewOrder(createNewOrderDto);
+
       return res.status(201).json({
         message: 'Order placed successfully',
       });
     } catch (error) {
-      return res.status(500).json({
-        message: 'Order placing failed',
-      });
+      if (error instanceof Error) {
+        return res.status(500).json({
+          message:
+            error.name === 'bankerror'
+              ? error.message
+              : "'Order placement failed'",
+        });
+      }
     }
   }
 }
