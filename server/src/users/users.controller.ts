@@ -55,4 +55,8 @@ export class UsersController {
   getProductsByUserId(@Param('id') id: string) {
     return this.usersService.getProductsByUserId(id);
   }
+  @Get('purchases/:userId')
+  getPurchasesByUserId(@Param('userId') userId: string) {
+    return this.usersService.getPurchasesByUserId(userId);
+  }
 }

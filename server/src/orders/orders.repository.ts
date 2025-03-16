@@ -20,7 +20,15 @@ export class OrdersRepository {
       .find({
         buyerId: id,
       })
-      .select('-__v');
+      .select('-__v')
+      .populate({
+        path: 'orderedProducts.productId',
+        select: '-__v -sellerId',
+      })
+      .populate({
+        path: 'orderedProducts.sellerId',
+        select: '-__v -roles -createdAt -password -products',
+      });
   }
 
   async getDetailsOFEachCartProduct(createNewOrderDto: CreateNewOrderDto) {
