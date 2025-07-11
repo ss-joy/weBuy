@@ -7,12 +7,12 @@ export type User = {
 };
 
 export type AuthSliceType = {
-  user: User;
+  user: User | null;
   isAuthenticated: boolean;
 };
 
 const initialState: AuthSliceType = {
-  user: {},
+  user: null,
   isAuthenticated: false,
 };
 
@@ -21,29 +21,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     loginUser: (state, action: PayloadAction<User>) => {
-      state.user.userId = action.payload.userId;
-      state.user.roles = action.payload.roles;
-      state.user.userEmail = action.payload.userEmail;
+      state.user = {
+        userId: action.payload.userId,
+        roles: action.payload.roles,
+        userEmail: action.payload.userEmail,
+      };
+      state.isAuthenticated = true;
     },
     logoutUser: (state) => {
-      state.user.userId = undefined;
-      state.user.roles = undefined;
-      state.user.userEmail = undefined;
-    },
-    setUserAuthData: (state, action: PayloadAction<User>) => {
-      state.user.userId = action.payload.userId;
-      state.user.roles = action.payload.roles;
-      state.user.userEmail = action.payload.userEmail;
-    },
-    setAuthStatus: (
-      state,
-      action: PayloadAction<{ userId: string | undefined }>
-    ) => {
-      state.isAuthenticated = !!action.payload.userId;
+      state.user = null;
+      state.isAuthenticated = false;
     },
   },
 });
 
-export const { loginUser, logoutUser, setUserAuthData, setAuthStatus } =
-  authSlice.actions;
+export const { loginUser, logoutUser } = authSlice.actions;
 export default authSlice;

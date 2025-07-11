@@ -1,11 +1,5 @@
 import apiSlice from "../api/apiSlice";
-import {
-  loginUser,
-  logoutUser,
-  setAuthStatus,
-  setUserAuthData,
-  User,
-} from "./authSlice";
+import { loginUser, logoutUser, User } from "./authSlice";
 
 const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -34,17 +28,8 @@ const authApi = apiSlice.injectEndpoints({
               userEmail: data.data.userEmail,
             })
           );
-          dispatch(
-            setAuthStatus({
-              userId: data.data.userId as string,
-            })
-          );
         } catch (error) {
-          dispatch(
-            setAuthStatus({
-              userId: undefined,
-            })
-          );
+          dispatch(logoutUser());
         }
       },
     }),
@@ -67,30 +52,14 @@ const authApi = apiSlice.injectEndpoints({
         try {
           const userData = await queryFulfilled;
           dispatch(
-            setUserAuthData({
+            loginUser({
               userId: userData.data.userId,
               roles: userData.data.roles,
               userEmail: userData.data.userEmail,
             })
           );
-          dispatch(
-            setAuthStatus({
-              userId: userData.data.userId,
-            })
-          );
         } catch (error) {
-          dispatch(
-            setUserAuthData({
-              userId: undefined,
-              roles: undefined,
-              userEmail: undefined,
-            })
-          );
-          dispatch(
-            setAuthStatus({
-              userId: undefined,
-            })
-          );
+          dispatch(logoutUser());
         }
       },
     }),
